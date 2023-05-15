@@ -23,7 +23,7 @@ Instant messaging system for real-time communication
 ## Installation
 1. Clone the GitHub repository: git clone https://github.com/LeBenjos/Projet-RS-HETIC.git
 2. Set up the required dependencies and environment.
-3. Configure the MySQL database settings in the project files.
+3. Configure the MySQL [database](source.md) settings in the project files.
 4. Run the application and access it through a web browser.
 
 ## Contributing
