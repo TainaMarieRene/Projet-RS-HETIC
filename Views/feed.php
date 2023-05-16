@@ -1,7 +1,7 @@
 <?php 
-require_once("../controllers/functions.php");
-$post=getUserPoser(1);
-var_dump($post);
+//require_once("../controllers/functions.php");
+// $post=getUserPoser(1);
+// var_dump($post);
 ?>
 
 <!DOCTYPE html>
@@ -13,6 +13,14 @@ var_dump($post);
     <title>Feed - <?="TON NOM"?></title>
 </head>
 <body>
-    
+    <?php require_once("./templates/side_profile.php")?>
+    <article>
+        <img src="<?= '' ?>" alt="friend_pp" />
+        <span><?="friend_pseudo"?><span> 
+        <p><?="post_date"?></p>
+        <p><?="post_content"?></p>
+        <img src="" alt="coeur">
+        <img src="" alt="commentary">
+    </article>
 </body>
 </html>
