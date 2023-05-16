@@ -183,9 +183,10 @@ CREATE TABLE `posts` (
 
 CREATE TABLE `posts_comments` (
   `post_comment_id` int(11) NOT NULL,
+  `post_comment_parent_id` int(11) DEFAULT NULL,
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `post_comment_parent_id` int(11) DEFAULT NULL,
+  `post_comment_content` TEXT NOT NULL,
   `post_comment_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
