@@ -117,6 +117,18 @@ CREATE TABLE `members_groups_extra` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `members_pages_extra`
+--
+
+CREATE TABLE members_pages_extra (
+  member_id INT PRIMARY KEY NOT NULL,
+  member_page_role ENUM('follower', 'admin') DEFAULT 'follower' NOT NULL,
+  FOREIGN KEY (member_id) REFERENCES members(member_id)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `messages`
 --
 
