@@ -95,6 +95,12 @@ CREATE TABLE members_groups_extra (
   FOREIGN KEY (member_id) REFERENCES members(member_id)
 );
 
+CREATE TABLE members_pages_extra (
+  member_id INT PRIMARY KEY NOT NULL,
+  member_page_role ENUM('follower', 'admin') DEFAULT 'follower' NOT NULL,
+  FOREIGN KEY (member_id) REFERENCES members(member_id)
+);
+
 CREATE TABLE posts (
   post_id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -114,9 +120,10 @@ CREATE TABLE posts_imgs (
 
 CREATE TABLE posts_comments (
   post_comment_id INT AUTO_INCREMENT PRIMARY KEY,
+  post_comment_parent_id INT,
   post_id INT NOT NULL,
   user_id INT NOT NULL,
-  post_comment_parent_id INT,
+  post_comment_content TEXT NOT NULL,
   post_comment_date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
   FOREIGN KEY (post_id) REFERENCES posts(post_id),
   FOREIGN KEY (user_id) REFERENCES users(user_id)

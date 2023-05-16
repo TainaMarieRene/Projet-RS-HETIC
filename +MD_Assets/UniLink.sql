@@ -117,6 +117,18 @@ CREATE TABLE `members_groups_extra` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `members_pages_extra`
+--
+
+CREATE TABLE members_pages_extra (
+  member_id INT PRIMARY KEY NOT NULL,
+  member_page_role ENUM('follower', 'admin') DEFAULT 'follower' NOT NULL,
+  FOREIGN KEY (member_id) REFERENCES members(member_id)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `messages`
 --
 
@@ -183,9 +195,10 @@ CREATE TABLE `posts` (
 
 CREATE TABLE `posts_comments` (
   `post_comment_id` int(11) NOT NULL,
+  `post_comment_parent_id` int(11) DEFAULT NULL,
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `post_comment_parent_id` int(11) DEFAULT NULL,
+  `post_comment_content` TEXT NOT NULL,
   `post_comment_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
