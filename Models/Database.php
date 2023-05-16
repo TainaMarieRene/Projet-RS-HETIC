@@ -4,8 +4,7 @@ namespace Database;
 use PDO;
 use PDOException;
 
-class DB
-{
+class DB {
     private string $_motor = "mysql";
     private string $_host = "localhost";
     private string $_dbName = "unilink";
