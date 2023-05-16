@@ -22,7 +22,7 @@ class DBXAMP
                 "file" => $e->getFile(),
                 "line" => $e->getLine()
             ]);
-            exit;
+            exit();
         }
     }
 
