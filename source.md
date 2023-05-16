@@ -24,8 +24,8 @@ CREATE TABLE authentifications (
   user_id INT PRIMARY KEY,
   user_username VARCHAR(255) NOT NULL UNIQUE,
   user_token VARCHAR(255) NOT NULL UNIQUE,
-  user_token_start DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  user_token_end DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  user_token_start DATETIME NOT NULL,
+  user_token_end DATETIME NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   FOREIGN KEY (user_username) REFERENCES users(user_username)
 );
