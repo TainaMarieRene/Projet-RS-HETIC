@@ -7,6 +7,7 @@ aside {
     align-items: center;
 
     width: 24.79vw;
+    max-height: 900px;
 
     font-family: 'Inter', sans-serif;
     background-color: #FFFF;
@@ -25,13 +26,21 @@ aside {
 
     font-size: 1.5rem;
     width:21.04vw ;
+    max-width: 357px;
+
 }
 .bio{
     width:21.04vw ;
+    max-width: 357px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
 }
+
+
+    
 .pp {
     width: 4.44vw;
     height: 4.44vw;
