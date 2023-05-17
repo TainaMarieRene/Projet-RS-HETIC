@@ -3,6 +3,23 @@ require_once("../controllers/functions.php");
 $post = getUserPosts(1); // Utilise getUserPosts au lieu de getUserPoser
 $test = getPostsFromPage(1);
 $allPosts = array_merge($post, $test);
+
+function getDateDiff(string $postDate) {
+    try {
+        $postDateTime = new DateTime($postDate);
+        $currentDateTime = new DateTime();
+
+        $interval = $postDateTime->diff($currentDateTime);
+
+        $minutes = $interval->days * 24 * 60 + $interval->h * 60 + $interval->i;
+
+        echo $minutes;
+
+    } catch (Exception $e) {
+        var_dump($e);
+    }
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -30,27 +47,28 @@ $allPosts = array_merge($post, $test);
     </article>
 
     <section id="userFeed">
-<!--        --><?php //= foreach($allPosts as $post):?>
+        <?php foreach($allPosts as $post): ?>
         <div class="postCard">
             <div class="cardHeader">
                 <img src="./assets/imgs/users/picture/<?= "mockuser.svg"?>" alt="Image de l'utilisateur">
                 <div>
-                    <span class="cardUserName"><?= "@ossian_t"?></span>
-                    <span><?= "2 minutes ago"?></span>
+                    <span class="cardUserName"><?= $post["Friends Pseudo"] ?? $post["page at"] ?></span>
+                    <span><?= isset($post["Post friend date"]) ? getDateDiff($post["Post friend date"]) : getDateDiff($post["Post Page date"])  ?> minutes ago</span>
                 </div>
             </div>
             <div class="cardBody">
-                <p>Everywhere I go, fuck Barbosa.</p>
+                <p><?= $post["Post friend content"] ?? $post["Post page content"]?></p>
                 <form class="cardCta" method="post">
                     <input type="image" src="./assets/icons/commentary.svg" name="comment">
                     <input type="image" src="./assets/icons/like.svg" name="like">
                 </form>
             </div>
             <div class="cardFooter">
-                <p>Aimé par <?= "9329 autres personnes" ?></p>
-                <p><?= "512"?> commentaires</p>
+                <p>Aimé par <?= $post["Post friend like"] ?? $post["Post page like"]?> autres personnes</p>
+                <p><?= $post["Post friend comment number"] ?? $post["Post page comment number"]?> commentaires</p>
             </div>
         </div>
+        <?php endforeach; ?>
     </section>
 </body>
 </html>

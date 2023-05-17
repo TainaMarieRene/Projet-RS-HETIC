@@ -5,6 +5,13 @@
     box-sizing: border-box;
 }
 
+#userFeed {
+    display: flex;
+    flex-flow: column;
+    gap: 32px;
+    align-items: center;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: #F5F2F6;
@@ -13,9 +20,11 @@ body {
 .postCard {
     background-color: white;
     border-radius: 25px;
+    width: 100%;
     max-width: 820px;
     padding: 16px 32px;
     font-size: 24px;
+
 }
 
 .cardHeader {
