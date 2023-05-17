@@ -1,0 +1,44 @@
+header {
+    display: flex;
+    padding: 16px 90px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.inputSearch {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 16px 32px;
+    background-color: #F5FDF4;
+    border-radius: 50px;
+}
+
+.inputSearch input {
+    background-color: inherit;
+    outline: none;
+    border: none;
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.headerNav {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.headerNav .headerCTA {
+    text-decoration: none;
+    color: #2B2626;
+    padding: 16px 32px;
+    background-color: #39E168;
+    border-radius: 50px;
+}

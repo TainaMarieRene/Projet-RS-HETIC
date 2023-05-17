@@ -2,12 +2,15 @@
 $username = ""
 
 ?>
+<head>
+    <link rel="stylesheet" type="text/css" href="./styles/header.css">
+</head>
 
 <header>
     <h1>Uni</h1>
     <div class="inputSearch">
         <label>
-            <img src="../assets/icons/searchIcon.svg">
+            <img src="./assets/icons/searchIcon.svg">
             <input type="search" placeholder="Chercher un membre">
         </label>
     </div>
