@@ -61,14 +61,45 @@ $requete = $pdo->prepare("SELECT
         friends f
         INNER JOIN users u ON (f.user_id1 = u.user_id OR f.user_id2 = u.user_id)
         INNER JOIN posts pst ON (pst.user_id = u.user_id AND pst.post_type = 'profile')
-        LEFT JOIN reactions rct ON (rct.reaction_type = 'profil' AND rct.reaction_type_id = pst.post_id AND rct.user_id = 1)
+        LEFT JOIN reactions rct ON (rct.reaction_type = 'profil' AND rct.reaction_type_id = pst.post_id AND rct.user_id = :userId)
         LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
     WHERE
-        (f.user_id1 = 1 OR f.user_id2 = 1) AND f.user_relation = 'friend'
+        (f.user_id1 = :userId OR f.user_id2 = :userId) AND f.user_relation = 'friend'
     GROUP BY
         u.user_firstname, u.user_lastname, u.user_username, pst.post_id, pst.post_content
 ");
 
-$requete->execute();
+$requete->execute([
+    "userId"=>$userId
+]);
 
+    $posts = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+    return $posts;
+}
+
+function getPostsFromPage(int $userId) {
+    $pdo = db();
+    $requere = $pdo->prepare("SELECT
+  pg.page_name AS 'Page pp',
+  pg.page_at AS 'page at',
+  pst.post_id AS 'Post page',
+  pst.post_content AS 'Post page content',
+  COUNT(rct.user_id) AS 'Post page like',
+  COUNT(cmt.post_comment_id) AS 'Post page comment number'
+FROM
+  members m
+  INNER JOIN pages pg ON m.member_type_id = pg.page_id
+  LEFT JOIN posts pst ON (pst.post_type = 'page' AND pst.post_type_id = pg.page_id)
+  LEFT JOIN reactions rct ON (rct.reaction_type = 'page' AND rct.reaction_type_id = pg.page_id AND rct.user_id = 1)
+  LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
+WHERE
+  m.user_id = :userId
+GROUP BY
+  pg.page_name, pg.page_at, pst.post_id, pst.post_content;");
+    $requere->execute([
+        ":userId"=>$userId
+    ]);
+
+    return $requere->fetchAll();
 }

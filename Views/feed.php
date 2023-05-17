@@ -1,7 +1,9 @@
 <?php 
 require_once("../controllers/functions.php");
 $post = getUserPosts(1); // Utilise getUserPosts au lieu de getUserPoser
-var_dump($post);
+$test = getPostsFromPage(1);
+var_dump($test);
+//var_dump($post);
 ?>
 
 <!DOCTYPE html>
