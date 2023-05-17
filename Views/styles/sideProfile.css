@@ -16,6 +16,8 @@ aside {
 
     padding: 2.01%;
     padding-bottom: 0%;
+
+    position: fixed;
 }
 
 .profile {
