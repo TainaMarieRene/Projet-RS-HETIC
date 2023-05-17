@@ -4,7 +4,7 @@ $post = getUserPosts(1); // Utilise getUserPosts au lieu de getUserPoser
 $test = getPostsFromPage(1);
 $allPosts = array_merge($post, $test);
 
-function getDateDiff(string $postDate) {
+function getDateDiff(string $postDate): void {
     try {
         $postDateTime = new DateTime($postDate);
         $currentDateTime = new DateTime();
@@ -59,8 +59,8 @@ function getDateDiff(string $postDate) {
             <div class="cardBody">
                 <p><?= $post["Post friend content"] ?? $post["Post page content"]?></p>
                 <form class="cardCta" method="post">
-                    <input type="image" src="./assets/icons/commentary.svg" name="comment">
-                    <input type="image" src="./assets/icons/like.svg" name="like">
+                    <input type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
+                    <input type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
                 </form>
             </div>
             <div class="cardFooter">
