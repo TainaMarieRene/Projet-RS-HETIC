@@ -19,8 +19,8 @@ $post = getUserPosts(1); // Utilise getUserPosts au lieu de getUserPoser
     <article>
         <img src="<?= '' ?>" alt="friend_pp" />
         <span><?php echo "friend_pseudo"; ?><span> 
-        <p><?php echo "post_date"; ?></p>
-        <p><?php echo "post_content"; ?></p>
+        <span><?php echo "post_date"; ?></span>
+        <span><?php echo "post_content"; ?></span>
         <img src="./assets/icons/commentary.svg" alt="commentary">
         <img src="./assets/icons/like.svg" alt="coeur">
         <span class="like"><?php echo "likes"; ?></span>
