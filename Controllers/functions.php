@@ -55,6 +55,7 @@ $requete = $pdo->prepare("SELECT
         u.user_username AS `Friends Pseudo`,
         pst.post_id AS `Friends Post`,
         pst.post_content AS `Post friend content`,
+        pst.post_date AS `Post friend date`,
         COUNT(rct.user_id) AS `Post friend like`,
         COUNT(cmt.post_comment_id) AS `Post friend comment number`
     FROM
@@ -85,6 +86,7 @@ function getPostsFromPage(int $userId) {
   pg.page_at AS 'page at',
   pst.post_id AS 'Post page',
   pst.post_content AS 'Post page content',
+  pst.post_date AS 'Post Page date',
   COUNT(rct.user_id) AS 'Post page like',
   COUNT(cmt.post_comment_id) AS 'Post page comment number'
 FROM
