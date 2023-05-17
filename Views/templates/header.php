@@ -16,6 +16,6 @@ $username = ""
     </div>
     <nav class="headerNav">
         <a href="#" class="headerCTA">Create</a>
-        <img src="../assets/imgs/users/picture/<?= $username ?>" alt="Image de l'utilisateur">
+        <img src="./assets/imgs/users/picture/<?= $username ?>" alt="Image de l'utilisateur">
     </nav>
 </header>

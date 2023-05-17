@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#userFeed {
+    display: flex;
+    flex-flow: column;
+    gap: 32px;
+    align-items: center;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F5F2F6;
+}
+
+.postCard {
+    background-color: white;
+    border-radius: 25px;
+    width: 100%;
+    max-width: 820px;
+    padding: 16px 32px;
+    font-size: 24px;
+
+}
+
+.cardHeader {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cardHeader div {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.cardUserName {
+    font-weight: 500;
+}
+
+.cardHeader div span + span,
+.cardFooter {
+    color: #7D7373;
+}
+
+
+.cardHeader img {
+    width: 4.44vw;
+    height: 4.44vw;
+    border: solid 1px;
+    border-radius: 100%;
+}
+
+.cardBody p {
+    padding: 16px 32px;
+}
+
