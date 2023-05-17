@@ -32,7 +32,7 @@ aside {
     align-items: center;
     justify-content: center;
 }
-img {
+.pp {
     width: 4.44vw;
     height: 4.44vw;
     border: solid 1px;
