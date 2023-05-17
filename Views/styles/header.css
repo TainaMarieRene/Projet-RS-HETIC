@@ -1,8 +1,21 @@
+main {
+    margin-top: 128px;
+    padding: 0 90px;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 102px;
+}
+
+
 header {
     display: flex;
     padding: 16px 90px;
     justify-content: space-between;
     align-items: center;
+    position: absolute;
+    top:0;
+    width: 100%;
+    background-color: white;
 }
 
 header h1 {
