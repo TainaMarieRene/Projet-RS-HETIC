@@ -1,7 +1,7 @@
 <?php 
 require_once("../controllers/functions.php");
 $post = getUserPosts(1); // Utilise getUserPosts au lieu de getUserPoser
-var_dump($post);
+//var_dump($post);
 ?>
 
 <!DOCTYPE html>
@@ -10,9 +10,11 @@ var_dump($post);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./styles/style.css">
     <title>Feed - <?php echo "TON NOM"; ?></title>
 </head>
 <body>
+<?php include './templates/header.php'; ?>
     <?php require_once("./templates/side_profile.php"); ?>
     <article>
         <img src="<?= '' ?>" alt="friend_pp" />
