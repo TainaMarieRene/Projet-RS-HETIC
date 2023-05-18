@@ -3,7 +3,13 @@ require_once("../controllers/functions.php");
 $post = getUserPosts(1); // Utilise getUserPosts au lieu de getUserPoser
 $test = getPostsFromPage(1);
 $allPosts = array_merge($post, $test);
+$imagePost = postImage();
 
+
+$methode = filter_input(INPUT_SERVER, "REQUEST_METHOD");
+if ($methode === 'POST') {
+
+}
 function getDateDiff(string $postDate): void
 {
     try {
@@ -21,6 +27,9 @@ function getDateDiff(string $postDate): void
     }
 
 }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -44,11 +53,11 @@ function getDateDiff(string $postDate): void
         <section id="userFeed">
             <form method="post">
                 <input type="text" name="createPost" placeholder='Quoi de neuf ?'></input>
-                <button>Post</button>
+                <button name="postPost">Post</button>
             </form>
             <form action="upload.php" method="post" enctype="multipart/form-data">
-                <input type="file" name="image">
-                <button type="submit">Upload Image</button>
+                <input type="file" name="file">
+                <button type="submit" name="postImg">Upload File</button>
             </form>
 
             <?php foreach ($allPosts as $post): ?>
