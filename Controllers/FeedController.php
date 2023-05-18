@@ -107,20 +107,19 @@ GROUP BY
 }
 
 function postImage(){
- 
-    $target_dir = "assets/imgs/users/posts";
-    $target_file = $target_dir . uniqid() . '' . basename($_FILES["file"]["name"]);
+    $pdo = db();
+    $target_dir = "assets/imgs/users/posts/";
+    $target_file = $target_dir . uniqid() . '' . basename($_FILES["postImg"]["name"]);
     $fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
     $allowedTypes = array('jpg', 'jpeg', 'png', 'gif', 'pdf');
-    $event_id = filter_input(INPUT_POST, "eventID", FILTER_VALIDATE_INT);
     if (in_array($fileType, $allowedTypes)) {
-        if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-        return htmlspecialchars( basename( $_FILES["file"]["name"]));
+        if (move_uploaded_file($_FILES["postImg"]["tmp_name"], $target_file)) {
+        var_dump(htmlspecialchars( basename( $_FILES["postImg"]["name"]))); 
         } else {
-        echo "Sorry, there was an error uploading your file.";
+        var_dump("error");
         }
     } else {
-        echo "Sorry, only JPG, JPEG, PNG, GIF, PDF files are allowed.";
+      var_dump("badFile");
     }
       }
 
