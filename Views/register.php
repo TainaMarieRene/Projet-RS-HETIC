@@ -8,8 +8,8 @@
 </head>
     <body>
         <!-- TO DO : Préciser les erreurs de l'user suivant les champs -->
-        <?php if($this->_method == "POST" && (!$firstname || !$lastname || !$birthdate || !$username || !$mail || !$password || !$password2)): ?>
-            <span>Merci de remplir correctement les champs</span>
+        <?php if($this->_method == "POST" && $this->_error): ?>
+            <span><?= $this->_error ?></span>
         <?php endif; ?>
 
         <form method="POST">

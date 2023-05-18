@@ -32,8 +32,8 @@ CREATE TABLE authentifications (
 
 CREATE TABLE profiles (
   user_id INT PRIMARY KEY,
-  profile_picture VARCHAR(255) NOT NULL,
-  profile_banner VARCHAR(255) NOT NULL,
+  profile_picture VARCHAR(255) NOT NULL DEFAULT "default_picture.jpg",
+  profile_banner VARCHAR(255) NOT NULL DEFAULT "default_banner.jpg",
   profile_bio VARCHAR(255),
   profile_location VARCHAR(255),
   profile_activity VARCHAR(255),
