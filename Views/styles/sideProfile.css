@@ -13,7 +13,6 @@ aside {
     background-color: #FFFF;
 
     border-radius: 2vw;
-
     padding: 2.01%;
     padding-bottom: 0%;
 
@@ -23,7 +22,7 @@ aside {
 .profile {
     display: flex;
     align-items: center;
-    justify-content:left;
+    justify-content:center;
     gap: 5%;
 
     font-size: 1.5rem;
@@ -32,12 +31,15 @@ aside {
 
 }
 .bio{
-    width:21.04vw ;
-    max-width: 357px;
-
     display: flex;
     align-items: center;
     justify-content: center;
+
+    width:10vw ;
+    max-width: 357px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+
 
 }
 
