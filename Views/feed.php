@@ -37,6 +37,11 @@ function getDateDiff(string $postDate): void {
     <main>
         <?php require_once("./templates/side_profile.php"); ?>
         <section id="userFeed">
+            <form  method="post">
+            <input type="text" name="createPost" placeholder='Quoi de neuf ?'></input>
+            <button>Post</button>
+            </form>
+        
             <?php foreach($allPosts as $post): ?>
                 <div class="postCard">
                     <div class="cardHeader">
