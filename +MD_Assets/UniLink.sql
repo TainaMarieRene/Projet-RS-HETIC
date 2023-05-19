@@ -221,8 +221,8 @@ CREATE TABLE `posts_imgs` (
 
 CREATE TABLE `profiles` (
   `user_id` int(11) NOT NULL,
-  `profile_picture` varchar(255) NOT NULL,
-  `profile_banner` varchar(255) NOT NULL,
+  `profile_picture` varchar(255) NOT "default_picture.jpg",
+  `profile_banner` varchar(255) NOT "default_banner.jpg",
   `profile_bio` varchar(255) DEFAULT NULL,
   `profile_location` varchar(255) DEFAULT NULL,
   `profile_activity` varchar(255) DEFAULT NULL,
