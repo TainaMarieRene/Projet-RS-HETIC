@@ -1,5 +1,5 @@
 <?php
-require_once("../controllers/functions.php");
+require_once("../controllers/FeedController.php");
 $post = getUserPosts(1); // Utilise getUserPosts au lieu de getUserPoser
 $test = getPostsFromPage(1);
 $allPosts = array_merge($post, $test);
