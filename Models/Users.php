@@ -30,7 +30,7 @@ class User {
         return ($check) ? true : false;
     }
 
-    public function addUser($firstname, $lastname, $birthdate, $username, $mail, $password){
+    public function creatUser($firstname, $lastname, $birthdate, $username, $mail, $password){
         // Création de l'user dans la table users
         $stmt = $this->_db->_pdo->prepare("INSERT INTO users (user_username, user_mail, user_password, user_firstname, user_lastname, user_birthdate) VALUES (:user_username, :user_mail, :user_password, :user_firstname, :user_lastname, :user_birthdate)");
         $stmt->execute([
@@ -47,10 +47,16 @@ class User {
         $stmt->execute([
             ":user_username" => $username 
         ]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        $stmt = $this->_db->_pdo->prepare("INSERT INTO profiles (user_id) VALUES (:user_id)");
+        return $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function loginUser($mail, $password){
+        $stmt = $this->_db->_pdo->prepare("SELECT user_password FROM users WHERE user_mail = :user_mail");
         $stmt->execute([
-            ":user_id" => $user["user_id"]
+            ":user_mail" => $mail
         ]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return password_verify($password, $user["user_password"]);
     }
 }

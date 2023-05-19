@@ -7,7 +7,6 @@
     <title>UniLink | <?= $this->_page; ?></title>
 </head>
     <body>
-        <!-- TO DO : Préciser les erreurs de l'user suivant les champs -->
         <?php if($this->_method == "POST" && $this->_error): ?>
             <span><?= $this->_error ?></span>
         <?php endif; ?>

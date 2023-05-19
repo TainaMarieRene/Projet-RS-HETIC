@@ -3,19 +3,47 @@
 namespace AuthController;
 use Database\DB;
 use Users\User;
+use Profiles\Profile;
 
 // LOGIN
 class LoginController {
     private string $_page;
     private string $_method;
     private DB $_db;
+    private User $_modelUser;
+    private $_error;
     
     public function __construct($page, $method, $db){
+        require '/Applications/MAMP/htdocs/Projet-RS-HETIC/Models/Users.php';
+        
         $this->_page = $page;
         $this->_method = $method;
         $this->_db = $db;
-        require '/Applications/MAMP/htdocs/Projet-RS-HETIC/Models/Users.php';
+        $this->_modelUser = new User($this->_db);
+        
+        switch ($this->_method){
+            case "POST" :
+                $mail = preg_match("`(?xim)^(?=.*\.[A-Z]+$)(?=([[:alnum:]\.+_-]+)@(?1))(?!.*@.*@)(?!.*?@.*\.\d+$)(?!([[:punct:]]))(?!.*\.{2,})(?!.*(?2)@)(?!.*@(?2)).*`", filter_input(INPUT_POST, "mail")) ? filter_input(INPUT_POST, "mail", FILTER_VALIDATE_EMAIL) : false;
+                if(!$mail && !$this->_error) $this->_error = "Mail invalide";
+
+                $password = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST, "password")) ? filter_input(INPUT_POST, "password") : false;
+                if(!$password && !$this->_error) $this->_error = "Mot de passe invalide (Longueur de 8 à 100 caractères avec minimum : 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spéciaux)";
+
+                if(!$this->_modelUser->checkMail($mail) && !$this->_error) $this->_error = "Aucun compte enregistré à l'adresse mail que vous avez renseigné";
+
+                if(!$this->_error){
+                    if($this->_modelUser->loginUser($mail, $password)){
+                        echo("Connecté");
+                    } else {
+                        $this->_error = "Mauvais mot de passe";
+                    }
+                }
+
+                break;
+        }
+        
         require '/Applications/MAMP/htdocs/Projet-RS-HETIC/Views/login.php';
+        if($this->_error){ return $this->_error; }
     }
 }
 
@@ -25,19 +53,20 @@ class RegisterController {
     private string $_method;
     private DB $_db;
     private User $_modelUser;
+    private Profile $_modelProfile;
     private $_error;
 
     public function __construct($page, $method, $db){
         require_once '/Applications/MAMP/htdocs/Projet-RS-HETIC/Models/Users.php';
+        require_once '/Applications/MAMP/htdocs/Projet-RS-HETIC/Models/Profiles.php';
 
         $this->_page = $page;
         $this->_method = $method;
         $this->_db = $db;
         $this->_modelUser = new User($this->_db);
+        $this->_modelProfile = new Profile($this->_db);
         
         switch ($this->_method){
-            case "GET" :
-                break;
             case "POST" :
                 // Check firstname && lastname
                 $firstname = preg_match("`^((?:(?:[a-zA-ZáâàãçéêèëïíóôõúüÁÂÀÃÇÉÈÊËÏÍÓÔÕÚÜ]+)(?:-(?:[a-zA-ZáâàãçéêèëïíóôõúüÁÂÀÃÇÉÈÊËÏÍÓÔÕÚÜ]+))+)|(?:[a-zA-ZáâàãçéêèëïíóôõúüÁÂÀÃÇÉÈÊËÏÍÓÔÕÚÜ]+))$`", filter_input(INPUT_POST, "firstname")) ? filter_input(INPUT_POST, "firstname") : false ;
@@ -70,7 +99,12 @@ class RegisterController {
                 if($this->_modelUser->checkUsername($username) && !$this->_error) $this->_error = "Identifiant déjà utilisé";
                 if($this->_modelUser->checkMail($mail) && !$this->_error) $this->_error = "Mail déjà utilisé";
                 
-                if(!$this->_error) $this->_modelUser->addUser($firstname, $lastname, $birthdate, $username, $mail, $password);
+                if(!$this->_error){
+                    $user = $this->_modelUser->creatUser($firstname, $lastname, $birthdate, $username, $mail, $password);
+                    $this->_modelProfile->creatProfile($user);
+                    header("Location: index.php");
+                    exit();
+                } 
                 
                 break;
         }        
