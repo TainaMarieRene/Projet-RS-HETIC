@@ -23,6 +23,6 @@
             <input type="submit" value="Inscription">
         </form>
         
-        <span>Déjà un compte ? </span><a href="index.php?p=login">Connectez-vous !</a>
+        <span>Déjà un compte ? </span><a href="index.php">Connectez-vous !</a>
     </body>
 </html>

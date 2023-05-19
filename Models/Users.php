@@ -1,15 +1,16 @@
 <?php
 
 namespace Users;
+require_once '../Models/Database.php';
+use Database\Database;
 use PDO;
 use PDOException;
-use Database\DB;
 
 class User {
-    private DB $_db;
+    private Database $_db;
 
-    public function __construct($db){
-        $this->_db = $db;
+    public function __construct(){
+        $this->_db = new Database;
     }
 
     public function checkUsername($username){
@@ -31,7 +32,7 @@ class User {
     }
 
     public function creatUser($firstname, $lastname, $birthdate, $username, $mail, $password){
-        // Création de l'user dans la table users
+        // Création the user in users
         $stmt = $this->_db->_pdo->prepare("INSERT INTO users (user_username, user_mail, user_password, user_firstname, user_lastname, user_birthdate) VALUES (:user_username, :user_mail, :user_password, :user_firstname, :user_lastname, :user_birthdate)");
         $stmt->execute([
             ":user_username" => $username,
@@ -42,7 +43,7 @@ class User {
             ":user_birthdate" => $birthdate
         ]);
 
-        // Création de l'user dans la table profiles grâce à l'user_id
+        // Return the user_id for creat the profile
         $stmt = $this->_db->_pdo->prepare("SELECT user_id FROM users WHERE user_username = :user_username");
         $stmt->execute([
             ":user_username" => $username 

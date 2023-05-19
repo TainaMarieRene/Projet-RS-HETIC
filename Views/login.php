@@ -10,6 +10,7 @@
     <?php if($this->_method == "POST" && $this->_error): ?>
         <span><?= $this->_error ?></span>
     <?php endif; ?>
+    
     <form method="POST">
         <input id="mail" name="mail" type="text" placeholder="Adresse mail" <?php if($this->_method == "POST" && $mail): ?> value="<?= $mail ?>" <?php endif; ?>>
         <input id="password" name="password" type="password" placeholder="Mot de pass">

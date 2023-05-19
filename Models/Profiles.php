@@ -1,16 +1,17 @@
 <?php
 
 namespace Profiles;
+require_once '../Models/Database.php';
+use Database\Database;
 use PDO;
 use PDOException;
-use Database\DB;
 
 class Profile {
 
-    private DB $_db;
+    private Database $_db;
 
-    public function __construct($db){
-        $this->_db = $db;
+    public function __construct(){
+        $this->_db = new Database;
     }
 
     public function creatProfile($user){
