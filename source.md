@@ -21,7 +21,8 @@ CREATE TABLE users (
 
 /* DATETIME + 30 DAYS */
 CREATE TABLE authentifications (
-  user_id INT PRIMARY KEY,
+  authentification_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
   user_username VARCHAR(255) NOT NULL UNIQUE,
   user_token VARCHAR(255) NOT NULL UNIQUE,
   user_token_start DATETIME NOT NULL,

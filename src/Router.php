@@ -5,6 +5,8 @@ namespace Router;
 require_once '../Controllers/AuthController.php';
 use AuthController\LoginController;
 use AuthController\RegisterController;
+use AuthController\TempoController;
+use AuthController\LogoutController;
 
 class Router {
     private string $_method;
@@ -23,8 +25,14 @@ class Router {
             case "register":
                 $this->_controller = new RegisterController($this->_page, $this->_method);
                 break;
+            case "logout":
+                $this->_controller = new LogoutController($this->_page, $this->_method);
+                break;
+            case "feed":
+                $this->_controller = new TempoController($this->_page, $this->_method);
+                break;
             default:
-                // TO DO : Creat a 404 Page
+                // TO DO : Create a 404 Page
                 echo("404");
                 break;
         }

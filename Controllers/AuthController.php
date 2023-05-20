@@ -31,6 +31,9 @@ class LoginController {
                 if(!$this->_error){
                     if($this->_modelUser->loginUser($mail, $password)){
                         echo("Connecté");
+                        $_SESSION["loggedin"] = true;
+                        header("Location: index.php?p=feed");
+                        exit();
                     } else {
                         $this->_error = "Mauvais mot de passe";
                     }
@@ -95,8 +98,8 @@ class RegisterController {
                 if($this->_modelUser->checkMail($mail) && !$this->_error) { $this->_error = "Mail déjà utilisé"; }
                 
                 if(!$this->_error){
-                    $user = $this->_modelUser->creatUser($firstname, $lastname, $birthdate, $username, $mail, $password);
-                    $this->_modelProfile->creatProfile($user);
+                    $user = $this->_modelUser->createUser($firstname, $lastname, $birthdate, $username, $mail, $password);
+                    $this->_modelProfile->createProfile($user);
                     header("Location: index.php");
                     exit();
                 } 
@@ -116,5 +119,33 @@ class RegisterController {
 
     private function checkPassword($password, $password2){
         return ($password === $password2) ? $password : false;
+    }
+}
+
+class LogoutController {
+    private string $_page;
+    private string $_method;
+    private $_error;
+    
+    public function __construct($page, $method){        
+        $this->_page = $page;
+        $this->_method = $method;
+        
+        require '../Views/logout.php';
+        if($this->_error){ return $this->_error; }
+    }
+}
+
+class TempoController {
+    private string $_page;
+    private string $_method;
+    private $_error;
+    
+    public function __construct($page, $method){        
+        $this->_page = $page;
+        $this->_method = $method;
+        
+        require '../Views/tempofeed.php';
+        if($this->_error){ return $this->_error; }
     }
 }

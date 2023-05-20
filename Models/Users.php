@@ -31,8 +31,8 @@ class User {
         return ($check) ? true : false;
     }
 
-    public function creatUser($firstname, $lastname, $birthdate, $username, $mail, $password){
-        // Création the user in users
+    public function createUser($firstname, $lastname, $birthdate, $username, $mail, $password){
+        // Create the user in users
         $stmt = $this->_db->_pdo->prepare("INSERT INTO users (user_username, user_mail, user_password, user_firstname, user_lastname, user_birthdate) VALUES (:user_username, :user_mail, :user_password, :user_firstname, :user_lastname, :user_birthdate)");
         $stmt->execute([
             ":user_username" => $username,
@@ -43,7 +43,7 @@ class User {
             ":user_birthdate" => $birthdate
         ]);
 
-        // Return the user_id for creat the profile
+        // Return the user_id for create the profile
         $stmt = $this->_db->_pdo->prepare("SELECT user_id FROM users WHERE user_username = :user_username");
         $stmt->execute([
             ":user_username" => $username 
