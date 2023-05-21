@@ -62,3 +62,41 @@ body {
     padding: 16px 32px;
 }
 
+#userFeed .postCta {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+input[name="postContent"] {
+    background: white;
+    border: none;
+    padding: 16px 32px;
+    width: calc(100%);
+    max-width: 600px;
+    border-radius: 50px;
+}
+
+button[name="postPost"],
+.mediaInput {
+    background-color: #39E168;
+    border-radius: 50px;
+    border: none;
+    padding: 16px 32px;
+    font-size: 1rem;
+    cursor: pointer
+}
+
+button[name="postPost"]:hover,
+.mediaInput:hover {
+    background-color: #2B2626;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.hide {
+    display: none;
+}
