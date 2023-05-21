@@ -84,10 +84,20 @@ class FeedController extends Database {
             $friendsPostsArray = $friendsPostsQuery->fetchAll();
             $pagesPostsArray = $pagesPostsQuery->fetchAll();
 
-            return array_merge($friendsPostsArray, $pagesPostsArray);
+            $postsArray = array_merge($friendsPostsArray, $pagesPostsArray);
+            usort($postsArray, array($this, 'sortPostsByDate'));
+
+            return $postsArray;
         } catch (PDOException $e) {
             return $e;
         }
+    }
+
+    private function sortPostsByDate($friends, $pages) {
+        $friendPostDate = new DateTime($friends['date']);
+        $pagePostDate = new DateTime($pages['date']);
+
+        return $pagePostDate <=> $friendPostDate;
     }
 
     public function getDateDiff(string $postDate): string {
