@@ -1,26 +1,13 @@
 <?php
+
+//if (!isset($_COOKIE["user_id"])) {
+//    header("Location: login.php");
+//    exit();
+//}
+
 require ('../Models/Database.php');
 require('../Controllers/FeedController.php');
 use Feed\FeedController;
-function getDateDiff(string $postDate): string {
-    try {
-        $postDateTime = new DateTime($postDate);
-        $currentDateTime = new DateTime();
-
-        $interval = $postDateTime->diff($currentDateTime);
-
-        return match (true) {
-            $interval->y > 0 => $postDateTime->format('M d, Y'),
-            $interval->m > 0 => $interval->m . 'm',
-            $interval->d > 0 => $interval->d . 'd',
-            $interval->h > 0 => $interval->h . 'h',
-            $interval->i > 0 => $interval->i . 'm',
-            default => 'Just now',
-        };
-    } catch (Exception $e) {
-        return ($e);
-    }
-}
 
 $feedController = new FeedController();
 $username = $feedController->getUserName();
@@ -63,7 +50,7 @@ $username = $feedController->getUserName();
                                 <?= $post["Friends Pseudo"] ?? $post["author"] ?>
                             </span>
                             <span>
-                                <?= getDateDiff($post["date"]) ?>
+                                <?= $feedController->getDateDiff($post["date"]) ?>
                             </span>
                         </div>
                     </div>

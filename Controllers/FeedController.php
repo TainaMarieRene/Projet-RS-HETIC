@@ -2,6 +2,9 @@
 namespace Feed;
 
 use Database\Database;
+use DateTime;
+use Exception;
+use PDOException;
 
 class FeedController extends Database {
     private int $userId;
@@ -16,15 +19,21 @@ class FeedController extends Database {
     }
 
     public function getUserName(): string {
-        $query = $this->_pdo->prepare("SELECT user_username FROM users WHERE user_id = :userId");
-        $query->execute([
-            ":userId" => $this->userId
-        ]);
-        return $query->fetch()["user_username"];
-    }
+        try {
+            $query = $this->_pdo->prepare("SELECT user_username FROM users WHERE user_id = :userId");
+            $query->execute([
+                ":userId" => $this->userId
+            ]);
+            return $query->fetch()["user_username"];
+        } catch (PDOException $e) {
+            return $e;
+        }
+}
 
-    public function getFeedPosts() {
-        $friendsPostsQuery = $this->_pdo->prepare("
+    public function getFeedPosts(): array
+    {
+        try {
+            $friendsPostsQuery = $this->_pdo->prepare("
         SELECT
             CONCAT(u.user_firstname, ' ', u.user_lastname) AS `Friends PP`,
             u.user_username AS `author`,
@@ -45,7 +54,7 @@ class FeedController extends Database {
             u.user_firstname, u.user_lastname, u.user_username, pst.post_id, pst.post_content
         ");
 
-        $pagesPostsQuery = $this->_pdo->prepare("
+            $pagesPostsQuery = $this->_pdo->prepare("
         SELECT
           pg.page_at AS 'author',
           pst.post_id AS 'id',
@@ -64,19 +73,43 @@ class FeedController extends Database {
         GROUP BY
         pg.page_name, pg.page_at, pst.post_id, pst.post_content");
 
-        $friendsPostsQuery->execute([
-            ":userId" => $this->userId
-        ]);
+            $friendsPostsQuery->execute([
+                ":userId" => $this->userId
+            ]);
 
-        $pagesPostsQuery->execute([
-            ":userId" => $this->userId
-        ]);
+            $pagesPostsQuery->execute([
+                ":userId" => $this->userId
+            ]);
 
-        $friendsPostsArray = $friendsPostsQuery->fetchAll();
-        $pagesPostsArray = $pagesPostsQuery->fetchAll();
+            $friendsPostsArray = $friendsPostsQuery->fetchAll();
+            $pagesPostsArray = $pagesPostsQuery->fetchAll();
 
-        return array_merge($friendsPostsArray, $pagesPostsArray);
+            return array_merge($friendsPostsArray, $pagesPostsArray);
+        } catch (PDOException $e) {
+            return $e;
+        }
     }
+
+    public function getDateDiff(string $postDate): string {
+        try {
+            $postDateTime = new DateTime($postDate);
+            $currentDateTime = new DateTime();
+
+            $interval = $postDateTime->diff($currentDateTime);
+
+            return match (true) {
+                $interval->y > 0 => $postDateTime->format('M d, Y'),
+                $interval->m > 0 => $interval->m . 'm',
+                $interval->d > 0 => $interval->d . 'd',
+                $interval->h > 0 => $interval->h . 'h',
+                $interval->i > 0 => $interval->i . 'm',
+                default => 'Just now',
+            };
+        } catch (Exception $e) {
+            return ($e);
+        }
+    }
+
 
     public function postImage(){
         $target_dir = "assets/imgs/users/posts/";
