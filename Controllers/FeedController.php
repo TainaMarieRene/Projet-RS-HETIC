@@ -30,7 +30,7 @@ class FeedController extends Database {
         }
 }
 
-    public function getFeedPosts(): array
+    public function getFeedPosts(): array|PDOException
     {
         try {
             $friendsPostsQuery = $this->_pdo->prepare("
@@ -93,11 +93,16 @@ class FeedController extends Database {
         }
     }
 
-    private function sortPostsByDate($friends, $pages) {
-        $friendPostDate = new DateTime($friends['date']);
-        $pagePostDate = new DateTime($pages['date']);
+    private function sortPostsByDate($friends, $pages): Exception|int
+    {
+        try {
+            $friendPostDate = new DateTime($friends['date']);
+            $pagePostDate = new DateTime($pages['date']);
 
-        return $pagePostDate <=> $friendPostDate;
+            return $pagePostDate <=> $friendPostDate;
+        } catch (Exception $e) {
+            return $e;
+        }
     }
 
     public function getDateDiff(string $postDate): string {
@@ -120,7 +125,8 @@ class FeedController extends Database {
         }
     }
 
-    public function createUserPost(string $postContent) {
+    public function createUserPost(string $postContent): PDOException|Exception|string
+    {
         try {
             $postQuery = $this->_pdo->prepare("
             INSERT INTO 
