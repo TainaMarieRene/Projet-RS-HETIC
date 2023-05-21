@@ -68,7 +68,10 @@ body {
     justify-content: center;
     gap: 8px;
 }
-
+#actionMsg {
+    color: #39E168;
+    font-weight: 500;
+}
 input[name="postContent"] {
     background: white;
     border: none;
