@@ -11,6 +11,11 @@ use Feed\FeedController;
 
 $feedController = new FeedController();
 $username = $feedController->getUserName();
+$actionMsg = "";
+if (isset($_POST['postPost'])) {
+    $actionMsg = $feedController->createUserPost($_POST['postContent']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -31,16 +36,15 @@ $username = $feedController->getUserName();
     <?php include './templates/header.php'; ?>
     <main>
         <?php require_once("./templates/side_profile.php"); ?>
+
         <section id="userFeed">
-            <form method="post">
-                <input type="text" name="createPost" placeholder='Quoi de neuf ?'>
+            <p id="actionMsg"><?= $actionMsg ?></p>
+            <form class="postCta" method="post">
+                <input type="text" name="postContent" placeholder='Quoi de neuf ?'>
+                <label for="inputImage" class="mediaInput"><img src="assets/icons/media.svg"></label>
+                <input type="file" name="inputImage" id="inputImage">
                 <button name="postPost">Post</button>
             </form>
-            <form method="post" enctype="multipart/form-data">
-                <input type="file" name="file">
-                <button type="submit" name="postImg">Upload File</button>
-            </form>
-
             <?php foreach ($feedController->getFeedPosts() as $post): ?>
                 <div class="postCard">
                     <div class="cardHeader">
@@ -76,5 +80,12 @@ $username = $feedController->getUserName();
         </section>
     </main>
 </body>
-
+<script>
+    let actionState = "<?= $actionMsg ?>"
+    if (!actionState) {
+        document.getElementById("actionMsg").classList.add('hide');
+    } else {
+        document.getElementById("actionMsg").classList.remove('hide');
+    }
+</script>
 </html>

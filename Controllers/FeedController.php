@@ -99,10 +99,10 @@ class FeedController extends Database {
 
             return match (true) {
                 $interval->y > 0 => $postDateTime->format('M d, Y'),
-                $interval->m > 0 => $interval->m . 'm',
-                $interval->d > 0 => $interval->d . 'd',
-                $interval->h > 0 => $interval->h . 'h',
-                $interval->i > 0 => $interval->i . 'm',
+                $interval->m > 0 => $interval->m . 'm ago',
+                $interval->d > 0 => $interval->d . 'd ago',
+                $interval->h > 0 => $interval->h . 'h ago',
+                $interval->i > 0 => $interval->i . 'm ago',
                 default => 'Just now',
             };
         } catch (Exception $e) {
@@ -110,6 +110,26 @@ class FeedController extends Database {
         }
     }
 
+    public function createUserPost(string $postContent) {
+        try {
+            $postQuery = $this->_pdo->prepare("
+            INSERT INTO 
+                `posts` (`post_id`, `user_id`, `post_type`, `post_type_id`, `post_date`, `post_content`) 
+            VALUES (NULL, :userId, 'profile', '0', current_timestamp(), :postContent)
+        ");
+
+            $postQuery->execute([
+                ":userId" => $this->userId,
+                ":postContent" => $postContent
+            ]);
+
+            $postQuery->fetchAll();
+
+            return "Successfully posted";
+        } catch (PDOException $e) {
+            return $e;
+        }
+    }
 
     public function postImage(){
         $target_dir = "assets/imgs/users/posts/";
