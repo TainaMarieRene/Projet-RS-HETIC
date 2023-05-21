@@ -40,8 +40,9 @@ if (isset($_POST['postPost'])) {
         <section id="userFeed">
             <p id="actionMsg"><?= $actionMsg ?></p>
             <form class="postCta" method="post">
-                <input type="text" name="postContent" placeholder='Quoi de neuf ?'>
-                <label for="inputImage" class="mediaInput"><img src="assets/icons/media.svg"></label>
+                <label for="postContent" class="hiddenLabel">Create Post Content Label</label>
+                <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
+                <label for="inputImage" class="mediaInput"><img alt="Media Icon" src="assets/icons/media.svg"></label>
                 <input type="file" name="inputImage" id="inputImage">
                 <button name="postPost">Post</button>
             </form>
