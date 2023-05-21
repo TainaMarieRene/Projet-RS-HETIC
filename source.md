@@ -19,14 +19,15 @@ CREATE TABLE users (
   user_account_status ENUM ('disable', 'waiting', 'valid') DEFAULT 'waiting' NOT NULL
  );
 
-/* DATETIME + 30 DAYS */
 CREATE TABLE authentifications (
-  authentification_id INT AUTO_INCREMENT PRIMARY KEY,
+  authentification_id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   user_id INT NOT NULL,
-  user_username VARCHAR(255) NOT NULL UNIQUE,
-  user_token VARCHAR(255) NOT NULL UNIQUE,
-  user_token_start DATETIME NOT NULL,
+  user_username VARCHAR(255) NOT NULL,
+  user_agent VARCHAR(255) NOT NULL,
+  user_token VARCHAR(255) NOT NULL,
+  user_token_start DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   user_token_end DATETIME NOT NULL,
+  UNIQUE KEY uc_username_agent (user_username, user_agent),
   FOREIGN KEY (user_id) REFERENCES users(user_id),
   FOREIGN KEY (user_username) REFERENCES users(user_username)
 );

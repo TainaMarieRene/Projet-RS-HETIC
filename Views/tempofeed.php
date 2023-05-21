@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>FEED</h1>
+    <p>Feed temporaire pour réaliser des tests</p>
     <a href="index.php?p=logout">Lougout</a>
 </body>
 </html>
