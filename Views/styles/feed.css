@@ -6,7 +6,7 @@
 }
 
 #userFeed {
-    margin-left: 511px;
+    margin-left: calc(24.79vw + 32px);
     display: flex;
     flex-flow: column;
     gap: 32px;
@@ -62,3 +62,54 @@ body {
     padding: 16px 32px;
 }
 
+#userFeed .postCta {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+#actionMsg {
+    color: #39E168;
+    font-weight: 500;
+}
+input[name="postContent"] {
+    background: white;
+    border: none;
+    padding: 16px 32px;
+    width: calc(100%);
+    max-width: 600px;
+    border-radius: 50px;
+}
+
+button[name="postPost"],
+.mediaInput {
+    background-color: #39E168;
+    border-radius: 50px;
+    border: none;
+    padding: 16px 32px;
+    font-size: 1rem;
+    cursor: pointer
+}
+
+button[name="postPost"]:hover,
+.mediaInput:hover {
+    background-color: #2B2626;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.hiddenLabel {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.hide {
+    display: none;
+}
