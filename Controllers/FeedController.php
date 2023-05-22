@@ -165,8 +165,8 @@ class FeedController extends Database {
 
     public function postLike(){
       try{
-        $query = $this->_pdo->prepare("INSERT INTO `likes`  `posts` (`post_id`, `user_id`, `id`)
-        VALUES (:post_id, :userId");
+        $query = $this->_pdo->prepare("INSERT INTO `reactions` (`reaction_type_id`, `user_id`, `reaction_type`, `reaction_emoji`)
+        VALUES (:post_id, :userId, 'profile'");
         
         $query->execute([
           ":userId" => $this->userId,
@@ -177,5 +177,26 @@ class FeedController extends Database {
         return $error;
       }
     }
+    public function createComment($commentContent)
+{
+    try {
+        $query = $this->_pdo->prepare(" INSERT INTO
+        `posts_comments` (`post_comment_id`, `post_id`, `user_id`, `post_comment_parent_id`, `post_comment_date`, `post_comment_content`) 
+        VALUES
+        (NULL, NULL,:userId, NULL, current_timestamp(), :commentContent)
+    ");
+
+        $query->execute([
+            ":userId" => $this->userId,
+            ":postContent" => $commentContent
+        ]);
+
+        $query->fetchAll();
+
+        return "Successfully posted";
+    } catch (PDOException $error) {
+        return $error;
+    }
+}
 }
 

@@ -19,7 +19,14 @@ if (isset($_POST['postPost'])) {
         $actionMsg = 'Can\'t post nothing !';
     }
 }
-
+$commentMSG = "";
+if(isset($_POST['postComment'])){
+    if($_POST['commentContent']){
+        $commentMSG = $feedController->createComment($_POST['postComment']);
+    } else{
+        $commentMSG = 'Can\'t post nothing !';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +50,7 @@ if (isset($_POST['postPost'])) {
 
         <section id="userFeed">
             <p id="actionMsg"><?= $actionMsg ?></p>
+            <p id="commentMSG"><?= $commentMSG ?></p>
             <form class="postCta" method="post">
                 <label for="postContent" class="hiddenLabel">Create Post Content Label</label>
                 <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
@@ -68,8 +76,12 @@ if (isset($_POST['postPost'])) {
                             <?= $post["content"] ?>
                         </p>
                         <form class="cardCta" method="post">
-                            <input type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
+                            <input id="commentButton"type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
                             <input type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
+                        </form>
+                        <form class="commentForm" method="post">
+                            <input type="text" name="commentContent "placeholder="ratio">
+                            <button name="postComment">Comment</button>
                         </form>
                     </div>
                     <div class="cardFooter">
@@ -95,5 +107,21 @@ if (isset($_POST['postPost'])) {
             document.getElementById("actionMsg").classList.add('hide');
         }, 1500)
     }
+    let commentMSG = "<?= $commentMSG ?>"
+    if (!commentMSG) {
+        document.getElementById("commentMSG").classList.add('hide');
+    } else {
+        document.getElementById("commentMSG").classList.remove('hide');
+        setTimeout(() => {
+            document.getElementById("commentMSG").classList.add('hide');
+        }, 1500)
+    }
+
+    let commentButton = document.getElementById("commentButton")
+    let commentForm = document.querySelector(".commentForm")
+    commentButton.addEventListener('click', () => {
+        commentForm.classList.toggle("hide")
+    })
+
 </script>
 </html>
