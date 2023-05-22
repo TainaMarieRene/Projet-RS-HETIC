@@ -170,7 +170,8 @@ class FeedController extends Database {
         
         $query->execute([
           ":userId" => $this->userId,
-          // ":post_id" => $post_id
+          // Comment savoir quel post à été like ? 
+          // ":post_id" => $post_id 
       ]);
       } catch(PDOException $error){
         return $error;
