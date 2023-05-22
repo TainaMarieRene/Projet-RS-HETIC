@@ -21,4 +21,11 @@ class Profile {
         ]);
     }
 
+    public function deleteProfile($user_id){
+        $stmt = $this->_db->_pdo->prepare("DELETE FROM profiles WHERE user_id = :user_id");
+        $stmt->execute([
+            ":user_id" => $user_id
+        ]);
+    }
+
 }

@@ -162,5 +162,19 @@ class FeedController extends Database {
             var_dump("badFile");
         }
     }
+
+    public function postLike(){
+      try{
+        $query = $this->_pdo->prepare("INSERT INTO `likes`  `posts` (`post_id`, `user_id`, `id`)
+        VALUES (:post_id, :userId");
+        
+        $query->execute([
+          ":userId" => $this->userId,
+          // ":post_id" => $post_id
+      ]);
+      } catch(PDOException $error){
+        return $error;
+      }
+    }
 }
 
