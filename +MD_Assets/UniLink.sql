@@ -32,10 +32,8 @@ CREATE TABLE `authentifications` (
   `user_token_end` datetime NOT NULL,
   PRIMARY KEY (`authentification_id`),
   UNIQUE KEY `uc_username_agent` (`user_username`,`user_agent`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `authentifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  CONSTRAINT `authentifications_ibfk_2` FOREIGN KEY (`user_username`) REFERENCES `users` (`user_username`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,6 +42,7 @@ CREATE TABLE `authentifications` (
 
 LOCK TABLES `authentifications` WRITE;
 /*!40000 ALTER TABLE `authentifications` DISABLE KEYS */;
+INSERT INTO `authentifications` VALUES (69,1,'Benjos','Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36','$2y$10$C0Ep6u0VdhNojdWGw9.1PuutaLT5dMI0ttSOagE9VdyGmnKqSaINi','2023-05-22 01:11:16','2023-06-21 01:11:16');
 /*!40000 ALTER TABLE `authentifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -435,7 +434,7 @@ CREATE TABLE `profiles` (
 
 LOCK TABLES `profiles` WRITE;
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` VALUES (1,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(2,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(3,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(4,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(5,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(6,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(7,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(8,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(9,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1);
+INSERT INTO `profiles` VALUES (1,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(2,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(3,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(4,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(5,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(6,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(7,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(8,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(9,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(11,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1),(12,'default_picture.jpg','default_banner.jpg',NULL,NULL,NULL,0,1);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -486,7 +485,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_username` (`user_username`),
   UNIQUE KEY `user_mail` (`user_mail`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -495,7 +494,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Benjos','b_schinkel@hetic.eu','$2y$10$u7ISrJfOmz.aFxp1IYKj2O5Tp6EEVIFjBM6R0AVyeO6neS8RXTBJu','Benjamin','Schinkel','2001-12-16','2023-05-18 20:42:20','waiting'),(2,'Julien','j_heitz@hetic.eu','$2y$10$8aiPdKHdKRTDVbmOKadYju2IKWs0PwsxhRq9voCTCCPOI.vw35WUO','Julien','Heitz','2001-04-30','2023-05-18 21:16:31','waiting'),(3,'Zeroway','jeremie@hetic.Eu','$2y$10$SxyNe0.jSat5ZfrfvnibIeBjIlMfTfktR5rmAubIEP5kjLEaTaBqS','Jérémie','Herzog','2000-07-20','2023-05-19 01:26:14','waiting'),(4,'Chibredor','taladum@gmail.com','$2y$10$2a27Nnt7yuB6cGVTasXt2OJkLzKD9zbkDXh.ot1RThtnxqjVuz4/q','Tanguy','Claude','2001-03-21','2023-05-19 01:29:20','waiting'),(5,'LTOssian','l_tchitoula@hetic.eu','$2y$10$bzRa1R.roE5wG7rNZKxK5.IBM1CxYVo9ri1h.yidFX13ZsPv3Thpy','Louisan','Tchitoula','2001-10-10','2023-05-19 14:29:44','waiting'),(6,'TainaMarie','m_rene@hetic.eu','$2y$10$fDYcEn2IezomlYsyjXvKe.Mm8Xe6t/r3u7CZJSKKV.HeO9rKohk5y','Marie','René','1997-12-12','2023-05-19 14:32:47','waiting'),(7,'Tati','mg_fahem@hetic.eu','$2y$10$rZqWD3d6JNzh.ZA7OWlZ6OGfbcWEq9ZWFbrbE2EdszuttcfmaW72G','Gwen','Fahem','1993-06-17','2023-05-19 14:34:03','waiting'),(8,'SoLaLune','a_garau@hetic.eu','$2y$10$QIrownMC5mQIFO3bbugzs.mm8QwVYrWDTlfUkxHHZeZdzjHiSvfAm','Alessandro','Garau','2000-08-10','2023-05-19 14:43:32','waiting'),(9,'BOOGIEMAN','a_schmitt@hetic.eu','$2y$10$hbe4MIQjmRZ6FqUKeNLOmOshuQF6W02Tc/ENggyPo.xXgdP9QMTM6','Anthony','Schmitt','2001-08-29','2023-05-20 23:50:05','waiting');
+INSERT INTO `users` VALUES (1,'Benjos','b_schinkel@hetic.eu','$2y$10$u7ISrJfOmz.aFxp1IYKj2O5Tp6EEVIFjBM6R0AVyeO6neS8RXTBJu','Benjamin','Schinkel','2001-12-16','2023-05-18 20:42:20','valid'),(2,'Julien','j_heitz@hetic.eu','$2y$10$8aiPdKHdKRTDVbmOKadYju2IKWs0PwsxhRq9voCTCCPOI.vw35WUO','Julien','Heitz','2001-04-30','2023-05-18 21:16:31','waiting'),(3,'Zeroway','jeremie@hetic.Eu','$2y$10$SxyNe0.jSat5ZfrfvnibIeBjIlMfTfktR5rmAubIEP5kjLEaTaBqS','Jérémie','Herzog','2000-07-20','2023-05-19 01:26:14','waiting'),(4,'Chibredor','taladum@gmail.com','$2y$10$2a27Nnt7yuB6cGVTasXt2OJkLzKD9zbkDXh.ot1RThtnxqjVuz4/q','Tanguy','Claude','2001-03-21','2023-05-19 01:29:20','waiting'),(5,'LTOssian','l_tchitoula@hetic.eu','$2y$10$bzRa1R.roE5wG7rNZKxK5.IBM1CxYVo9ri1h.yidFX13ZsPv3Thpy','Louisan','Tchitoula','2001-10-10','2023-05-19 14:29:44','waiting'),(6,'TainaMarie','m_rene@hetic.eu','$2y$10$fDYcEn2IezomlYsyjXvKe.Mm8Xe6t/r3u7CZJSKKV.HeO9rKohk5y','Marie','René','1997-12-12','2023-05-19 14:32:47','waiting'),(7,'Tati','mg_fahem@hetic.eu','$2y$10$rZqWD3d6JNzh.ZA7OWlZ6OGfbcWEq9ZWFbrbE2EdszuttcfmaW72G','Gwen','Fahem','1993-06-17','2023-05-19 14:34:03','waiting'),(8,'SoLaLune','a_garau@hetic.eu','$2y$10$QIrownMC5mQIFO3bbugzs.mm8QwVYrWDTlfUkxHHZeZdzjHiSvfAm','Alessandro','Garau','2000-08-10','2023-05-19 14:43:32','waiting'),(9,'BOOGIEMAN','a_schmitt@hetic.eu','$2y$10$hbe4MIQjmRZ6FqUKeNLOmOshuQF6W02Tc/ENggyPo.xXgdP9QMTM6','Anthony','Schmitt','2001-08-29','2023-05-20 23:50:05','waiting'),(11,'Kobra','d_goble@hetic.eu','$2y$10$6GTtJn.sP0lHUjGYMS3vdurS6EQl5N7BRvajIDZafxwb6yqO0U/ry','Djédjé','Goble','1997-12-14','2023-05-21 02:13:49','waiting'),(12,'Biquette','s_attos@hetic.eu','$2y$10$riRxdtxK.naYoufRGpaZkua2Z6L4kBa4KEAMK2T1bpL76zvbDN0mO','Sabrina','Attos','2000-09-15','2023-05-21 21:22:29','waiting');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -508,4 +507,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-21  1:41:10
+-- Dump completed on 2023-05-22  3:33:25
