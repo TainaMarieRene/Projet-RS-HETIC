@@ -7,6 +7,7 @@ use AuthController\RegisterController;
 use AuthController\LoginController;
 use AuthController\LogoutController;
 use AuthController\TempoController;
+use AuthController\ValidateController;
 require_once '../Controllers/UserController.php';
 use UserController\UserOptionsController;
 use UserController\DeleteUserController;
@@ -30,6 +31,9 @@ class Router {
                 break;
             case "login":
                 $this->_controller = new LoginController($this->_page, $this->_method);
+                break;
+            case "validateUser":
+                $this->_controller = new ValidateController($this->_page, $this->_method);
                 break;
             case "logout":
                 $this->_controller = new LogoutController($this->_page, $this->_method);

@@ -2,11 +2,17 @@
 
 namespace AuthController;
 
+// Models
 use Users\User;
 use Profiles\Profile;
 use Authentifications\Authentification;
+// Src
 require_once '../src/Helpers.php';
 use Helpers\Helpers;
+// Mailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 // REGISTER
 class RegisterController {
@@ -186,6 +192,41 @@ class LogoutController {
     }
 }
 
+// VALIDATE USER
+class ValidateController {
+    private string $_page;
+    private string $_method;
+    private Helpers $_helpers;
+    private string $_type;
+    private string $_id;
+    private User $_modelUser;
+    private Authentification $_modelAuth;
+
+    public function __construct($page, $method){
+        require_once '../Models/Users.php';
+        require_once '../Models/Authentifications.php';
+
+        $this->_page = $page;
+        $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '', isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '');
+        $this->_type = preg_match("`^(valid)$`", filter_input(INPUT_GET, "type")) ? filter_input(INPUT_GET, "type") : '';
+        $this->_id = ($_COOKIE['uniCookieUserID'] === filter_input(INPUT_GET, "id")) ? filter_input(INPUT_GET, "id") : '';
+        $this->_modelUser = new User();
+        $this->_modelAuth = new Authentification();
+
+        $user = $this->_modelUser->getUserByID($this->_id);
+        
+        if($this->_id && $user["user_account_status"] == 'waiting'){
+            $this->_modelUser->updateStatus($this->_id, $this->_type);
+            header("Location: index.php?p=feed&success=valid"); 
+            exit();
+        } else {
+            header("Location: index.php?p=feed&success=error"); 
+            exit();
+        }
+    }
+}
+
 class TempoController {
     private string $_page;
     private string $_method;
@@ -200,4 +241,84 @@ class TempoController {
         require_once '../Views/tempofeed.php';
         if($this->_error){ return $this->_error; }
     }
+}
+
+function sendMail($user_id, $user_firstname, $user_lastname, $user_mail){
+    require_once 'vendor/autoload.php';
+    $email = new PHPMailer(true);
+    $email->SMTPDebug = SMTP::DEBUG_SERVER;
+    $email->isSMTP();
+    $email->Host = 'mail.gandi.net';
+    $email->SMTPAuth = true;
+    $email->Username = 'unilink@heitzjulien.com';
+    $email->Password = '29i8v9JjvsTCunilink-gQwoLX';
+    $email->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $email->Port = 587;
+    $email->setFrom('unilink@heitzjulien.com', 'Unilink');
+    $email->addAddress($user_mail, $user_firstname . ' ' . $user_lastname);
+    $email->CharSet = 'UTF-8';
+    $email->isHTML(true);
+    $email->Subject = 'Bienvenue sur Unilink';
+    $email->Body = "
+    <html>
+        <head>
+            <title>Bienvenue sur Unilink</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    background-color: #f2f2f2;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .container {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    padding: 20px;
+                }
+
+                h1 {
+                    font-size: 24px;
+                    color: #333;
+                    margin-bottom: 20px;
+                }
+
+                p {
+                    font-size: 16px;
+                    color: #555;
+                    margin-bottom: 10px;
+                }
+
+                a {
+                    display: inline-block;
+                    background-color: #3AE168;
+                    color: #050505;
+                    text-decoration: none;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                    margin-top: 10px;
+                }
+
+                img {
+                    max-width: 200px;
+                    margin-top: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <h1>Merci pour votre inscription sur Unilink, $user_firstname !</h1>
+                <p>Nous sommes ravis de vous accueillir parmi nous.</p>
+                <p>Veuillez cliquer sur le lien ci-dessous pour vérifier votre compte :</p>
+                <a href='https://localhost/Projet-RS-Hetic/public/index.php?p=validateUser&type=valid&id=$user_id%27%3EV%C3%A9rifier mon compte</a>
+                <p>Merci encore, et à bientôt sur Unilink !</p>
+                <img src='https://example.com/logo.png' alt='Logo Unilink'>
+            </div>
+        </body>
+    </html>
+    ";
+    $email->AltBody = 'Merci pour votre inscription sur Unilink. Veuillez vérifier votre compte en cliquant sur le lien suivant : http://localhost:8888/verification.php';
+
+    $email->send();
+    ob_clean();
 }
