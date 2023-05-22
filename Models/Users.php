@@ -89,9 +89,17 @@ class User {
         if(($checkAccountStatus["user_account_status"] == 'waiting' && $type == 'valid') || ($checkAccountStatus["user_account_status"] == 'valid' && $type == 'disable') || ($checkAccountStatus["user_account_status"] == 'disable' && $type == 'valid')){
             $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_account_status = :type WHERE user_id = :user_id");
             $stmt->execute([
-                ":type" => $type,
-                ":user_id" => $user_id
+                ":user_id" => $user_id,
+                ":type" => $type
             ]);
         }
+    }
+
+    public function updateLastSeen($user_id){
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_last_seen = :time WHERE user_id = :user_id");
+        $stmt->execute([
+            ":time" => date("Y-m-d G:i:s", time()),
+            ":user_id" => $user_id
+        ]);
     }
 }

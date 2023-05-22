@@ -21,7 +21,7 @@ class UserOptionsController {
 
         $this->_page = $page;
         $this->_method = $method;
-        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '', isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '');
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
         $this->_modelUser = new User();
 
         $this->_user = $this->_modelUser->getUserByID($_COOKIE['uniCookieUserID']);
@@ -43,7 +43,7 @@ class UpdateUserStatusController {
 
         $this->_page = $page;
         $this->_method = $method;
-        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '', isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '');
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
         $this->_type = preg_match("`^(valid|disable)$`", filter_input(INPUT_GET, "type")) ? filter_input(INPUT_GET, "type") : '';
         $this->_modelUser = new User();
 
@@ -68,7 +68,7 @@ class DeleteUserController {
 
         $this->_page = $page;
         $this->_method = $method;
-        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '', isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '');
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
         $this->_modelUser = new User();
         $this->_modelProfile = new Profile();
         $this->_modelAuth = new Authentification();

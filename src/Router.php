@@ -8,6 +8,7 @@ use AuthController\LoginController;
 use AuthController\LogoutController;
 use AuthController\TempoController;
 use AuthController\ValidateController;
+use AuthController\ResendMailController;
 require_once '../Controllers/UserController.php';
 use UserController\UserOptionsController;
 use UserController\DeleteUserController;
@@ -46,6 +47,9 @@ class Router {
                 break;
             case "updateAccountStatus":
                 $this->_controller = new UpdateUserStatusController($this->_page, $this->_method);
+                break;
+            case "resendMail":
+                $this->_controller = new ResendMailController($this->_page, $this->_method);
                 break;
             case "deleteAccount":
                 $this->_controller = new DeleteUserController($this->_page, $this->_method);
