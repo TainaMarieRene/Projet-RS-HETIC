@@ -252,7 +252,7 @@ class TempoController {
         $email->SMTPAuth = true;
         $email->Username = 'unilink@heitzjulien.com';
         $email->Password = '29i8v9JjvsTCunilink-gQwoLX';
-        $email->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $email->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
         $email->Port = 587;
         $email->setFrom('unilink@heitzjulien.com', 'Unilink');
         $email->addAddress($user_mail, $user_firstname . ' ' . $user_lastname);
@@ -317,7 +317,7 @@ class TempoController {
             </div>
         </body>
         </html>";
-        $email->AltBody = "Merci pour votre inscription sur Unilink. Veuillez vérifier votre compte en cliquant sur le lien suivant : https://localhost/Projet-RS-Hetic/public/index.php?p=validateUser&type=valid&id=$user_id";
+        $email->AltBody = "Merci pour votre inscription sur Unilink. Veuillez vérifier votre compte en cliquant sur le lien suivant : https://localhost/Projet-RS-Hetic/public/index.php?p=validateUser&type=valid&id=$user_id;
         $email->send();
         ob_clean();
     }
