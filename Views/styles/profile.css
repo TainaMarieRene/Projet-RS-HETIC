@@ -1,0 +1,24 @@
+section {
+    width: 100vw;
+    position: absolute;
+}
+
+section > img{
+    width: inherit;
+}
+
+#picture{
+    width: 25%;
+}
+
+.profile-block {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: -130px;
+    padding-left: 20px;
+}
+
+.profile-block img {
+    border-radius: 50%;
+}
