@@ -26,8 +26,27 @@ function getUserInfo($user_id) {
         ":user_id"=>$user_id
     ]);
 
-    $result = $requete->fetchAll(PDO::FETCH_ASSOC);
+    $result = $requete->fetch(PDO::FETCH_ASSOC);
 
     return $result;
 
+}
+
+function getUserName($user_id) {
+
+    $pdo = db();
+
+    $requete = $pdo->prepare("SELECT
+    user_firstname, user_lastname, user_username
+    FROM users
+    WHERE user_id = :user_id;
+    ");
+
+    $requete->execute([
+        ":user_id"=>$user_id
+    ]);
+
+    $result = $requete->fetch(PDO::FETCH_ASSOC);
+
+    return $result;
 }
