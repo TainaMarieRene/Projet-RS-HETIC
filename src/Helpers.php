@@ -10,30 +10,32 @@ class Helpers{
     private string $_uniCookieUsername;
     private string $_uniCookieAgent;
     private string $_uniCookieToken;
+    private string $_uniCookieUserID;
     private Authentification $_modelAuth;
 
-    public function __construct($page, $uniCookieUsername = '', $uniCookieAgent = '', $uniCookieToken = ''){
+    public function __construct($page, $uniCookieUsername, $uniCookieAgent, $uniCookieToken, $uniCookieUserID){
         $this->_page = $page;
         $this->_uniCookieUsername = $uniCookieUsername;
         $this->_uniCookieAgent = $uniCookieAgent;
         $this->_uniCookieToken = $uniCookieToken;
+        $this->_uniCookieUserID = $uniCookieUserID;
         $this->_modelAuth = new Authentification();
 
         switch ($this->_page){
             case "login":
-                if($this->_modelAuth->areLogin($uniCookieUsername, $uniCookieAgent, $uniCookieToken)){
+                if($this->_modelAuth->areLogin($this->_uniCookieUsername, $this->_uniCookieAgent, $this->_uniCookieToken, $this->_uniCookieUserID)){
                     header("Location: index.php?p=feed");
                     exit();
                 }
                 break;
             case "register":
-                if($this->_modelAuth->areLogin($uniCookieUsername, $uniCookieAgent, $uniCookieToken)){
+                if($this->_modelAuth->areLogin($this->_uniCookieUsername, $this->_uniCookieAgent, $this->_uniCookieToken, $this->_uniCookieUserID)){
                     header("Location: index.php?p=feed");
                     exit();
                 }
                 break;
             default:
-                if(!$this->_modelAuth->areLogin($uniCookieUsername, $uniCookieAgent, $uniCookieToken)){
+                if(!$this->_modelAuth->areLogin($this->_uniCookieUsername, $this->_uniCookieAgent, $this->_uniCookieToken, $this->_uniCookieUserID)){
                     header("Location: index.php");
                     exit();
                 }

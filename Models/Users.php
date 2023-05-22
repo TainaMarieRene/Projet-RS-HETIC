@@ -28,6 +28,13 @@ class User {
         return $this->getUser($mail);
     }
 
+    public function deleteUser($user_id){
+        $stmt = $this->_db->_pdo->prepare("DELETE FROM users WHERE user_id = :user_id");
+        $stmt->execute([
+            ":user_id" => $user_id
+        ]);
+    }
+
     public function loginUser($mail, $password){
         $stmt = $this->_db->_pdo->prepare("SELECT user_password FROM users WHERE user_mail = :user_mail");
         $stmt->execute([
@@ -42,6 +49,15 @@ class User {
         $stmt = $this->_db->_pdo->prepare("SELECT user_id, user_username FROM users WHERE user_mail = :user_mail");
         $stmt->execute([
             ":user_mail" => $mail
+        ]);
+        
+        return $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserByID($user_id){
+        $stmt = $this->_db->_pdo->prepare("SELECT * FROM users WHERE user_id = :user_id");
+        $stmt->execute([
+            ":user_id" => $user_id
         ]);
         
         return $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -65,5 +81,17 @@ class User {
         $check = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return ($check) ? true : false;
+    }
+
+    public function updateStatus($user_id, $type){
+        $checkAccountStatus = $this->getUserByID($user_id);
+
+        if(($checkAccountStatus["user_account_status"] == 'waiting' && $type == 'valid') || ($checkAccountStatus["user_account_status"] == 'valid' && $type == 'disable') || ($checkAccountStatus["user_account_status"] == 'disable' && $type == 'valid')){
+            $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_account_status = :type WHERE user_id = :user_id");
+            $stmt->execute([
+                ":type" => $type,
+                ":user_id" => $user_id
+            ]);
+        }
     }
 }

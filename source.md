@@ -27,9 +27,7 @@ CREATE TABLE authentifications (
   user_token VARCHAR(255) NOT NULL,
   user_token_start DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   user_token_end DATETIME NOT NULL,
-  UNIQUE KEY uc_username_agent (user_username, user_agent),
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
-  FOREIGN KEY (user_username) REFERENCES users(user_username)
+  UNIQUE KEY uc_username_agent (user_username, user_agent)
 );
 
 CREATE TABLE profiles (

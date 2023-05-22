@@ -3,8 +3,8 @@
 namespace AuthController;
 
 use Users\User;
-use Authentifications\Authentification;
 use Profiles\Profile;
+use Authentifications\Authentification;
 require_once '../src/Helpers.php';
 use Helpers\Helpers;
 
@@ -25,7 +25,8 @@ class RegisterController {
 
         $this->_page = $page;
         $this->_method = $method;
-        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');        $this->_modelUser = new User();
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '', isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '');
+        $this->_modelUser = new User();
         $this->_modelProfile = new Profile();
         $this->_modelAuth = new Authentification();
         
@@ -63,8 +64,8 @@ class RegisterController {
                 if(!$this->_error){
                     $user = $this->_modelUser->createUser($firstname, $lastname, $birthdate, $username, $mail, $password);
                     $this->_modelProfile->createProfile($user);
-                    $user = $this->_modelUser->getUser($mail);
                     $token = $this->_modelAuth->createToken($user);
+                    setcookie('uniCookieUserID', $user["user_id"], time()+(30*24*60*60));
                     setcookie('uniCookieUsername', $user["user_username"], time()+(30*24*60*60));
                     setcookie('uniCookieAgent', $_SERVER['HTTP_USER_AGENT'], time()+(30*24*60*60));
                     setcookie('uniCookieToken', $token, time()+(30*24*60*60));
@@ -105,7 +106,7 @@ class LoginController {
         
         $this->_page = $page;
         $this->_method = $method;
-        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '', isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '');
         $this->_modelUser = new User();
         $this->_modelAuth = new Authentification();
         
@@ -125,6 +126,7 @@ class LoginController {
                     if($this->_modelUser->loginUser($mail, $password)){
                         $user = $this->_modelUser->getUser($mail);
                         $token = $this->_modelAuth->createToken($user);
+                        setcookie('uniCookieUserID', $user["user_id"], time()+(30*24*60*60));
                         setcookie('uniCookieUsername', $user["user_username"], time()+(30*24*60*60));
                         setcookie('uniCookieAgent', $_SERVER['HTTP_USER_AGENT'], time()+(30*24*60*60));
                         setcookie('uniCookieToken', $token, time()+(30*24*60*60));
@@ -147,6 +149,8 @@ class LoginController {
 class LogoutController {
     private string $_page;
     private string $_method;
+    private Helpers $_helpers;
+    private $_type;
     private Authentification $_modelAuth;
     
     public function __construct($page, $method){   
@@ -154,18 +158,31 @@ class LogoutController {
 
         $this->_page = $page;
         $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '', isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '');
+        $this->_type = preg_match("`^(device|allDevice)$`", filter_input(INPUT_GET, "type")) ? filter_input(INPUT_GET, "type") : '';
         $this->_modelAuth = new Authentification();
+
         
         // Delete token and cookies
-        if (isset($_COOKIE['uniCookieUsername']) || isset($_COOKIE['uniCookieAgent']) || isset($_COOKIE['uniCookieToken'])) {
-            $token = $this->_modelAuth->deleteToken($_COOKIE['uniCookieUsername'], $_COOKIE['uniCookieAgent']);
-            setcookie('uniCookieUsername', '', time()-3600);
-            setcookie('uniCookieAgent', '', time()-3600);
-            setcookie('uniCookieToken', '', time()-3600);
+        switch ($this->_type){
+            case "device":
+                $token = $this->_modelAuth->deleteToken($_COOKIE['uniCookieUsername'], $_COOKIE['uniCookieAgent'], $_COOKIE['uniCookieUserID']);
+                $this->deleteCookies();
+                break;
+            case "allDevice":
+                $token = $this->_modelAuth->deleteAllToken($_COOKIE['uniCookieUsername'], $_COOKIE['uniCookieUserID']);
+                $this->deleteCookies();
+                break;
         }
-
         header("Location: index.php");
         exit();
+    }
+
+    private function deleteCookies(){
+        setcookie('uniCookieUserID', '', time()-3600);
+        setcookie('uniCookieUsername', '', time()-3600);
+        setcookie('uniCookieAgent', '', time()-3600);
+        setcookie('uniCookieToken', '', time()-3600);
     }
 }
 
@@ -178,7 +195,7 @@ class TempoController {
     public function __construct($page, $method){        
         $this->_page = $page;
         $this->_method = $method;
-        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUsername']) ? $_COOKIE['uniCookieUsername'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '', isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '');
         
         require_once '../Views/tempofeed.php';
         if($this->_error){ return $this->_error; }
