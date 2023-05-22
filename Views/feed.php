@@ -13,7 +13,11 @@ $feedController = new FeedController();
 $username = $feedController->getUserName();
 $actionMsg = "";
 if (isset($_POST['postPost'])) {
-    $actionMsg = $feedController->createUserPost($_POST['postContent']);
+    if ($_POST['postContent']) {
+        $actionMsg = $feedController->createUserPost($_POST['postContent']);
+    } else {
+        $actionMsg = 'Can\'t post nothing !';
+    }
 }
 
 ?>
