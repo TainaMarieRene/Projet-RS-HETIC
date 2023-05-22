@@ -75,9 +75,16 @@ if(isset($_POST['postComment'])){
                         <p>
                             <?= $post["content"] ?>
                         </p>
+                        <form class="hideCta reactionCta " method="post">
+                            <input type='image' src='./assets/icons/smiley-bad.svg' name="bad" alt="Angry Face">
+                            <input type='image' src='./assets/icons/smiley-crying-rainbow.svg' name="crying" alt="Crying Face">
+                            <input type='image' src='./assets/icons/smiley-drop.svg' name="drop" alt="Drop Face">
+                            <input type='image' src='./assets/icons/smiley-in-love.svg' name="love" alt="heart in eyes Face">
+                            <input type='image' src='./assets/icons/smiley-lol-sideways.svg' name="lol" alt="Laughing face">
+                        </form>
                         <form class="cardCta" method="post">
                             <input id="commentButton"type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
-                            <input type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
+                            <input id="likeButton"type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
                         </form>
                         <form class="commentForm" method="post">
                             <input type="text" name="commentContent "placeholder="ratio">
@@ -123,5 +130,22 @@ if(isset($_POST['postComment'])){
         commentForm.classList.toggle("hide")
     })
 
+    let likeButton = document.getElementById("likeButton")
+    let reactionCta = document.querySelector(".reactionCta")
+    function displayCta(element){
+        element.addEventListener('mouseenter',()=>{
+        reactionCta.classList.remove('hideCta')
+    })
+    }
+    function hideCta(element){
+        element.addEventListener('mouseleave',()=>{
+        reactionCta.classList.add('hideCta')
+    })
+}
+    displayCta(likeButton)
+    displayCta(reactionCta)
+    hideCta(likeButton)
+    hideCta(reactionCta)
+// pb l'animation du like ne marche que sur le premier post
 </script>
 </html>
