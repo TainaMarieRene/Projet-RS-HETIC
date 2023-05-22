@@ -146,6 +146,15 @@ if(isset($_POST['postComment'])){
     displayCta(reactionCta)
     hideCta(likeButton)
     hideCta(reactionCta)
-// pb l'animation du like ne marche que sur le premier post
+
+/* 
+
+NOTE PERSO ALESS (ne pas faire attention ni toucher, je corrigerai by myself)
+
+- pb l'animation du like ne marche que sur le premier post
+- tous les inputs like on le même id (faire un incrementeur)
+
+*/
+
 </script>
 </html>

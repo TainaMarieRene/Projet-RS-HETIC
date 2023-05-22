@@ -113,9 +113,6 @@ input[type="file"] {
     display: none;
 }
 
-#likeButton:hover{
-    background-color: #7D7373;
-}
 
 .reactionCta{
     display: flex;
@@ -127,14 +124,14 @@ input[type="file"] {
     background: #FFFF;
     box-shadow:  5px 5px 10px #dedede;
 
-    animation: float 2s ease-out;
+    animation: float 1s ease-out;
 }
 @keyframes float{
     0%{
         transform: translateY(0px);
     }
     50%{
-        transform: translateY(-10px);
+        transform: translateY(-5px);
     }
     100%{
         transform: translateY(0px);
