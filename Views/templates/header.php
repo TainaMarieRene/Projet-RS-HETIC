@@ -1,5 +1,4 @@
 <?php
-$username = ""
 
 ?>
 <head>
@@ -16,6 +15,6 @@ $username = ""
     </div>
     <nav class="headerNav">
         <a href="#" class="headerCTA">Create</a>
-        <img src="./assets/imgs/users/picture/<?= $username ?>" alt="Image de l'utilisateur">
+        <img src="./assets/imgs/users/picture/<?= $username ?? "default_picture.jpg" ?>" alt="Image de <?= $username ?? "anonyme" ?>">
     </nav>
 </header>
