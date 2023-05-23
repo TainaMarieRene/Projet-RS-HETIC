@@ -87,7 +87,7 @@ $id = 0
                             <input id=<?= "commentButton" . $id ?> type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
                             <input id=<?= "likeButton" . $id ?> type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
                         </form>
-                        <form class="commentForm" method="post">
+                        <form class="commentForm hideCta" id=<?='comment' . $id ?> method="post">
                             <input type="text" name="commentContent "placeholder="ratio">
                             <button name="postComment">Comment</button>
                         </form>
