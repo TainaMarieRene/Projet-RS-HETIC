@@ -55,7 +55,7 @@ class RegisterController {
                 
                 $password = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST, "password")) ? filter_input(INPUT_POST, "password") : false;
                 $password2 = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST, "password2")) ? filter_input(INPUT_POST, "password2") : false;
-                if((!$password || !$password2) && !$this->_error) { $this->_error = "Mot de passe invalide (Longueur de 8 à 100 caractères avec minimum : 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spéciaux)"; }
+                if((!$password || !$password2) && !$this->_error) { $this->_error = "Mot de passe invalide :" . "<br>" . "-8 à 100 caractères" . "<br>" . "-1 majuscule" . "<br>" . "-1 minuscule" . "<br>" . "-1 chiffre" . "<br>" . "-1 caractère spécial"; }
                 $password = $this->checkPassword($password, $password2);
                 if(!$password && !$this->_error) { $this->_error = "Les mots de passe ne correspondent pas"; }
                 
@@ -121,9 +121,9 @@ class LoginController {
                 if(!$mail && !$this->_error) { $this->_error = "Mail invalide"; }
 
                 $password = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST, "password")) ? filter_input(INPUT_POST, "password") : false;
-                if(!$password && !$this->_error) { $this->_error = "Mot de passe invalide (Longueur de 8 à 100 caractères avec minimum : 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spéciaux)"; }
+                if(!$password && !$this->_error) { $this->_error = "Mot de passe invalide :" . "<br>" . "-8 à 100 caractères" . "<br>" . "-1 majuscule" . "<br>" . "-1 minuscule" . "<br>" . "-1 chiffre" . "<br>" . "-1 caractère spécial"; }
 
-                if(!$this->_modelUser->checkMail($mail) && !$this->_error) { $this->_error = "Aucun compte enregistré à l'adresse mail que vous avez renseigné"; }
+                if(!$this->_modelUser->checkMail($mail) && !$this->_error) { $this->_error = "Identifiants incorrect"; }
 
                 // Login and create token and cookies
                 if(!$this->_error){
@@ -136,7 +136,7 @@ class LoginController {
                         header("Location: index.php?p=feed");
                         exit();
                     } else {
-                        $this->_error = "Mauvais mot de passe";
+                        $this->_error = "Identifiants incorrect";
                     }
                 }
 

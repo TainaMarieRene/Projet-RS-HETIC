@@ -444,7 +444,7 @@ DROP TABLE IF EXISTS `reactions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `reactions` (
-  `reaction_type` enum('group','page','profil') NOT NULL,
+  `reaction_type` enum('post', 'message') NOT NULL,
   `reaction_type_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `reaction_emoji` enum('react1','react2','react3','react4','react5') NOT NULL,
