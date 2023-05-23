@@ -112,3 +112,39 @@ input[type="file"] {
 .hide {
     display: none;
 }
+
+
+.reactionCta{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 20vw;
+    height: 4vw;
+    border-radius: 50px;
+    background: #FFFF;
+    box-shadow:  5px 5px 10px #dedede;
+    animation: float 1.5s ease-out;
+}
+@keyframes float{
+    0%{
+        transform: translateY(0px);
+    }
+    50%{
+        transform: translateY(-5px);
+    }
+    100%{
+        transform: translateY(0px);
+    }
+}
+
+.reactionCta>input{
+    width: 2vw;
+}
+.reactionCta>input:hover{
+    transform: scale(1.1);
+
+}
+
+.hideCta{
+    display: none;
+}
