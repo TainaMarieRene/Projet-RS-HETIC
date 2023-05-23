@@ -29,6 +29,7 @@ if(isset($_POST['postComment'])){
         $commentMSG = 'Can\'t post nothing !';
     }
 }
+$id = 0 
 ?>
 
 <!DOCTYPE html>
@@ -77,7 +78,7 @@ if(isset($_POST['postComment'])){
                         <p>
                             <?= $post["content"] ?>
                         </p>
-                        <form class="hideCta reactionCta " method="post">
+                        <form class="hideCta" id=<?='reactionCta' . $id ?> method="post">
                             <input type='image' src='./assets/icons/smiley-bad.svg' name="bad" alt="Angry Face">
                             <input type='image' src='./assets/icons/smiley-crying-rainbow.svg' name="crying" alt="Crying Face">
                             <input type='image' src='./assets/icons/smiley-drop.svg' name="drop" alt="Drop Face">
@@ -85,10 +86,10 @@ if(isset($_POST['postComment'])){
                             <input type='image' src='./assets/icons/smiley-lol-sideways.svg' name="lol" alt="Laughing face">
                         </form>
                         <form class="cardCta" method="post">
-                            <input id="commentButton"type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
-                            <input id="likeButton"type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
+                            <input id=<?= "commentButton" . $id ?> type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
+                            <input id=<?= "likeButton" . $id ?> type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
                         </form>
-                        <form class="commentForm" method="post">
+                        <form class="commentForm hideCta" id=<?='comment' . $id ?> method="post">
                             <input type="text" name="commentContent "placeholder="ratio">
                             <button name="postComment">Comment</button>
                         </form>
@@ -102,6 +103,7 @@ if(isset($_POST['postComment'])){
                         </p>
                     </div>
                 </div>
+                <?php $id++ ?>
             <?php endforeach; ?>
         </section>
     </main>
@@ -126,37 +128,13 @@ if(isset($_POST['postComment'])){
         }, 1500)
     }
 
-    let commentButton = document.getElementById("commentButton")
-    let commentForm = document.querySelector(".commentForm")
-    commentButton.addEventListener('click', () => {
-        commentForm.classList.toggle("hide")
-    })
-
-    let likeButton = document.getElementById("likeButton")
-    let reactionCta = document.querySelector(".reactionCta")
-    function displayCta(element){
-        element.addEventListener('mouseenter',()=>{
-        reactionCta.classList.remove('hideCta')
-    })
-    }
-    function hideCta(element){
-        element.addEventListener('mouseleave',()=>{
-        reactionCta.classList.add('hideCta')
-    })
-}
-    displayCta(likeButton)
-    displayCta(reactionCta)
-    hideCta(likeButton)
-    hideCta(reactionCta)
-
-/* 
-
+/*
 NOTE PERSO ALESS (ne pas faire attention ni toucher, je corrigerai by myself)
 
-- pb l'animation du like ne marche que sur le premier post
-- tous les inputs like on le même id (faire un incrementeur)
+- l'animation fonctionne sur tous les posts MAIS se display and hide super vite 
 
 */
 
 </script>
+<script src="./script/feed.js"></script>
 </html>
