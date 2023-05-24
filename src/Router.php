@@ -15,6 +15,8 @@ use UserController\DeleteUserController;
 use UserController\UpdateUserStatusController;
 require_once '../Controllers/HTTPResponsesController.php';
 use HTTPResponses\HTTPResponseController;
+require_once '../Controllers/ProfileController2.php';
+use ProfileController\ProfileController;
 
 class Router {
     private string $_method;
@@ -41,6 +43,9 @@ class Router {
                 break;
             case "feed":
                 $this->_controller = new TempoController($this->_page, $this->_method);
+                break;
+            case "profile":
+                $this->_controller = new ProfileController($this->_page, $this->_method);
                 break;
             case "userOptions":
                 $this->_controller = new UserOptionsController($this->_page, $this->_method);

@@ -28,4 +28,14 @@ class Profile {
         ]);
     }
 
+    public function getProfileInfo($user_id) {
+        $stmt = $this->_db->_pdo->prepare("SELECT * FROM profiles WHERE user_id = :user_id");
+        $stmt->execute([
+            ":user_id"=>$user_id
+        ]);
+        $profile = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        return $profile;
+    }
+
 }

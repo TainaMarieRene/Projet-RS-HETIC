@@ -31,6 +31,8 @@ body{
     gap: 20px;
     background-color: var(--white);
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
 
 .authcard .error{
