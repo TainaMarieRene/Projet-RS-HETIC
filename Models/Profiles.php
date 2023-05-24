@@ -38,4 +38,26 @@ class Profile {
         return $profile;
     }
 
+    public function getUserName($user_id) {
+        $stmt = $this->_db->_pdo->prepare("SELECT user_firstname, user_lastname, user_username FROM users WHERE user_id = :user_id");
+        $stmt->execute([
+            ":user_id"=>$user_id
+        ]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        return $user;
+    }
+
+    public function getUserPosts($user_id) {
+        $stmt = $this->_db->_pdo->prepare("SELECT * FROM posts WHERE user_id = :user_id and post_type = :profile_type");
+        $stmt->execute([
+            ":user_id" => $user_id,
+            ":profile_type" => "profile"
+        ]);
+    
+        $userPosts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        return $userPosts;
+    }
+
 }

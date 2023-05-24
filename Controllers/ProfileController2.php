@@ -24,6 +24,8 @@ class ProfileController {
         $this->_modelProfile = new Profile();
 
         $profile = $this->_modelProfile->getProfileInfo($_COOKIE['uniCookieUserID']);
+        $user = $this->_modelProfile->getUserName($_COOKIE['uniCookieUserID']);
+        $userPosts = $this->_modelProfile->getUserPosts($_COOKIE['uniCookieUserID']);
 
         require_once '../Views/profile2.php';
     }
