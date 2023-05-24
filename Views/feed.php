@@ -76,7 +76,7 @@ $id = 0
                         <p>
                             <?= $post["content"] ?>
                         </p>
-                        <form class="hideCta" id=<?='reactionCta' . $id ?> method="post">
+                        <form class="hideCta reactionCta" id=<?='reactionCta' . $id  ?> method="post">
                             <input type='image' src='./assets/icons/smiley-bad.svg' name="bad" alt="Angry Face">
                             <input type='image' src='./assets/icons/smiley-crying-rainbow.svg' name="crying" alt="Crying Face">
                             <input type='image' src='./assets/icons/smiley-drop.svg' name="drop" alt="Drop Face">
@@ -84,12 +84,12 @@ $id = 0
                             <input type='image' src='./assets/icons/smiley-lol-sideways.svg' name="lol" alt="Laughing face">
                         </form>
                         <form class="cardCta" method="post">
-                            <input id=<?= "commentButton" . $id ?> type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
-                            <input id=<?= "likeButton" . $id ?> type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
+                            <input class="displayForm" id=<?= "displayForm" . $id ?> type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
+                            <input class="likeButton" id=<?= "likeButton" . $id ?> type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
                         </form>
-                        <form class="commentForm hideCta" id=<?='comment' . $id ?> method="post">
-                            <input type="text" name="commentContent "placeholder="ratio">
-                            <button name="postComment">Comment</button>
+                        <form class="hideCta commentForm" id=<?='comment' . $id  ?> method="post">
+                            <textarea name="" class="commentContent" name="commentContent"  rows="1"></textarea>
+                            <input type="button" class="postComment" name="postComment" value="Commenter">
                         </form>
                     </div>
                     <div class="cardFooter">
@@ -106,6 +106,8 @@ $id = 0
         </section>
     </main>
 </body>
+<script src="./script/feed.js"></script>
+
 <script>
     let actionState = "<?= $actionMsg ?>"
     if (!actionState) {
@@ -134,5 +136,4 @@ NOTE PERSO ALESS (ne pas faire attention ni toucher, je corrigerai by myself)
 */
 
 </script>
-<script src="./script/feed.js"></script>
 </html>

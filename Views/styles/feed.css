@@ -146,5 +146,34 @@ input[type="file"] {
 }
 
 .hideCta{
-    display: none;
+    display: none !important;
 }
+.commentForm{
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  gap: 2%
+}
+.commentContent{
+    min-width: 10vw;
+    min-height: 2vw;
+
+    border-color: #2B2626;
+    border-radius: 30px;
+    border: solid 1px;
+    
+    padding: 0.5vw;
+
+    resize:none;
+
+}
+.postComment{
+    background-color: #39E168;
+    border-radius: 50px;
+    border: none;
+    padding: 0.4vw 1vw;
+    font-size: 1rem;
+    cursor: pointer
+}
+
