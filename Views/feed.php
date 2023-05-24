@@ -22,14 +22,15 @@ if (isset($_POST['postPost'])) {
     }
 }
 $commentMSG = "";
+
 if (isset($_POST['postComment'])) {
     if ($_POST['commentContent']) {
-        
         $postId = $_POST["postId"];
         $userId = $_POST["userId"];
         $parentId = $_POST["parentId"];
         $content = $_POST["commentContent"];
-
+    
+    
         $commentMSG = $feedController->postComment($postId, $userId, $parentId, $content);
         header('Location: feed.php', true, 303);
         exit();
@@ -38,6 +39,21 @@ if (isset($_POST['postComment'])) {
     }
 }
 
+
+if (isset($_POST["reaction"])) {
+        $reactionType = "profil"; 
+        $userId = 1; 
+        // $reactionEmoji = "react3"; 
+        $reactionTypeId = 5;
+        $reactionEmoji = $feedController->filterReaction($_POST["reaction"]); 
+//pb pour l'id qui se set pas comme il faut
+        $feedController->saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId);
+        header('Location: feed.php', true, 303);
+        exit();
+}
+
+
+$userId = 1;
 $id = 0
     ?>
 
@@ -92,14 +108,13 @@ $id = 0
                         <p>
                             <?= $post["content"] ?>
                         </p>
+
                         <form class="hideCta reactionCta" id=<?= 'reactionCta' . $id ?> method="post">
-                            <input type='image' src='./assets/icons/smiley-bad.svg' name="bad" alt="Angry Face">
-                            <input type='image' src='./assets/icons/smiley-crying-rainbow.svg' name="crying"
-                                alt="Crying Face">
-                            <input type='image' src='./assets/icons/smiley-drop.svg' name="drop" alt="Drop Face">
-                            <input type='image' src='./assets/icons/smiley-in-love.svg' name="love"
-                                alt="heart in eyes Face">
-                            <input type='image' src='./assets/icons/smiley-lol-sideways.svg' name="lol" alt="Laughing face">
+                            <button type="submit" name="reaction" value="bad"><img src="./assets/icons/smiley-bad.svg" alt="Angry Face"></button>
+                            <button type="submit" name="reaction" value="crying"><img src="./assets/icons/smiley-crying-rainbow.svg" alt="Crying Face"></button>
+                            <button type="submit" name="reaction" value="drop"><img src="./assets/icons/smiley-drop.svg" alt="Drop Face"></button>
+                            <button type="submit" name="reaction" value="love"><img src="./assets/icons/smiley-in-love.svg" alt="heart in eyes Face"></button>
+                            <button type="submit" name="reaction" value="lol"><img src="./assets/icons/smiley-lol-sideways.svg" alt="Laughing face"></button>
                         </form>
                         <form class="cardCta" method="post">
                             <input class="displayForm" id=<?= "displayForm" . $id ?> type="image"
@@ -108,17 +123,16 @@ $id = 0
                                 name="like" alt="Like Icon">
                         </form>
                         <form class="hideCta commentForm" id=<?= 'comment' . $id ?> method="post">
-                            <input type="hidden" name="postId" value="<?php $post['id'] ?>">
-                            <input type="hidden" name="userId" value="<?php $userId=1?>">
-                            <input type="hidden" name="parentId" value="<?php $parentId=1 ?>">
+                            <input type="hidden" name="postId" value="<?= $post['id'] ?>">
+                            <input type="hidden" name="userId" value="<?= $userId?>">
+                            <input type="hidden" name="parentId" value="<?= $parentId=1 ?>">
                             <textarea name="commentContent" class="commentContent" rows="1"></textarea>
                             <input type="submit" class="postComment" name="postComment" value="Commenter">
                         </form>
-
                     </div>
                     <div class="cardFooter">
                         <p>
-                            <?= $post["likesCount"] ?> ont aimé ce post
+                            <?= $post["likesCount"] ?> ont réagi à ce post
                         </p>
                         <p>
                             <?= $post["commentsCount"] ?> commentaires
@@ -137,7 +151,7 @@ $id = 0
     if (!actionState) {
         document.getElementById("actionMsg").classList.add('hide');
     } else {
-        document.getElementById("actionMsg").classList.remove('hide');
+        document.getElementById("actionMsg").classLis t.remove('hide');
         setTimeout(() => {
             document.getElementById("actionMsg").classList.add('hide');
         }, 1500)
@@ -151,6 +165,8 @@ $id = 0
             document.getElementById("commentMSG").classList.add('hide');
         }, 1500)
     }
+
+
 
 </script>
 
