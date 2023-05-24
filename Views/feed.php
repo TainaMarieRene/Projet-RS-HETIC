@@ -1,38 +1,35 @@
 <?php
-require_once("../controllers/FeedController.php");
-$post = getUserPosts(1); // Utilise getUserPosts au lieu de getUserPoser
-$test = getPostsFromPage(1);
-$allPosts = array_merge($post, $test);
 
-$methode = filter_input(INPUT_SERVER, "REQUEST_METHOD");
-if ($methode === 'POST') {
-    if (isset($_FILES["postImg"])){
-        postImage();
-    } elseif(isset($_POST["postPost"])){
+//if (!isset($_COOKIE["user_id"])) {
+//    header("Location: login.php");
+//    exit();
+//}
 
+require ('../Models/Database.php');
+require('../Controllers/FeedController.php');
+use Feed\FeedController;
+
+$feedController = new FeedController();
+$username = $feedController->getUserName();
+$actionMsg = "";
+if (isset($_POST['postPost'])) {
+    if ($_POST['postContent']) {
+        $actionMsg = $feedController->createUserPost($_POST['postContent']);
+        header('Location: feed.php', true, 303);
+        exit();
+    } else {
+        $actionMsg = 'Can\'t post nothing !';
     }
-
 }
-function getDateDiff(string $postDate): void
-{
-    try {
-        $postDateTime = new DateTime($postDate);
-        $currentDateTime = new DateTime();
-
-        $interval = $postDateTime->diff($currentDateTime);
-
-        $minutes = $interval->days * 24 * 60 + $interval->h * 60 + $interval->i;
-
-        echo $minutes;
-
-    } catch (Exception $e) {
-        var_dump($e);
+$commentMSG = "";
+if(isset($_POST['postComment'])){
+    if($_POST['commentContent']){
+        $commentMSG = $feedController->createComment($_POST['postComment']);
+    } else{
+        $commentMSG = 'Can\'t post nothing !';
     }
-
 }
-
-
-
+$id = 0 
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +42,7 @@ function getDateDiff(string $postDate): void
     <link rel="stylesheet" type="text/css" href="./styles/style.css">
     <link rel="stylesheet" type="text/css" href="./styles/feed.css">
     <title>Feed -
-        <?php echo "TON NOM"; ?>
+        <?php echo $feedController->getUserName(); ?>
     </title>
 </head>
 
@@ -53,51 +50,92 @@ function getDateDiff(string $postDate): void
     <?php include './templates/header.php'; ?>
     <main>
         <?php require_once("./templates/side_profile.php"); ?>
+
         <section id="userFeed">
-            <form method="post">
-                <input type="text" name="createPost" placeholder='Quoi de neuf ?'></input>
+            <p id="actionMsg"><?= $actionMsg ?></p>
+            <p id="commentMSG"><?= $commentMSG ?></p>
+            <form class="postCta" method="post">
+                <label for="postContent" class="hiddenLabel">Create Post Content Label</label>
+                <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
+                <label for="inputImage" class="mediaInput"><img alt="Media Icon" src="assets/icons/media.svg"></label>
+                <input type="file" name="inputImage" id="inputImage">
                 <button name="postPost">Post</button>
             </form>
-            <form method="post" enctype="multipart/form-data">
-                <input type="file" name="file">
-                <button type="submit" name="postImg">Upload File</button>
-            </form>
-
-            <?php foreach ($allPosts as $post): ?>
+            <?php foreach ($feedController->getFeedPosts() as $post): ?>
                 <div class="postCard">
                     <div class="cardHeader">
-                        <img src="./assets/imgs/users/picture/<?= "mockuser.svg" ?>" alt="Image de l'utilisateur">
+                        <img src="./assets/imgs/users/picture/<?= "default_picture.jpg" ?>" alt="Image de <?= $post["author"]?>">
                         <div>
                             <span class="cardUserName">
-                                <?= $post["Friends Pseudo"] ?? $post["page at"] ?>
+                                <?= $post["Friends Pseudo"] ?? $post["author"] ?>
                             </span>
                             <span>
-                                <?= isset($post["Post friend date"]) ? getDateDiff($post["Post friend date"]) : getDateDiff($post["Post Page date"]) ?>
-                                minutes ago
+                                <?= $feedController->getDateDiff($post["date"]) ?>
                             </span>
                         </div>
                     </div>
                     <div class="cardBody">
                         <p>
-                            <?= $post["Post friend content"] ?? $post["Post page content"] ?>
+                            <?= $post["content"] ?>
                         </p>
+                        <form class="hideCta reactionCta" id=<?='reactionCta' . $id  ?> method="post">
+                            <input type='image' src='./assets/icons/smiley-bad.svg' name="bad" alt="Angry Face">
+                            <input type='image' src='./assets/icons/smiley-crying-rainbow.svg' name="crying" alt="Crying Face">
+                            <input type='image' src='./assets/icons/smiley-drop.svg' name="drop" alt="Drop Face">
+                            <input type='image' src='./assets/icons/smiley-in-love.svg' name="love" alt="heart in eyes Face">
+                            <input type='image' src='./assets/icons/smiley-lol-sideways.svg' name="lol" alt="Laughing face">
+                        </form>
                         <form class="cardCta" method="post">
-                            <input type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
-                            <input type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
+                            <input class="displayForm" id=<?= "displayForm" . $id ?> type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
+                            <input class="likeButton" id=<?= "likeButton" . $id ?> type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
+                        </form>
+                        <form class="hideCta commentForm" id=<?='comment' . $id  ?> method="post">
+                            <textarea name="" class="commentContent" name="commentContent"  rows="1"></textarea>
+                            <input type="button" class="postComment" name="postComment" value="Commenter">
                         </form>
                     </div>
                     <div class="cardFooter">
-                        <p>Aimé par
-                            <?= $post["Post friend like"] ?? $post["Post page like"] ?> autres personnes
+                        <p>
+                            <?= $post["likesCount"] ?> ont aimé ce post
                         </p>
                         <p>
-                            <?= $post["Post friend comment number"] ?? $post["Post page comment number"] ?> commentaires
+                            <?= $post["commentsCount"] ?> commentaires
                         </p>
                     </div>
                 </div>
+                <?php $id++ ?>
             <?php endforeach; ?>
         </section>
     </main>
 </body>
+<script src="./script/feed.js"></script>
 
+<script>
+    let actionState = "<?= $actionMsg ?>"
+    if (!actionState) {
+        document.getElementById("actionMsg").classList.add('hide');
+    } else {
+        document.getElementById("actionMsg").classList.remove('hide');
+        setTimeout(() => {
+            document.getElementById("actionMsg").classList.add('hide');
+        }, 1500)
+    }
+    let commentMSG = "<?= $commentMSG ?>"
+    if (!commentMSG) {
+        document.getElementById("commentMSG").classList.add('hide');
+    } else {
+        document.getElementById("commentMSG").classList.remove('hide');
+        setTimeout(() => {
+            document.getElementById("commentMSG").classList.add('hide');
+        }, 1500)
+    }
+
+/*
+NOTE PERSO ALESS (ne pas faire attention ni toucher, je corrigerai by myself)
+
+- l'animation fonctionne sur tous les posts MAIS se display and hide super vite 
+
+*/
+
+</script>
 </html>

@@ -3,8 +3,20 @@
 namespace Router;
 
 require_once '../Controllers/AuthController.php';
-use AuthController\LoginController;
 use AuthController\RegisterController;
+use AuthController\LoginController;
+use AuthController\LogoutController;
+use AuthController\TempoController;
+use AuthController\ValidateController;
+use AuthController\ResendMailController;
+require_once '../Controllers/UserController.php';
+use UserController\UserOptionsController;
+use UserController\DeleteUserController;
+use UserController\UpdateUserStatusController;
+require_once '../Controllers/HTTPResponsesController.php';
+use HTTPResponses\HTTPResponseController;
+require_once '../Controllers/ProfileController2.php';
+use ProfileController\ProfileController;
 
 class Router {
     private string $_method;
@@ -17,15 +29,38 @@ class Router {
         $this->_page = filter_input(INPUT_GET, "p") ? filter_input(INPUT_GET, "p") : "login";
 
         switch($this->_page){
-            case "login":
-                $this->_controller = new LoginController($this->_page, $this->_method);
-                break;
             case "register":
                 $this->_controller = new RegisterController($this->_page, $this->_method);
                 break;
+            case "login":
+                $this->_controller = new LoginController($this->_page, $this->_method);
+                break;
+            case "validateUser":
+                $this->_controller = new ValidateController($this->_page, $this->_method);
+                break;
+            case "logout":
+                $this->_controller = new LogoutController($this->_page, $this->_method);
+                break;
+            case "feed":
+                $this->_controller = new TempoController($this->_page, $this->_method);
+                break;
+            case "profile":
+                $this->_controller = new ProfileController($this->_page, $this->_method);
+                break;
+            case "userOptions":
+                $this->_controller = new UserOptionsController($this->_page, $this->_method);
+                break;
+            case "updateAccountStatus":
+                $this->_controller = new UpdateUserStatusController($this->_page, $this->_method);
+                break;
+            case "resendMail":
+                $this->_controller = new ResendMailController($this->_page, $this->_method);
+                break;
+            case "deleteAccount":
+                $this->_controller = new DeleteUserController($this->_page, $this->_method);
+                break;
             default:
-                // TO DO : Creat a 404 Page
-                echo("404");
+                $this->_controller = new HTTPResponseController($this->_page, $this->_method);
                 break;
         }
     }
