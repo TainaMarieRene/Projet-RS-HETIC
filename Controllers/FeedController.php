@@ -177,26 +177,45 @@ class FeedController extends Database {
         return $error;
       }
     }
-    public function createComment($commentContent)
-{
-    try {
-        $query = $this->_pdo->prepare(" INSERT INTO
-        `posts_comments` (`post_comment_id`, `post_id`, `user_id`, `post_comment_parent_id`, `post_comment_date`, `post_comment_content`) 
-        VALUES
-        (NULL, NULL,:userId, NULL, current_timestamp(), :commentContent)
-    ");
+//     public function createComment($commentContent)
+// {
+//     try {
+//         $query = $this->_pdo->prepare(" INSERT INTO
+//         `posts_comments` (`post_comment_id`, `post_id`, `user_id`, `post_comment_parent_id`, `post_comment_date`, `post_comment_content`) 
+//         VALUES
+//         (NULL, NULL,:userId, NULL, current_timestamp(), :commentContent)
+//     ");
 
-        $query->execute([
-            ":userId" => $this->userId,
-            ":postContent" => $commentContent
-        ]);
+//         $query->execute([
+//             ":userId" => $this->userId,
+//             ":postContent" => $commentContent
+//         ]);
 
-        $query->fetchAll();
+//         $query->fetchAll();
 
-        return "Successfully posted";
-    } catch (PDOException $error) {
-        return $error;
-    }
+//         return "comment posted";
+//     } catch (PDOException $error) {
+//         return $error;
+//     }
+// }
+public function postComment($postId, $userId, $parentId, $content) {
+try{
+    $query = $this->_pdo->prepare("INSERT INTO
+    `posts_comments` (`post_id`, `user_id`, `post_comment_parent_id`, `post_comment_date`, `post_comment_content`) 
+    VALUES (:postId, :userId, :parentId, NOW(), :content)");
+    $query->execute([
+        ":postId" => $postId,
+        ":userId" => $userId,
+        ":parentId" => $parentId,
+        ":content" => $content
+    ]);
+    $query->fetchAll();
+    return "comment POSTED";
+} catch (PDOException $error) {
+    return $error;
 }
 }
+}
+
+
 

@@ -5,7 +5,7 @@
 //    exit();
 //}
 
-require ('../Models/Database.php');
+require('../Models/Database.php');
 require('../Controllers/FeedController.php');
 use Feed\FeedController;
 
@@ -22,15 +22,24 @@ if (isset($_POST['postPost'])) {
     }
 }
 $commentMSG = "";
-if(isset($_POST['postComment'])){
-    if($_POST['commentContent']){
-        $commentMSG = $feedController->createComment($_POST['postComment']);
-    } else{
+if (isset($_POST['postComment'])) {
+    if ($_POST['commentContent']) {
+        
+        $postId = $_POST["postId"];
+        $userId = $_POST["userId"];
+        $parentId = $_POST["parentId"];
+        $content = $_POST["commentContent"];
+
+        $commentMSG = $feedController->postComment($postId, $userId, $parentId, $content);
+        header('Location: feed.php', true, 303);
+        exit();
+    } else {
         $commentMSG = 'Can\'t post nothing !';
     }
 }
-$id = 0 
-?>
+
+$id = 0
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,8 +61,12 @@ $id = 0
         <?php require_once("./templates/side_profile.php"); ?>
 
         <section id="userFeed">
-            <p id="actionMsg"><?= $actionMsg ?></p>
-            <p id="commentMSG"><?= $commentMSG ?></p>
+            <p id="actionMsg">
+                <?= $actionMsg ?>
+            </p>
+            <p id="commentMSG">
+                <?= $commentMSG ?>
+            </p>
             <form class="postCta" method="post">
                 <label for="postContent" class="hiddenLabel">Create Post Content Label</label>
                 <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
@@ -64,7 +77,8 @@ $id = 0
             <?php foreach ($feedController->getFeedPosts() as $post): ?>
                 <div class="postCard">
                     <div class="cardHeader">
-                        <img src="./assets/imgs/users/picture/<?= "default_picture.jpg" ?>" alt="Image de <?= $post["author"]?>">
+                        <img src="./assets/imgs/users/picture/<?= "default_picture.jpg" ?>"
+                            alt="Image de <?= $post["author"] ?>">
                         <div>
                             <span class="cardUserName">
                                 <?= $post["Friends Pseudo"] ?? $post["author"] ?>
@@ -78,21 +92,29 @@ $id = 0
                         <p>
                             <?= $post["content"] ?>
                         </p>
-                        <form class="hideCta reactionCta" id=<?='reactionCta' . $id  ?> method="post">
+                        <form class="hideCta reactionCta" id=<?= 'reactionCta' . $id ?> method="post">
                             <input type='image' src='./assets/icons/smiley-bad.svg' name="bad" alt="Angry Face">
-                            <input type='image' src='./assets/icons/smiley-crying-rainbow.svg' name="crying" alt="Crying Face">
+                            <input type='image' src='./assets/icons/smiley-crying-rainbow.svg' name="crying"
+                                alt="Crying Face">
                             <input type='image' src='./assets/icons/smiley-drop.svg' name="drop" alt="Drop Face">
-                            <input type='image' src='./assets/icons/smiley-in-love.svg' name="love" alt="heart in eyes Face">
+                            <input type='image' src='./assets/icons/smiley-in-love.svg' name="love"
+                                alt="heart in eyes Face">
                             <input type='image' src='./assets/icons/smiley-lol-sideways.svg' name="lol" alt="Laughing face">
                         </form>
                         <form class="cardCta" method="post">
-                            <input class="displayForm" id=<?= "displayForm" . $id ?> type="image" src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
-                            <input class="likeButton" id=<?= "likeButton" . $id ?> type="image" src="./assets/icons/like.svg" name="like" alt="Like Icon">
+                            <input class="displayForm" id=<?= "displayForm" . $id ?> type="image"
+                                src="./assets/icons/commentary.svg" name="comment" alt="Comment Icon">
+                            <input class="likeButton" id=<?= "likeButton" . $id ?> type="image" src="./assets/icons/like.svg"
+                                name="like" alt="Like Icon">
                         </form>
-                        <form class="hideCta commentForm" id=<?='comment' . $id  ?> method="post">
-                            <textarea name="" class="commentContent" name="commentContent"  rows="1"></textarea>
-                            <input type="button" class="postComment" name="postComment" value="Commenter">
+                        <form class="hideCta commentForm" id=<?= 'comment' . $id ?> method="post">
+                            <input type="hidden" name="postId" value="<?php $post['id'] ?>">
+                            <input type="hidden" name="userId" value="<?php $userId=1?>">
+                            <input type="hidden" name="parentId" value="<?php $parentId=1 ?>">
+                            <textarea name="commentContent" class="commentContent" rows="1"></textarea>
+                            <input type="submit" class="postComment" name="postComment" value="Commenter">
                         </form>
+
                     </div>
                     <div class="cardFooter">
                         <p>
@@ -130,12 +152,6 @@ $id = 0
         }, 1500)
     }
 
-/*
-NOTE PERSO ALESS (ne pas faire attention ni toucher, je corrigerai by myself)
-
-- l'animation fonctionne sur tous les posts MAIS se display and hide super vite 
-
-*/
-
 </script>
+
 </html>
