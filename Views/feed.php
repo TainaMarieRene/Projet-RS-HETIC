@@ -15,6 +15,8 @@ $actionMsg = "";
 if (isset($_POST['postPost'])) {
     if ($_POST['postContent']) {
         $actionMsg = $feedController->createUserPost($_POST['postContent']);
+        header('Location: feed.php', true, 303);
+        exit();
     } else {
         $actionMsg = 'Can\'t post nothing !';
     }
