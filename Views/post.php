@@ -46,60 +46,60 @@ if (isset($_POST['postComment'])) {
 
 <body>
 <?php include '../Views/templates/header.php'; ?>
-<main>
-    <?php require_once("../Views/templates/side_profile.php"); ?>
-    <section id="postFeed">
-        <p id="commentMSG">
-            <?= $commentMSG ?>
-        </p>
+    <main>
+        <?php require_once("../Views/templates/side_profile.php"); ?>
+        <section id="postFeed">
+            <p id="commentMSG">
+                <?= $commentMSG ?>
+            </p>
 
-        <div class="postCard">
-            <div class="cardHeader">
-            <img src="../Views/assets/imgs/users/picture/<?= "x.jpg" ?>" alt="Image de <?= $postData["postData"]["author"] ?>">
-                <div>
-                    <span class="cardUserName">
-                        <?= $postData["postData"]["author"] ?>
-                    </span>
-                    <span>
-                        <?= $feedController->getDateDiff($postData["postData"]["date"]) ?>
-                    </span>
+            <div class="postCard">
+                <div class="cardHeader">
+                <img src="../Views/assets/imgs/users/picture/<?= "x.jpg" ?>" alt="Image de <?= $postData["postData"]["author"] ?>">
+                    <div>
+                        <span class="cardUserName">
+                            <?= $postData["postData"]["author"] ?>
+                        </span>
+                        <span>
+                            <?= $feedController->getDateDiff($postData["postData"]["date"]) ?>
+                        </span>
+                    </div>
+                </div>
+                <div class="cardBody">
+                    <p>
+                        <?= $postData["postData"]["content"]?>
+                    </p>
+                </div>
+                <?php if($_COOKIE['uniCookieUserID'] != $postData["postData"]["user_id"]):?>
+                <form class="cardCta" method="post">
+                    <input class="likeButton" id= "likeButton<?=$postPageController->postId?>" type="image"
+                           src="../Views/assets/icons/like.svg" name="like" alt="Like Icon">
+                </form>
+                <?php endif; ?>
+                <form class="commentForm" id= 'comment<?=$postPageController->postId?>' method="post">
+                    <input type="hidden" name="postId" value="<?= $postPageController->postId ?>">
+                    <input type="hidden" name="parentId" value="<?= $parentId = 1 ?>">
+                    <input type="hidden" name="userId" value="<?= $_COOKIE['uniCookieUserID'] ?>">
+                    <textarea name="commentContent" class="commentContent" rows="1"></textarea>
+                    <input type="submit" class="postComment" name="postComment" value="Commenter">
+                </form>
+                <div class="cardComments">
+                    <p>reactions</p>
+                    <p>commentaires</p>
+                    <?php foreach($postData["commentsData"] as $commentData): ?>
+                        <div class="commentCard">
+                            <div class="commentHeader">
+                                <img src="../Views/assets/imgs/users/picture/<?= "x.jpg" ?>" alt="Image de <?= $commentData["author"] ?>">
+                            </div>
+                            <div class="commentCardBody">
+                                <p><?= $commentData["content"] ?></p>
+                                <p>@<?= $commentData["author"]. " ".$feedController->getDateDiff($commentData["date"])?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-            <div class="cardBody">
-                <p>
-                    <?= $postData["postData"]["content"]?>
-                </p>
-            </div>
-            <?php if($_COOKIE['uniCookieUserID'] != $postData["postData"]["user_id"]):?>
-            <form class="cardCta" method="post">
-                <input class="likeButton" id= "likeButton<?=$postPageController->postId?>" type="image"
-                       src="../Views/assets/icons/like.svg" name="like" alt="Like Icon">
-            </form>
-            <?php endif; ?>
-            <form class="commentForm" id= 'comment<?=$postPageController->postId?>' method="post">
-                <input type="hidden" name="postId" value="<?= $postPageController->postId ?>">
-                <input type="hidden" name="parentId" value="<?= $parentId = 1 ?>">
-                <input type="hidden" name="userId" value="<?= $_COOKIE['uniCookieUserID'] ?>">
-                <textarea name="commentContent" class="commentContent" rows="1"></textarea>
-                <input type="submit" class="postComment" name="postComment" value="Commenter">
-            </form>
-            <div class="cardComments">
-                <p>reactions</p>
-                <p>commentaires</p>
-                <?php foreach($postData["commentsData"] as $commentData): ?>
-                    <div class="commentCard">
-                        <div class="commentHeader">
-                            <img src="../Views/assets/imgs/users/picture/<?= "x.jpg" ?>" alt="Image de <?= $commentData["author"] ?>">
-                        </div>
-                        <div class="commentCardBody">
-                            <p><?= $commentData["content"] ?></p>
-                            <p>@<?= $commentData["author"]. " ".$feedController->getDateDiff($commentData["date"])?></p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-</main>
+        </section>
+    </main>
 </body>
 </html>
