@@ -1,11 +1,15 @@
 <?php
 
-require ('../Models/Database.php');
 require ('../Controllers/PostPageController.php');
+require ('../Controllers/FeedController.php');
+
+use Feed\FeedController;
 use Post\PostPageController;
 
 $postPageController = new PostPageController();
 $postData = $postPageController->renderData();
+$feedController = new FeedController();
+$username = $postPageController->getUserName();
 
 ?>
 
@@ -24,11 +28,24 @@ $postData = $postPageController->renderData();
 </head>
 
 <body>
-<?php //include './templates/header.php'; ?>
+<?php include '../Views/templates/header.php'; ?>
 <main>
-    <?php require_once("./templates/side_profile.php"); ?>
+    <?php require_once("../Views/templates/side_profile.php"); ?>
     <section id="postFeed">
         <?=$postData["postData"]["author"] ?>
+        <div class="postCard">
+            <div class="cardHeader">
+            <img src="../Views/assets/imgs/users/picture/<?= "x.jpg" ?>" alt="Image de <?= $postData["postData"]["author"] ?>">
+                <div>
+                    <span class="cardUserName">
+                        <?= $postData["postData"]["author"] ?>
+                    </span>
+                    <span>
+                        <?= $feedController->getDateDiff($postData["postData"]["date"]) ?>
+                    </span>
+                </div>
+            </div>
+        </div>
     </section>
 </main>
 </body>
