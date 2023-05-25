@@ -147,7 +147,7 @@ $id = 0
     if (!actionState) {
         document.getElementById("actionMsg").classList.add('hide');
     } else {
-        document.getElementById("actionMsg").classLis t.remove('hide');
+        document.getElementById("actionMsg").classList.remove('hide');
         setTimeout(() => {
             document.getElementById("actionMsg").classList.add('hide');
         }, 1500)
