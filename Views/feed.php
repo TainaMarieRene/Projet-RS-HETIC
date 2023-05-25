@@ -45,8 +45,9 @@ if (isset($_POST["reaction"])) {
 
 
 $userId = $_COOKIE['uniCookieUserID'];
-$id = 0
-    ?>
+$id = 0;
+$likeId = 0;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -140,15 +141,16 @@ $id = 0
                             Voir plus...
                         </a>
                         <div class='displayReaction hideCta' id=<?= 'displayReaction' . $id ?>>
-                            <ul>
+                            <ul class='reactionList'>
                                 <?php foreach ($feedController->getLike($post['id']) as $like): ?>
                                     <li class='reactionContent'>
-                                        <img class="reactionEmoji" id=<?= 'reactionEmoji' . $id ?> src="" alt='image'
-                                            value="<?= $like['reaction_emoji'] ?>" />
+                                        <img class="reactionEmoji <?= $like['reaction_emoji'] ?>" id=<?= 'reactionEmoji' . $likeId ?>
+                                            src="" alt='image' />
                                         <span>
                                             <?= $like['user_firstname'] . " " . $like['user_lastname'] ?>
                                         </span>
                                     </li>
+                                    <?php $likeId++ ?>
                                 <?php endforeach; ?>
 
                                 <ul>
@@ -189,53 +191,7 @@ $id = 0
         }, 1500)
     }
 
-    let b = 0
-    while (true) {
-        let reactionButton = document.getElementById('reactionButton' + b)
-        let displayReaction = document.getElementById('displayReaction' + b)
 
-        if (!reactionButton && !displayReaction) {
-            break
-        }
-        reactionButton.addEventListener('click', function (event) {
-            event.preventDefault()
-            displayReaction.classList.toggle("hideCta")
-        })
-        b++
-    }
-
-    // let reactionEmoji = document.querySelector('.reactionEmoji')
-    // if (reactionEmoji.value === 'react1') {
-    //     reactionEmoji.src = '../Views/assets/icons/smiley-bad.svg'
-    // } else if (reactionEmoji.value === 'react2') {
-    //     reactionEmoji.src = "../Views/assets/icons/smiley-crying-rainbow.svg"
-    // } else if (reactionEmoji.value === 'react3') {
-    //     reactionEmoji.src = "../Views/assets/icons/smiley-drop.svg"
-    // } else if (reactionEmoji.value === 'react4') {
-    //     reactionEmoji.src = "../Views/assets/icons/smiley-in-love.svg"
-    // } else {
-    //     reactionEmoji.src = "../Views/assets/icons/smiley-lol-sideways.svg"
-    // }
-
-    let emoji = 0
-    while (true) {
-        let reactionEmoji = document.getElementById('reactionEmoji' + emoji)
-        if (!reactionEmoji) {
-            break
-        }
-        if (reactionEmoji.value === 'react1') {
-            reactionEmoji.src = '../Views/assets/icons/smiley-bad.svg'
-        } else if (reactionEmoji.value === 'react2') {
-            reactionEmoji.src = "../Views/assets/icons/smiley-crying-rainbow.svg"
-        } else if (reactionEmoji.value === 'react3') {
-            reactionEmoji.src = "../Views/assets/icons/smiley-drop.svg"
-        } else if (reactionEmoji.value === 'react4') {
-            reactionEmoji.src = "../Views/assets/icons/smiley-in-love.svg"
-        } else {
-            reactionEmoji.src = "../Views/assets/icons/smiley-lol-sideways.svg"
-        }
-        emoji++
-    }
 </script>
 
 </html>

@@ -49,6 +49,41 @@ textarea.addEventListener('input', function() {
   textarea.style.height = newHeight + 'vw'
 });
 
+let b = 0
+while (true) {
+    let reactionButton = document.getElementById('reactionButton' + b)
+    let displayReaction = document.getElementById('displayReaction' + b)
 
+    if (!reactionButton && !displayReaction) {
+        break
+    }
+    reactionButton.addEventListener('click', function (event) {
+        event.preventDefault()
+        displayReaction.classList.toggle("hideCta")
+    })
+    b++
+}
 
-
+let reactionEmojiArray = []
+let emoji = 0
+while (true) {
+    const reactionEmoji = document.getElementById('reactionEmoji' + emoji)
+    if (!reactionEmoji) {
+        break
+    }
+    reactionEmojiArray.push(reactionEmoji)
+    emoji++
+}
+reactionEmojiArray.forEach(emoji => {
+    if (emoji.classList[1] === 'react1') {
+        emoji.src = '../Views/assets/icons/smiley-bad.svg'
+    } else if (emoji.classList[1] === 'react2') {
+        emoji.src = "../Views/assets/icons/smiley-crying-rainbow.svg"
+    } else if (emoji.classList[1] === 'react3') {
+        emoji.src = "../Views/assets/icons/smiley-drop.svg"
+    } else if (emoji.classList[1] === 'react4') {
+        emoji.src = "../Views/assets/icons/smiley-in-love.svg"
+    } else {
+        emoji.src = "../Views/assets/icons/smiley-lol-sideways.svg"
+    }
+})
