@@ -65,11 +65,7 @@ $id = 0
 <body>
     <?php include '../Views/templates/header.php'; ?>
     <main>
-        <?php if(preg_match("`^(valid)$`", filter_input(INPUT_GET, "success"))): ?>
-            <div class="success">Mail validé</div>
-        <?php elseif(preg_match("`^(error)$`", filter_input(INPUT_GET, "success"))): ?>
-            <div class="error">Erreur durant la validation du mail, veuillez ressayer</div>
-        <?php endif; ?>
+
         <?php require_once("../Views/templates/side_profile.php"); ?>
 
         <section id="userFeed">
@@ -139,9 +135,21 @@ $id = 0
                             href="http://localhost/projet-rs-hetic/Views/post.php?id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
                             Voir plus...
                         </a>
+                        <div class=' displayReaction'>
+                            <ul>
+                                <?php foreach ($feedController->getLike($post['id']) as $like): ?>
+                                    <li class='reactionContent'>
+                                        <img class="reactionEmoji" src="" alt='image' value="<?= $like['reaction_emoji'] ?>" />
+                                        <span>
+                                            <?= $like['user_firstname'] . " " . $like['user_lastname'] ?>
+                                        </span>
+                                    </li>
+                                <?php endforeach; ?>
 
+                                <ul>
+                        </div>
                         <p>
-                            <?= $post["likesCount"] ?> ont réagi à ce post
+                            <?= $post["likesCount"] ?> <button class='reactionButton'>ont réagi à ce post</button>
                         </p>
                         <p>
                             <?= $post["commentsCount"] ?> commentaires
@@ -175,7 +183,25 @@ $id = 0
         }, 1500)
     }
 
+    reactionButton = document.querySelector('.reactionButton')
+    displayReaction = document.querySelector('.displayReaction')
+    reactionButton.addEventListener('click', function (event) {
+        event.preventDefault()
+        displayReaction.classList.toggle("hideCta")
+    })
 
+    reactionEmoji = document.querySelector('.reactionEmoji')
+    if (reactionEmoji.value === 'react1') {
+        reactionEmoji.src = '../Views/assets/icons/smiley-bad.svg'
+    } else if (reactionEmoji.value === 'react2') {
+        reactionEmoji.src = "../Views/assets/icons/smiley-crying-rainbow.svg"
+    } else if (reactionEmoji.value === 'react3') {
+        reactionEmoji.src = "../Views/assets/icons/smiley-drop.svg"
+    } else if (reactionEmoji.value === 'react4') {
+        reactionEmoji.src = "../Views/assets/icons/smiley-in-love.svg"
+    } else {
+        reactionEmoji.src = "../Views/assets/icons/smiley-lol-sideways.svg"
+    }
 
 </script>
 

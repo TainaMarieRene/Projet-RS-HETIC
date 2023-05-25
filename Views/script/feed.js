@@ -49,26 +49,4 @@ textarea.addEventListener('input', function() {
   textarea.style.height = newHeight + 'vw'
 });
 
-// function handleReactionClick(userId,reactionType,emoji) {
-//     console.log("Reaction button clicked");
-//     console.log("userId:", userId);
-//     console.log("reactionType:", reactionType);
-//     console.log("emoji:", emoji);
-//     saveReaction(userId, reactionType, emoji);
-// }
 
-// function saveReaction(userId, reactionType, emoji) {
-//         var xhttp = new XMLHttpRequest()
-//         xhttp.onreadystatechange = function() {
-//             if (this.readyState == 4 && this.status == 200) {
-//                 console.log(this.responseText)
-//             }
-//         };
-//         handleReactionClick(userId, reactionType, emoji)
-//         xhttp.open("POST", "http://localhost/Projet-RS-HETIC/views/feed.php", true)
-//         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-//         xhttp.send("userId=" + userId + "&reactionType=" + reactionType + "&emoji=" + emoji)
-//     }
-
-  
-    

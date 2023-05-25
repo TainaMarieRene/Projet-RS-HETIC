@@ -249,4 +249,26 @@ class FeedController extends Database
             return 'react5';
         }
     }
+
+    public function getLike($postId)
+    {
+        try {
+            $query = $this->_pdo->prepare("SELECT u.user_firstname, u.user_lastname, r.reaction_emoji
+                FROM users u
+                JOIN reactions r ON u.user_id = r.user_id
+                WHERE r.reaction_type = 'post'
+                AND r.reaction_type_id = :postId");
+
+            $query->execute([
+                ":postId" => $postId,
+            ]);
+
+            $likes = $query->fetchAll();
+            return $likes;
+        } catch (PDOException $error) {
+            return $error;
+        }
+    }
+
+
 }

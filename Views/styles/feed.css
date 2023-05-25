@@ -181,3 +181,35 @@ input[type="file"] {
     cursor: pointer
 }
 
+.reactionButton{
+    border: none;
+    padding: 0;
+    color: none;
+    background: none;
+    margin: none;
+    color: #7D7373;
+    cursor: pointer;
+}
+
+.reactionContent{
+    width: 16vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    font-size: 1rem;
+    padding: 5%;
+
+    border: none;
+
+    border-radius: 50px;
+    background: #FFFF;
+    box-shadow:  5px 5px 10px #dedede;
+
+    color: #000000;
+
+}
+
+.reactionEmoji{
+    width: 2vw;
+}
