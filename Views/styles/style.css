@@ -25,3 +25,26 @@ body{
 h2{
     font-size: 24px;
 }
+
+.error{
+    border: 1px solid #D8000C;
+    color: #D8000C;
+	background-color: #FFBABA;
+    text-align: center;
+    padding: 10px;
+    width: 75%;
+    margin: 0 auto;
+}
+
+.success{
+    border: 1px solid #270;
+    color: #270;
+	background-color: #DFF2BF;
+    text-align: center;
+    padding: 10px;
+    width: 75%;
+}
+
+div.error, div.success{
+    margin: 30px auto;
+}

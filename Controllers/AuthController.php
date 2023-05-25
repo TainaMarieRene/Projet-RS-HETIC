@@ -245,7 +245,7 @@ class ResendMailController {
 
 }
 
-class TempoController {
+class FeedController {
     private string $_page;
     private string $_method;
     private Helpers $_helpers;
@@ -255,7 +255,7 @@ class TempoController {
         $this->_page = $page;
         $this->_method = $method;
         $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
-        
+
         require_once '../Views/feed.php';
     }
 }

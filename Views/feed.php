@@ -42,8 +42,11 @@ if (isset($_POST["reaction"])) {
     header('Location: http://localhost/projet-rs-hetic/public/index.php?p=feed', true, 303);
     exit();
 }
-$id = 0;
-?>
+
+
+$userId = $_COOKIE['uniCookieUserID'];
+$id = 0
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -62,6 +65,11 @@ $id = 0;
 <body>
     <?php include '../Views/templates/header.php'; ?>
     <main>
+        <?php if(preg_match("`^(valid)$`", filter_input(INPUT_GET, "success"))): ?>
+            <div class="success">Mail validé</div>
+        <?php elseif(preg_match("`^(error)$`", filter_input(INPUT_GET, "success"))): ?>
+            <div class="error">Erreur durant la validation du mail, veuillez ressayer</div>
+        <?php endif; ?>
         <?php require_once("../Views/templates/side_profile.php"); ?>
 
         <section id="userFeed">
@@ -120,7 +128,7 @@ $id = 0;
                         </form>
                         <form class="hideCta commentForm" id=<?= 'comment' . $id ?> method="post">
                             <input type="hidden" name="postId" value="<?= $post['id'] ?>">
-                            <input type="hidden" name="userId" value="<?= $_COOKIE['uniCookieUserID'] ?>">
+                            <input type="hidden" name="userId" value="<?= $userId ?>">
                             <input type="hidden" name="parentId" value="<?= $parentId = 1 ?>">
                             <textarea name="commentContent" class="commentContent" rows="1"></textarea>
                             <input type="submit" class="postComment" name="postComment" value="Commenter">

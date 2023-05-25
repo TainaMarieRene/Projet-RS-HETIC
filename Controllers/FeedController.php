@@ -217,7 +217,7 @@ class FeedController extends Database
     }
 
 
-    public function saveReaction($userId, $reactionType, $reactionEmoji,$reactionTypeId)
+    public function saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId)
     {
         try {
             $query = $this->_pdo->prepare("INSERT INTO reactions (reaction_type, reaction_type_id, user_id, reaction_emoji)
@@ -225,7 +225,6 @@ class FeedController extends Database
             $query->execute([
                 ":reactionType" => $reactionType,
                 ":reactionTypeId" => $reactionTypeId,
-                // ":reactionTypeId" => $this->_pdo->lastInsertId()+1,
                 ":userId" => $userId,
                 ":reactionEmoji" => $reactionEmoji
             ]);
@@ -236,16 +235,17 @@ class FeedController extends Database
             return $error;
         }
     }
-    public function filterReaction($reaction){
+    public function filterReaction($reaction)
+    {
         if ($reaction === 'bad') {
             return 'react1';
         } elseif ($reaction === 'crying') {
             return 'react2';
-        }elseif ($reaction === 'drop') {
+        } elseif ($reaction === 'drop') {
             return 'react3';
-        }elseif ($reaction === 'love') {
+        } elseif ($reaction === 'love') {
             return 'react4';
-        }elseif ($reaction === 'lol') {
+        } elseif ($reaction === 'lol') {
             return 'react5';
         }
     }

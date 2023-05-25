@@ -18,13 +18,14 @@
 
     <nav>
         <ul>
-            <li> <a href="http://">Home</a></li>
-            <li> <a href="http://">Notifications</a></li>
-            <li> <a href="http://">Friends</a></li>
-            <li> <a href="http://">Pages</a></li>
-            <li> <a href="http://">Groups</a></li>
-            <li><a href="http://">Settings</a></li>
-            <li> <a href="http://">Logout</a></li>
+            <li><a href="index.php?p=profile&profile_id=<?= $_COOKIE['uniCookieUserID'] ?>">Profil d'utilisateur</a></li>
+            <li><a href="http://">Notifications</a></li>
+            <li><a href="http://">Friends</a></li>
+            <li><a href="http://">Pages</a></li>
+            <li><a href="http://">Groups</a></li>
+            <li><a href="index.php?p=userOptions">Options d'utilisateur</a></li>
+            <li><a href="index.php?p=logout&type=device">Deconnexion</a></li>
+            <li><a href="index.php?p=logout&type=allDevice">Deconnexion global</a></li>
         </ul>
     </nav>
 
