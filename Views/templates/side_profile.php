@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" href="./styles/sideProfile.css">
+    <link rel="stylesheet" href="../Views/styles/sideProfile.css">
 </head>
 
 <aside>

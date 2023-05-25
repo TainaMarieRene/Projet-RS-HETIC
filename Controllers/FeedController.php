@@ -12,13 +12,12 @@ class FeedController extends Database
     public function __construct()
     {
         parent::__construct();
-        $this->setUserId(1);
+        $this->setUserId();
     }
 
-    public function setUserId(int $userCookieId): void
+    public function setUserId(): void
     {
-        $this->userId = $userCookieId;
-        //        En tant normal, aller chercher la data dans les cookies
+        $this->userId = $_COOKIE['uniCookieUserID'];
     }
 
     public function getUserName(): string
@@ -54,7 +53,7 @@ class FeedController extends Database
             LEFT JOIN reactions rct ON (rct.reaction_type = 'profil' AND rct.reaction_type_id = pst.post_id AND rct.user_id = :userId)
             LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
         WHERE
-            (f.user_id1 = :userId OR f.user_id2 = :userId) AND f.user_relation = 'friend'
+            (f.user_id1 = :userId OR f.user_id2 = :userId) AND f.user_relation = 'friend' OR u.user_id = :userId
         GROUP BY
             u.user_firstname, u.user_lastname, u.user_username, pst.post_id, pst.post_content
         ");
@@ -72,7 +71,7 @@ class FeedController extends Database
           members m
           INNER JOIN pages pg ON m.member_type_id = pg.page_id
           LEFT JOIN posts pst ON (pst.post_type = 'page' AND pst.post_type_id = pg.page_id)
-          LEFT JOIN reactions rct ON (rct.reaction_type = 'page' AND rct.reaction_type_id = pg.page_id AND rct.user_id = 1)
+          LEFT JOIN reactions rct ON (rct.reaction_type = 'page' AND rct.reaction_type_id = pg.page_id AND rct.user_id = :userId)
           LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
         WHERE
           m.user_id = :userId
