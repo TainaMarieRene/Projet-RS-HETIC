@@ -49,26 +49,41 @@ textarea.addEventListener('input', function() {
   textarea.style.height = newHeight + 'vw'
 });
 
-// function handleReactionClick(userId,reactionType,emoji) {
-//     console.log("Reaction button clicked");
-//     console.log("userId:", userId);
-//     console.log("reactionType:", reactionType);
-//     console.log("emoji:", emoji);
-//     saveReaction(userId, reactionType, emoji);
-// }
+let b = 0
+while (true) {
+    let reactionButton = document.getElementById('reactionButton' + b)
+    let displayReaction = document.getElementById('displayReaction' + b)
 
-// function saveReaction(userId, reactionType, emoji) {
-//         var xhttp = new XMLHttpRequest()
-//         xhttp.onreadystatechange = function() {
-//             if (this.readyState == 4 && this.status == 200) {
-//                 console.log(this.responseText)
-//             }
-//         };
-//         handleReactionClick(userId, reactionType, emoji)
-//         xhttp.open("POST", "http://localhost/Projet-RS-HETIC/views/feed.php", true)
-//         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
-//         xhttp.send("userId=" + userId + "&reactionType=" + reactionType + "&emoji=" + emoji)
-//     }
+    if (!reactionButton && !displayReaction) {
+        break
+    }
+    reactionButton.addEventListener('click', function (event) {
+        event.preventDefault()
+        displayReaction.classList.toggle("hideCta")
+    })
+    b++
+}
 
-  
-    
+let reactionEmojiArray = []
+let emoji = 0
+while (true) {
+    const reactionEmoji = document.getElementById('reactionEmoji' + emoji)
+    if (!reactionEmoji) {
+        break
+    }
+    reactionEmojiArray.push(reactionEmoji)
+    emoji++
+}
+reactionEmojiArray.forEach(emoji => {
+    if (emoji.classList[1] === 'react1') {
+        emoji.src = '../Views/assets/icons/smiley-bad.svg'
+    } else if (emoji.classList[1] === 'react2') {
+        emoji.src = "../Views/assets/icons/smiley-crying-rainbow.svg"
+    } else if (emoji.classList[1] === 'react3') {
+        emoji.src = "../Views/assets/icons/smiley-drop.svg"
+    } else if (emoji.classList[1] === 'react4') {
+        emoji.src = "../Views/assets/icons/smiley-in-love.svg"
+    } else {
+        emoji.src = "../Views/assets/icons/smiley-lol-sideways.svg"
+    }
+})

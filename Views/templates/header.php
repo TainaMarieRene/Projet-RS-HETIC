@@ -6,7 +6,7 @@
 </head>
 
 <header>
-    <h1>Uni</h1>
+    <a href="http://localhost/projet-rs-hetic/public/index.php?p=feed"><h1>Uni</h1></a>
     <div class="inputSearch">
         <label>
             <img src="../Views/assets/icons/searchIcon.svg" alt="Icone de recherche">
@@ -15,6 +15,6 @@
     </div>
     <nav class="headerNav">
         <a href="#" class="headerCTA">Create</a>
-        <img src="../Views/assets/imgs/users/picture/<?= $username ?? "default_picture.jpg" ?>" alt="Image de <?= $username ?? "anonyme" ?>">
+        <img class="userPdp" src="../Views/assets/imgs/users/picture/<?= $username ?? "default_picture.jpg" ?>" alt="Image de <?= $username ?? "anonyme" ?>">
     </nav>
 </header>

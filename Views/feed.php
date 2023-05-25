@@ -34,19 +34,20 @@ if (isset($_POST['postComment'])) {
 
 if (isset($_POST["reaction"])) {
     $reactionType = $_POST['postType'];
-    $userId = 1;
+    $userId = $_COOKIE['uniCookieUserID'];
     $reactionTypeId = $_POST['postId'];
     $reactionEmoji = $feedController->filterReaction($_POST["reaction"]);
 
     $feedController->saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId);
-    header('Location: feed.php', true, 303);
+    header('Location: http://localhost/projet-rs-hetic/public/index.php?p=feed', true, 303);
     exit();
 }
 
 
 $userId = $_COOKIE['uniCookieUserID'];
-$id = 0
-    ?>
+$id = 0;
+$likeId = 0;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -136,12 +137,27 @@ $id = 0
                     </div>
                     <div class="cardFooter">
                         <a
-                            href="http://localhost/projet-rs-hetic/Views/post.php?id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
+                            href="http://localhost/projet-rs-hetic/public/index.php?p=post&id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
                             Voir plus...
                         </a>
+                        <div class='displayReaction hideCta' id=<?= 'displayReaction' . $id ?>>
+                            <ul class='reactionList'>
+                                <?php foreach ($feedController->getLike($post['id']) as $like): ?>
+                                    <li class='reactionContent'>
+                                        <img class="reactionEmoji <?= $like['reaction_emoji'] ?>" id=<?= 'reactionEmoji' . $likeId ?>
+                                            src="" alt='image' />
+                                        <span>
+                                            <?= $like['user_firstname'] . " " . $like['user_lastname'] ?>
+                                        </span>
+                                    </li>
+                                    <?php $likeId++ ?>
+                                <?php endforeach; ?>
 
+                                <ul>
+                        </div>
                         <p>
-                            <?= $post["likesCount"] ?> ont réagi à ce post
+                            <?= $post["likesCount"] ?> <button class='reactionButton' id=<?= 'reactionButton' . $id ?>>ont
+                                réagi à ce post</button>
                         </p>
                         <p>
                             <?= $post["commentsCount"] ?> commentaires
@@ -174,7 +190,6 @@ $id = 0
             document.getElementById("commentMSG").classList.add('hide');
         }, 1500)
     }
-
 
 
 </script>
