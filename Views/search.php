@@ -1,12 +1,16 @@
 <?php
-
+require ('../Controllers/FeedController.php');
 require ('../Controllers/SearchController.php');
+
+use Feed\FeedController;
 use Search\SearchController;
 
 $searchFilter = $_GET["filter"];
 $searchController = new SearchController();
 
 $renderData = $searchController->getAccounts($searchFilter);
+$username = (new FeedController())->getUserName();
+
 ?>
 
 <!DOCTYPE html>
