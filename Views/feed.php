@@ -45,8 +45,9 @@ if (isset($_POST["reaction"])) {
 
 
 $userId = $_COOKIE['uniCookieUserID'];
-$id = 0
-    ?>
+$id = 0;
+$likeId = 0;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -65,9 +66,9 @@ $id = 0
 <body>
     <?php include '../Views/templates/header.php'; ?>
     <main>
-        <?php if(preg_match("`^(valid)$`", filter_input(INPUT_GET, "success"))): ?>
+        <?php if (preg_match("`^(valid)$`", filter_input(INPUT_GET, "success"))): ?>
             <div class="success">Mail validé</div>
-        <?php elseif(preg_match("`^(error)$`", filter_input(INPUT_GET, "success"))): ?>
+        <?php elseif (preg_match("`^(error)$`", filter_input(INPUT_GET, "success"))): ?>
             <div class="error">Erreur durant la validation du mail, veuillez réessayer</div>
         <?php endif; ?>
         <?php require_once("../Views/templates/side_profile.php"); ?>
@@ -139,9 +140,24 @@ $id = 0
                             href="http://localhost/projet-rs-hetic/public/index.php?p=post&id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
                             Voir plus...
                         </a>
+                        <div class='displayReaction hideCta' id=<?= 'displayReaction' . $id ?>>
+                            <ul class='reactionList'>
+                                <?php foreach ($feedController->getLike($post['id']) as $like): ?>
+                                    <li class='reactionContent'>
+                                        <img class="reactionEmoji <?= $like['reaction_emoji'] ?>" id=<?= 'reactionEmoji' . $likeId ?>
+                                            src="" alt='image' />
+                                        <span>
+                                            <?= $like['user_firstname'] . " " . $like['user_lastname'] ?>
+                                        </span>
+                                    </li>
+                                    <?php $likeId++ ?>
+                                <?php endforeach; ?>
 
+                                <ul>
+                        </div>
                         <p>
-                            <?= $post["likesCount"] ?> ont réagi à ce post
+                            <?= $post["likesCount"] ?> <button class='reactionButton' id=<?= 'reactionButton' . $id ?>>ont
+                                réagi à ce post</button>
                         </p>
                         <p>
                             <?= $post["commentsCount"] ?> commentaires
@@ -174,7 +190,6 @@ $id = 0
             document.getElementById("commentMSG").classList.add('hide');
         }, 1500)
     }
-
 
 
 </script>
