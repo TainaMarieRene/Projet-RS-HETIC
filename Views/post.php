@@ -95,7 +95,7 @@ if (isset($_POST['postComment'])) {
                             </div>
                             <div class="commentCardBody">
                                 <p><?= $commentData["content"] ?></p>
-                                <p>@<?= $commentData["author"]. " ".$feedController->getDateDiff($commentData["date"])?></p>
+                                <p><a href="http://localhost/projet-rs-hetic/public/index.php?p=profile&profile_id=<?=$commentData["author_id"]?>">@<?= $commentData["author"] ?></a> <?=$feedController->getDateDiff($commentData["date"])?></p>
                             </div>
                         </div>
                     <?php endforeach; ?>
