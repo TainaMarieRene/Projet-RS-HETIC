@@ -9,6 +9,7 @@ use AuthController\PostRouter;
 use AuthController\RegisterController;
 use AuthController\LoginController;
 use AuthController\LogoutController;
+use AuthController\SearchRouter;
 use AuthController\ValidateController;
 use AuthController\ResendMailController;
 require_once '../Controllers/UserController.php';
@@ -74,6 +75,9 @@ class Router {
                 break;
             case "post":
                 $this->_controller = new PostRouter($this->_page, $this->_method);
+                break;
+            case "search":
+                $this->_controller = new SearchRouter($this->_page, $this->_method);
                 break;
             default:
                 $this->_controller = new HTTPResponseController($this->_page, $this->_method);
