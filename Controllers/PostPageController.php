@@ -1,13 +1,10 @@
 <?php
 
 namespace Post;
-
 use Database\Database;
-use Exception;
 use PDOException;
 class PostPageController extends Database
 {
-
     public int $postId;
     public string $postType;
     public function __construct()
