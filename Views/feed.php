@@ -43,10 +43,9 @@ if (isset($_POST['postComment'])) {
 if (isset($_POST["reaction"])) {
     $reactionType = $_POST['postType'];
     $userId = 1;
-    // $reactionEmoji = "react3"; 
     $reactionTypeId = $_POST['postId'];
     $reactionEmoji = $feedController->filterReaction($_POST["reaction"]);
-    //pb pour l'id qui se set pas comme il faut
+
     $feedController->saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId);
     header('Location: feed.php', true, 303);
     exit();
@@ -139,7 +138,8 @@ $id = 0
                         </form>
                     </div>
                     <div class="cardFooter">
-                        <a href="http://localhost/projet-rs-hetic/Views/post.php?id=<?=$post["id"]?>&type=<?=$post['type']?>">
+                        <a
+                            href="http://localhost/projet-rs-hetic/Views/post.php?id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
                             Voir plus...
                         </a>
 
