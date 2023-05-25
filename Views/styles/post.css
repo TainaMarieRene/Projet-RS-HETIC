@@ -16,3 +16,30 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: #F5F2F6;
 }
+
+.cardComments {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+    font-size: 24px;
+}
+
+.commentHeader {
+    width: 64px;
+    height: 64px;
+    border-radius: 100px;
+    border: 1px solid black;
+}
+
+.commentCard {
+    background-color: #F5FDF4;
+    border-radius: 50px;
+    display: flex;
+    flex-flow: row;
+    gap: 16px;
+    align-items: center;
+}
+
+.commentCardBody p + p {
+    color: #7D7373;
+}
