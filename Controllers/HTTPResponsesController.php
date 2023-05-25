@@ -13,6 +13,5 @@ class HTTPResponseController {
         $this->_method = $method;
 
         require_once '../Views/404.php';
-        if($this->_error){ return $this->_error; }
     }
 }

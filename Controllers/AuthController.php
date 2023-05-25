@@ -81,7 +81,6 @@ class RegisterController {
         }        
 
         require_once '../Views/register.php';
-        if($this->_error){ return $this->_error; }
     }
 
     private function checkYears($birthdate){
@@ -144,7 +143,6 @@ class LoginController {
         }
         
         require_once '../Views/login.php';
-        if($this->_error){ return $this->_error; }
     }
 }
 
@@ -259,6 +257,5 @@ class TempoController {
         $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
         
         require_once '../Views/tempofeed.php';
-        if($this->_error){ return $this->_error; }
     }
 }

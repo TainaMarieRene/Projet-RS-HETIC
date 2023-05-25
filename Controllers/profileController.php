@@ -1,52 +1,60 @@
 <?php
 
-function db()
-{
-    $host = "localhost";
-    $user = "root";
-    $password = "";
-    $db_name = "unilink";
+namespace ProfileController;
 
-    $dsn = "mysql:host=$host;dbname=$db_name";
+// Models
+use Profiles\Profile;
+use Users\User;
+use Posts\Post;
+// Src
+require_once '../src/Helpers.php';
+use Helpers\Helpers;
 
-    return new PDO($dsn, "$user", "$password", array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4'));
-}
+class ProfileController {
+    private string $_page;
+    private string $_method;
+    private Helpers $_helpers;
+    private Profile $_modelProfile;
+    private User $_modelUser;
+    private Post $_modelPost;
+    private $_error;
 
-function getUserInfo($user_id) {
+    public function __construct($page, $method){
+        require_once '../Models/Profiles.php';
+        require_once '../Models/Users.php';
+        require_once '../Models/Posts.php';
 
-    $pdo = db();
+        $this->_page = $page;
+        $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+        $this->_modelProfile = new Profile();
+        $this->_modelUser = new User();
+        $this->_modelPost = new Post();
 
-    $requete = $pdo->prepare("SELECT
-    profile_picture, profile_banner, profile_bio, profile_location, profile_activity, profile_certification, profile_status
-    FROM profiles
-    WHERE user_id = :user_id;
-    ");
+        $profile = $this->_modelProfile->getProfileInfo($_COOKIE['uniCookieUserID']);
+        $user = $this->_modelUser->getUserByID($_COOKIE['uniCookieUserID']);
+        
+        switch($this->_method){
+            case "POST":
+                $postContent = preg_match("`^.+$`" , preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "postContent"))) ? preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "postContent")) : false;
+                if(!$postContent && !$this->_error) { $this->_error = "Contenue invalide"; }
+                
+                if($postContent && isset($_FILES['postImg']) && $_FILES['postImg']['error'] === UPLOAD_ERR_OK){
+                    $postImg = file_get_contents($_FILES['postImg']['tmp_name']);
+                    $postImgHash = hash('sha256', $postImg);
+                    $postImgExtension = pathinfo($_FILES['postImg']['name'], PATHINFO_EXTENSION);
+                    $postImgPath = '../Views/assets/imgs/users/posts/' . $postImgHash . '.' . $postImgExtension;
+                    file_put_contents($postImgPath, $postImg);
+                    $postImgPath = $postImgHash . '.' . $postImgExtension;
+                    $this->_modelPost->createPost($_COOKIE['uniCookieUserID'], "profile", $_COOKIE['uniCookieUserID'], $postContent, $postImgPath);
+                } elseif ($postContent){
+                    $this->_modelPost->createPost($_COOKIE['uniCookieUserID'], "profile", $_COOKIE['uniCookieUserID'], $postContent);
+                }
+                break;
+        }
 
-    $requete->execute([
-        ":user_id"=>$user_id
-    ]);
+        $userPosts = $this->_modelPost->getUserProfilePosts($_COOKIE['uniCookieUserID']);
 
-    $result = $requete->fetch(PDO::FETCH_ASSOC);
-
-    return $result;
-
-}
-
-function getUserName($user_id) {
-
-    $pdo = db();
-
-    $requete = $pdo->prepare("SELECT
-    user_firstname, user_lastname, user_username
-    FROM users
-    WHERE user_id = :user_id;
-    ");
-
-    $requete->execute([
-        ":user_id"=>$user_id
-    ]);
-
-    $result = $requete->fetch(PDO::FETCH_ASSOC);
-
-    return $result;
+        require_once '../Views/profile.php';
+    }
 }
