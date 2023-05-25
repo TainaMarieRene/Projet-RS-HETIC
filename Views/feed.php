@@ -44,7 +44,7 @@ if (isset($_POST["reaction"])) {
 }
 
 
-$userId = 1;
+$userId = $_COOKIE['uniCookieUserID'];
 $id = 0
     ?>
 
