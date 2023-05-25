@@ -42,6 +42,7 @@ class FeedController extends Database
             CONCAT(u.user_firstname, ' ', u.user_lastname) AS `Friends PP`,
             u.user_username AS `author`,
             pst.post_id AS `id`,
+            pst.post_type AS 'type',
             pst.post_content AS `content`,
             pst.post_date AS `date`,
             COUNT(rct.user_id) AS `likesCount`,
@@ -62,6 +63,7 @@ class FeedController extends Database
         SELECT
           pg.page_at AS 'author',
           pst.post_id AS 'id',
+          pst.post_type AS 'type',
           pst.post_content AS 'content',
           pst.post_date AS 'date',
           COUNT(rct.user_id) AS 'likesCount',

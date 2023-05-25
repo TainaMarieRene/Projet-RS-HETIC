@@ -14,7 +14,7 @@
     <?php endif; ?>
     <h1>FEED</h1>
     <p>Feed temporaire pour réaliser des tests</p>
-    <a href="index.php?p=profile">Profil d'utilisateur</a>
+    <a href="index.php?p=profile&profile_id=<?= $_COOKIE['uniCookieUserID'] ?>">Profil d'utilisateur</a>
     <a href="index.php?p=userOptions">Options d'utilisateur</a>
     <a href="index.php?p=logout&type=device">Lougout</a>
     <a href="index.php?p=logout&type=allDevice">Lougout all device</a>

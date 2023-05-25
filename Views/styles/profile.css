@@ -22,3 +22,7 @@ section > img{
 .profile-block img {
     border-radius: 50%;
 }
+
+.userPost-block img{
+    width: 200px;
+}

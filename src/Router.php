@@ -13,9 +13,11 @@ require_once '../Controllers/UserController.php';
 use UserController\UserOptionsController;
 use UserController\DeleteUserController;
 use UserController\UpdateUserStatusController;
+require_once '../Controllers/PostController.php';
+use PostController\DeletePostController;
 require_once '../Controllers/HTTPResponsesController.php';
 use HTTPResponses\HTTPResponseController;
-require_once '../Controllers/ProfileController2.php';
+require_once '../Controllers/ProfileController.php';
 use ProfileController\ProfileController;
 
 class Router {
@@ -46,6 +48,9 @@ class Router {
                 break;
             case "profile":
                 $this->_controller = new ProfileController($this->_page, $this->_method);
+                break;
+            case "deletePost":
+                $this->_controller = new DeletePostController($this->_page, $this->_method);
                 break;
             case "userOptions":
                 $this->_controller = new UserOptionsController($this->_page, $this->_method);

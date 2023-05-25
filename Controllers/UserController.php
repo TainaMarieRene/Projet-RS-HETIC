@@ -2,9 +2,12 @@
 
 namespace UserController;
 
+// Models
 use Users\User;
 use Profiles\Profile;
 use Authentifications\Authentification;
+use Posts\Post;
+// src
 require_once '../src/Helpers.php';
 use Helpers\Helpers;
 
@@ -27,7 +30,6 @@ class UserOptionsController {
         $this->_user = $this->_modelUser->getUserByID($_COOKIE['uniCookieUserID']);
 
         require_once '../Views/userOptions.php';
-        if($this->_error){ return $this->_error; }
     }
 }
 
@@ -61,10 +63,12 @@ class DeleteUserController {
     private User $_modelUser;
     private Profile $_modelProfile;
     private Authentification $_modelAuth;
+    private Post $_modelPost;
 
     public function __construct($page, $method){
         require_once '../Models/Users.php';
         require_once '../Models/Profiles.php';
+        require_once '../Models/Posts.php';
 
         $this->_page = $page;
         $this->_method = $method;
@@ -72,7 +76,9 @@ class DeleteUserController {
         $this->_modelUser = new User();
         $this->_modelProfile = new Profile();
         $this->_modelAuth = new Authentification();
+        $this->_modelPost = new Post();
 
+        $this->_modelPost->deleteAllPosts($_COOKIE['uniCookieUserID']);
         $this->_modelProfile->deleteProfile($_COOKIE['uniCookieUserID']);
         $this->_modelUser->deleteUser($_COOKIE['uniCookieUserID']);
         header("Location: index.php?p=logout&type=allDevice");
