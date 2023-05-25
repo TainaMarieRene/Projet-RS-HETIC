@@ -17,7 +17,6 @@ class UserOptionsController {
     private string $_method;
     private Helpers $_helpers;
     private User $_modelUser;
-    private array $_user;
     private $_error;
 
     public function __construct($page, $method){
