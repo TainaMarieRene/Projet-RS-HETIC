@@ -34,19 +34,16 @@ if (isset($_POST['postComment'])) {
 
 if (isset($_POST["reaction"])) {
     $reactionType = $_POST['postType'];
-    $userId = 1;
+    $userId = $_COOKIE['uniCookieUserID'];
     $reactionTypeId = $_POST['postId'];
     $reactionEmoji = $feedController->filterReaction($_POST["reaction"]);
 
     $feedController->saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId);
-    header('Location: feed.php', true, 303);
+    header('Location: http://localhost/projet-rs-hetic/public/index.php?p=feed', true, 303);
     exit();
 }
-
-
-$userId = 1;
-$id = 0
-    ?>
+$id = 0;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -123,7 +120,7 @@ $id = 0
                         </form>
                         <form class="hideCta commentForm" id=<?= 'comment' . $id ?> method="post">
                             <input type="hidden" name="postId" value="<?= $post['id'] ?>">
-                            <input type="hidden" name="userId" value="<?= $userId ?>">
+                            <input type="hidden" name="userId" value="<?= $_COOKIE['uniCookieUserID'] ?>">
                             <input type="hidden" name="parentId" value="<?= $parentId = 1 ?>">
                             <textarea name="commentContent" class="commentContent" rows="1"></textarea>
                             <input type="submit" class="postComment" name="postComment" value="Commenter">
