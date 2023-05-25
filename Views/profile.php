@@ -32,19 +32,25 @@
                 <span>
                     <?= $profile["profile_activity"]; ?>
                 </span>
-            </div>
-            <div class="create-post">
-                <?php if($this->_method == "POST" && $this->_error): ?>
-                    <div class="error" ><?= $this->_error ?></div>
+                <a href="index.php?p=feed">Feed</a>
+                <?php if((filter_input(INPUT_GET, "profile_id")) == $_COOKIE['uniCookieUserID']): ?>
+                    <a href="index.php?p=userOptions">Options d'utilisateur</a>
                 <?php endif; ?>
-                <form class="postCta" method="POST" enctype="multipart/form-data">
-                    <!-- <label for="postContent" class="hiddenLabel">Create Post Content Label</label> -->
-                    <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
-                    <label for="postImg" class="mediaInput"><img alt="Media Icon" src="../Views/assets/icons/media.svg"></label>
-                    <input type="file" name="postImg" id="postImg">
-                    <input type="submit" value="Ajouter">
-                </form>
             </div>
+            <?php if((filter_input(INPUT_GET, "profile_id")) == $_COOKIE['uniCookieUserID']): ?>
+                <div class="create-post">
+                    <?php if($this->_method == "POST" && $this->_error): ?>
+                        <div class="error" ><?= $this->_error ?></div>
+                    <?php endif; ?>
+                    <form class="postCta" method="POST" enctype="multipart/form-data">
+                        <!-- <label for="postContent" class="hiddenLabel">Create Post Content Label</label> -->
+                        <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
+                        <label for="postImg" class="mediaInput"><img alt="Media Icon" src="../Views/assets/icons/media.svg"></label>
+                        <input type="file" name="postImg" id="postImg">
+                        <input type="submit" value="Ajouter">
+                    </form>
+                </div>
+            <?php endif; ?>
             <?php foreach ($userPosts as $post): ?>
                 <div class="userPost-block">
                     <span><?= $post["post_date"] ?></span>
@@ -52,7 +58,9 @@
                     <?php if(isset($post["post_img"])):?>
                         <img src="../Views/assets/imgs/users/posts/<?= $post["post_img"] ?>" alt="Image du post de <?= $user["user_username"]?>">
                     <?php endif; ?>
-                    <a href="index.php?p=deletePost&post_id=<?= $post["post_id"] ?>">Supprimer le post</a>
+                    <?php if((filter_input(INPUT_GET, "profile_id")) == $_COOKIE['uniCookieUserID']): ?>
+                        <a href="index.php?p=deletePost&post_id=<?= $post["post_id"] ?>">Supprimer le post</a>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
     </section>

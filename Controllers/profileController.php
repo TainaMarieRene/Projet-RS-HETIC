@@ -31,8 +31,8 @@ class ProfileController {
         $this->_modelUser = new User();
         $this->_modelPost = new Post();
 
-        $profile = $this->_modelProfile->getProfileInfo($_COOKIE['uniCookieUserID']);
-        $user = $this->_modelUser->getUserByID($_COOKIE['uniCookieUserID']);
+        $profile = $this->_modelProfile->getProfileInfo((filter_input(INPUT_GET, "profile_id")));
+        $user = $this->_modelUser->getUserByID((filter_input(INPUT_GET, "profile_id")));
         
         switch($this->_method){
             case "POST":
@@ -53,7 +53,7 @@ class ProfileController {
                 break;
         }
 
-        $userPosts = $this->_modelPost->getUserProfilePosts($_COOKIE['uniCookieUserID']);
+        $userPosts = $this->_modelPost->getUserProfilePosts((filter_input(INPUT_GET, "profile_id")));
 
         require_once '../Views/profile.php';
     }
