@@ -9,6 +9,7 @@ use Posts\Post;
 // Src
 require_once '../src/Helpers.php';
 use Helpers\Helpers;
+use DateTime;
 
 class ProfileController {
     private string $_page;
@@ -61,5 +62,27 @@ class ProfileController {
         $userPosts = $this->_modelPost->getUserProfilePosts((filter_input(INPUT_GET, "profile_id")));
 
         require_once '../Views/profile.php';
+
+    }
+    public function getNewDate($dateString){
+                $dateTime = new DateTime($dateString);
+                $currentDateTime = new DateTime();
+                
+                $diff = $currentDateTime->diff($dateTime);
+                
+                if ($diff->y > 0) {
+                    return $diff->y . " an(s) ";
+                } elseif ($diff->m > 0) {
+                    return $diff->m . " mois ";
+                } elseif ($diff->d > 0) {
+                    return $diff->d . " jour(s) ";
+                } elseif ($diff->h > 0) {
+                    return $diff->h . " heure(s) ";
+                } elseif ($diff->i > 0) {
+                    return $diff->i . " minute(s) ";
+                } else {
+                    return $diff->s . " seconde(s) ";
+                }
+                
     }
 }
