@@ -102,4 +102,12 @@ class User {
             ":user_id" => $user_id
         ]);
     }
+
+    public function changePassword($user_id, $password) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_password = :user_password WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_password" => password_hash($password, PASSWORD_DEFAULT)
+        ]);
+    }
 }

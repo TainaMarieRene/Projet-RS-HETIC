@@ -66,10 +66,10 @@ $likeId = 0;
 <body>
     <?php include '../Views/templates/header.php'; ?>
     <main>
-        <?php if (preg_match("`^(valid)$`", filter_input(INPUT_GET, "success"))): ?>
+        <?php if(filter_input(INPUT_GET, "success") && preg_match("`^(valid)$`", filter_input(INPUT_GET, "success"))): ?>
             <div class="success">Mail validé</div>
-        <?php elseif (preg_match("`^(error)$`", filter_input(INPUT_GET, "success"))): ?>
-            <div class="error">Erreur durant la validation du mail, veuillez réessayer</div>
+        <?php elseif(filter_input(INPUT_GET, "success") && preg_match("`^(error)$`", filter_input(INPUT_GET, "success"))): ?>
+            <div class="error">Erreur durant la validation du mail, veuillez ressayer</div>
         <?php endif; ?>
         <?php require_once("../Views/templates/side_profile.php"); ?>
 
