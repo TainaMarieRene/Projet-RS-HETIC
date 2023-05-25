@@ -7,7 +7,9 @@ use Exception;
 use PDOException;
 class PostPageController extends Database
 {
-    private int $postId;
+
+    public int $postId;
+    public string $postType;
     public function __construct()
     {
         parent::__construct();
@@ -18,6 +20,7 @@ class PostPageController extends Database
     public function setPostId(): void
     {
         $this->postId = $_GET["id"] ?? 0;
+        $this->postType = $_GET["type"] ?? "";
     }
 
     public function renderData(): array|string
@@ -29,26 +32,53 @@ class PostPageController extends Database
             ];
         }
 
+        if (!$this->postType) {
+            return [
+                "code" => 404,
+                "message" => "Invalid type"
+            ];
+        }
+
+// todo : check if the post is from a page and use the according @
         try {
-            $postDataQuery = $this->_pdo->prepare("
-                 SELECT u.user_username as author,
-                       p.post_date as date,
-                       p.post_content as content
-                FROM posts AS p
-                JOIN users AS u ON u.user_id = p.user_id
-                WHERE p.post_id = :postId;
+            switch($this->postType) {
+                case "profile":
+                    $postDataQuery = $this->_pdo->prepare("
+                         SELECT u.user_username as author,
+                               p.post_date as date,
+                               p.post_content as content
+                        FROM posts AS p
+                        JOIN users AS u ON u.user_id = p.user_id
+                        WHERE p.post_id = :postId AND p.post_type = :postType;
                     ");
+                    break;
+                case "page":
+                    $postDataQuery = $this->_pdo->prepare("
+                         SELECT pa.page_at as author,
+                               p.post_date as date,
+                               p.post_content as content
+                        FROM posts AS p
+                        JOIN pages AS pa ON pa.page_id = p.post_type_id
+                        WHERE p.post_id = :postId AND p.post_type = :postType;
+                    ");
+                    break;
+                default:
+                    $postDataQuery = false;
+                    break;
+            }
 
             $postDataQuery->execute([
-                ":postId" => $this->postId
+                ":postId" => $this->postId,
+                ":postType" => $this->postType
             ]);
 
             $postData = $postDataQuery->fetch();
 
             if (!$postData) {
                 return [
+                    "status" => "error",
                     "code" => 404,
-                    "message" => "Invalid ID"
+                    "message" => "This post doesn't not exist"
                 ];
             }
 
@@ -67,8 +97,8 @@ class PostPageController extends Database
 
             $commentData = $commentDataQuery->fetchAll();
 
-
             return [
+                "status" => "success",
                 "postData" => $postData,
                 "commentsData" => $commentData
             ];
@@ -76,4 +106,5 @@ class PostPageController extends Database
             return $exception->getMessage();
         }
     }
+
 }

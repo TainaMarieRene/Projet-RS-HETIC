@@ -131,6 +131,10 @@ $id = 0
                         </form>
                     </div>
                     <div class="cardFooter">
+                        <a href="http://localhost/projet-rs-hetic/Views/post.php?id=<?=$post["id"]?>&type=<?=$post['type']?>">
+                            Voir plus...
+                        </a>
+
                         <p>
                             <?= $post["likesCount"] ?> ont réagi à ce post
                         </p>
