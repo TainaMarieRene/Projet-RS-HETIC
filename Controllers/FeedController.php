@@ -41,7 +41,7 @@ class FeedController extends Database
             CONCAT(u.user_firstname, ' ', u.user_lastname) AS `Friends PP`,
             u.user_username AS `author`,
             pst.post_id AS `id`,
-            pst.post_type AS 'type',
+            pst.post_type AS `type`,
             pst.post_content AS `content`,
             pst.post_date AS `date`,
             COUNT(rct.user_id) AS `likesCount`,
@@ -53,10 +53,30 @@ class FeedController extends Database
             LEFT JOIN reactions rct ON (rct.reaction_type = 'profil' AND rct.reaction_type_id = pst.post_id AND rct.user_id = :userId)
             LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
         WHERE
-            (f.user_id1 = :userId OR f.user_id2 = :userId) AND f.user_relation = 'friend' OR u.user_id = :userId
+            (f.user_id1 = :userId OR f.user_id2 = :userId) AND f.user_relation = 'friend'
         GROUP BY
             u.user_firstname, u.user_lastname, u.user_username, pst.post_id, pst.post_content
         ");
+
+            $usersPostsQuery = $this->_pdo->prepare("
+                SELECT 
+                    u.user_username AS `author`,
+                    pst.post_id AS `id`,
+                    pst.post_type AS `type`,
+                    pst.post_content AS `content`,
+                    pst.post_date AS `date`,
+                    COUNT(rct.user_id) AS `likesCount`,
+                    COUNT(cmt.post_comment_id) AS `commentsCount`
+                FROM users AS u 
+                JOIN posts AS pst ON pst.user_id = u.user_id
+                LEFT JOIN reactions rct ON (rct.reaction_type = 'profil' AND rct.reaction_type_id = pst.post_id AND rct.user_id = :userId)
+                LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
+                
+                WHERE (u.user_id = :userId)
+                GROUP BY
+                    u.user_firstname, u.user_lastname, u.user_username, pst.post_id, pst.post_content;
+
+            ");
 
             $pagesPostsQuery = $this->_pdo->prepare("
         SELECT
@@ -86,10 +106,15 @@ class FeedController extends Database
                 ":userId" => $this->userId
             ]);
 
+            $usersPostsQuery->execute([
+                ":userId" => $this->userId
+            ]);
+
             $friendsPostsArray = $friendsPostsQuery->fetchAll();
             $pagesPostsArray = $pagesPostsQuery->fetchAll();
+            $usersPostsArray = $usersPostsQuery->fetchAll();
 
-            $postsArray = array_merge($friendsPostsArray, $pagesPostsArray);
+            $postsArray = array_merge(array_merge($friendsPostsArray, $usersPostsArray), $pagesPostsArray);
             usort($postsArray, array($this, 'sortPostsByDate'));
 
             return $postsArray;
