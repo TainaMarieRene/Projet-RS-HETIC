@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Views/styles/style.css">
+    <link rel="stylesheet" type="text/css" href="../Views/styles/userOptions.css">
     <title>UniLink | <?= $this->_page; ?></title>
 </head>
 <body>
@@ -19,5 +21,23 @@
     <a href="index.php?p=feed">Feed</a>
     <a href="index.php?p=logout&type=device">Lougout</a>
     <a href="index.php?p=logout&type=allDevice">Lougout all device</a>
+
+    <div>
+        <?php if($this->_method == "POST" && $this->_error): ?>
+            <div class="error" ><?= $this->_error ?></div>
+        <?php endif; ?>
+        <form class="user-info" action="" method="POST">
+            <input type="text" value="<?= $user["user_username"]?>">
+            <input type="text" value="<?= $user["user_mail"]?>">
+            <input type="password" name="currentPassword" placeholder="Mot de passe actuel">
+            <input type="password" name="password1" placeholder="Nouveau mot de passe">
+            <input type="password" name="password2" placeholder="Confirmer nouveau mot de passe">
+            <input type="text" value="<?= $user["user_firstname"]?>">
+            <input type="text" value="<?= $user["user_lastname"]?>">
+            <input type="date" value="<?= $user["user_birthdate"]?>">
+            <input type="submit" value="Valider">
+        </form>
+    </div>
+
 </body>
 </html>
