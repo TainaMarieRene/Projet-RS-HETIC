@@ -6,7 +6,7 @@ require_once '../Controllers/AuthController.php';
 use AuthController\RegisterController;
 use AuthController\LoginController;
 use AuthController\LogoutController;
-use AuthController\TempoController;
+use AuthController\FeedController;
 use AuthController\ValidateController;
 use AuthController\ResendMailController;
 require_once '../Controllers/UserController.php';
@@ -44,7 +44,7 @@ class Router {
                 $this->_controller = new LogoutController($this->_page, $this->_method);
                 break;
             case "feed":
-                $this->_controller = new TempoController($this->_page, $this->_method);
+                $this->_controller = new FeedController($this->_page, $this->_method);
                 break;
             case "profile":
                 $this->_controller = new ProfileController($this->_page, $this->_method);
