@@ -22,7 +22,7 @@ if (isset($_POST['postComment'])) {
         $userId = $_POST["userId"];
         $parentId = $_POST["parentId"];
         $content = $_POST["commentContent"];
-    
+
         $commentMSG = $feedController->postComment($postId, $userId, $parentId, $content);
         header('Location: http://localhost/projet-rs-hetic/public/index.php?p=feed', true, 303);
         exit();
@@ -33,15 +33,14 @@ if (isset($_POST['postComment'])) {
 
 
 if (isset($_POST["reaction"])) {
-        $reactionType = "profil"; 
-        $userId = 1; 
-        // $reactionEmoji = "react3"; 
-        $reactionTypeId = 5;
-        $reactionEmoji = $feedController->filterReaction($_POST["reaction"]); 
-//pb pour l'id qui se set pas comme il faut
-        $feedController->saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId);
-        header('Location: feed.php', true, 303);
-        exit();
+    $reactionType = $_POST['postType'];
+    $userId = 1;
+    $reactionTypeId = $_POST['postId'];
+    $reactionEmoji = $feedController->filterReaction($_POST["reaction"]);
+
+    $feedController->saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId);
+    header('Location: feed.php', true, 303);
+    exit();
 }
 
 
@@ -78,7 +77,8 @@ $id = 0
             <form class="postCta" method="post">
                 <label for="postContent" class="hiddenLabel">Create Post Content Label</label>
                 <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
-                <label for="inputImage" class="mediaInput"><img alt="Media Icon" src="../Views/assets/icons/media.svg"></label>
+                <label for="inputImage" class="mediaInput"><img alt="Media Icon"
+                        src="../Views/assets/icons/media.svg"></label>
                 <input type="file" name="inputImage" id="inputImage">
                 <button name="postPost">Post</button>
             </form>
@@ -102,28 +102,36 @@ $id = 0
                         </p>
 
                         <form class="hideCta reactionCta" id=<?= 'reactionCta' . $id ?> method="post">
-                            <button type="submit" name="reaction" value="bad"><img src="../Views/assets/icons/smiley-bad.svg" alt="Angry Face"></button>
-                            <button type="submit" name="reaction" value="crying"><img src="../Views/assets/icons/smiley-crying-rainbow.svg" alt="Crying Face"></button>
-                            <button type="submit" name="reaction" value="drop"><img src="../Views/assets/icons/smiley-drop.svg" alt="Drop Face"></button>
-                            <button type="submit" name="reaction" value="love"><img src="../Views/assets/icons/smiley-in-love.svg" alt="heart in eyes Face"></button>
-                            <button type="submit" name="reaction" value="lol"><img src="../Views/assets/icons/smiley-lol-sideways.svg" alt="Laughing face"></button>
+                            <input type="hidden" name="postId" value="<?= $post['id'] ?>">
+                            <input type="hidden" name="postType" value="<?= $post['type'] ?>">
+                            <button type="submit" name="reaction" value="bad"><img
+                                    src="../Views/assets/icons/smiley-bad.svg" alt="Angry Face"></button>
+                            <button type="submit" name="reaction" value="crying"><img
+                                    src="../Views/assets/icons/smiley-crying-rainbow.svg" alt="Crying Face"></button>
+                            <button type="submit" name="reaction" value="drop"><img
+                                    src="../Views/assets/icons/smiley-drop.svg" alt="Drop Face"></button>
+                            <button type="submit" name="reaction" value="love"><img
+                                    src="../Views/assets/icons/smiley-in-love.svg" alt="heart in eyes Face"></button>
+                            <button type="submit" name="reaction" value="lol"><img
+                                    src="../Views/assets/icons/smiley-lol-sideways.svg" alt="Laughing face"></button>
                         </form>
                         <form class="cardCta" method="post">
                             <input class="displayForm" id=<?= "displayForm" . $id ?> type="image"
                                 src="../Views/assets/icons/commentary.svg" name="comment" alt="Comment Icon">
-                            <input class="likeButton" id=<?= "likeButton" . $id ?> type="image" src="../Views/assets/icons/like.svg"
-                                name="like" alt="Like Icon">
+                            <input class="likeButton" id=<?= "likeButton" . $id ?> type="image"
+                                src="../Views/assets/icons/like.svg" name="like" alt="Like Icon">
                         </form>
                         <form class="hideCta commentForm" id=<?= 'comment' . $id ?> method="post">
                             <input type="hidden" name="postId" value="<?= $post['id'] ?>">
-                            <input type="hidden" name="userId" value="<?= $userId?>">
-                            <input type="hidden" name="parentId" value="<?= $parentId=1 ?>">
+                            <input type="hidden" name="userId" value="<?= $userId ?>">
+                            <input type="hidden" name="parentId" value="<?= $parentId = 1 ?>">
                             <textarea name="commentContent" class="commentContent" rows="1"></textarea>
                             <input type="submit" class="postComment" name="postComment" value="Commenter">
                         </form>
                     </div>
                     <div class="cardFooter">
-                        <a href="http://localhost/projet-rs-hetic/Views/post.php?id=<?=$post["id"]?>&type=<?=$post['type']?>">
+                        <a
+                            href="http://localhost/projet-rs-hetic/Views/post.php?id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
                             Voir plus...
                         </a>
 
