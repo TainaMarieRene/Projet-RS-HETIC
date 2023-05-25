@@ -118,7 +118,7 @@ input[type="file"] {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 20vw;
+    width: 15vw;
     height: 4vw;
     border-radius: 50px;
     background: #FFFF;
@@ -137,10 +137,15 @@ input[type="file"] {
     }
 }
 
-.reactionCta>input{
+.reactionCta>button{
     width: 2vw;
+    border: none;
+    padding: none;
+    color: none;
+    background: none;
+
 }
-.reactionCta>input:hover{
+.reactionCta>button:hover{
     transform: scale(1.1);
 
 }

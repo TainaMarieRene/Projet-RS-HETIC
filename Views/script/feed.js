@@ -41,26 +41,6 @@ while (true) {
     i++
 }
 
-// const input = document.querySelector('.commentContent');
-
-// input.addEventListener('input', function () {
-//     const textLength = input.value.length
-//     const newWidth = textLength / 2
-//     const newHeight = textLength / 4
-
-//     if(input.style.width < 20 + "vw"){
-//         input.style.width = newWidth + 'vw'
-//         console.log(input.style.width)
-
-
-//     }else if(input.style.height < 24 + "vw"){
-//         console.log("coucou")
-//         input.style.height = newHeight + 'vw'
-//         console.log("ceci est height: ", input.style.height)
-//     }
-
-
-// })
 const textarea = document.querySelector('.commentContent');
 
 textarea.addEventListener('input', function() {
@@ -68,3 +48,27 @@ textarea.addEventListener('input', function() {
   const newHeight= textarea.scrollHeight / 12
   textarea.style.height = newHeight + 'vw'
 });
+
+// function handleReactionClick(userId,reactionType,emoji) {
+//     console.log("Reaction button clicked");
+//     console.log("userId:", userId);
+//     console.log("reactionType:", reactionType);
+//     console.log("emoji:", emoji);
+//     saveReaction(userId, reactionType, emoji);
+// }
+
+// function saveReaction(userId, reactionType, emoji) {
+//         var xhttp = new XMLHttpRequest()
+//         xhttp.onreadystatechange = function() {
+//             if (this.readyState == 4 && this.status == 200) {
+//                 console.log(this.responseText)
+//             }
+//         };
+//         handleReactionClick(userId, reactionType, emoji)
+//         xhttp.open("POST", "http://localhost/Projet-RS-HETIC/views/feed.php", true)
+//         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+//         xhttp.send("userId=" + userId + "&reactionType=" + reactionType + "&emoji=" + emoji)
+//     }
+
+  
+    

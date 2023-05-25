@@ -6,19 +6,23 @@ use DateTime;
 use Exception;
 use PDOException;
 
-class FeedController extends Database {
+class FeedController extends Database
+{
     private int $userId;
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
         $this->setUserId(1);
     }
 
-    public function setUserId(int $userCookieId): void {
+    public function setUserId(int $userCookieId): void
+    {
         $this->userId = $userCookieId;
-//        En tant normal, aller chercher la data dans les cookies
+        //        En tant normal, aller chercher la data dans les cookies
     }
 
-    public function getUserName(): string {
+    public function getUserName(): string
+    {
         try {
             $query = $this->_pdo->prepare("SELECT user_username FROM users WHERE user_id = :userId");
             $query->execute([
@@ -28,7 +32,7 @@ class FeedController extends Database {
         } catch (PDOException $e) {
             return $e;
         }
-}
+    }
 
     public function getFeedPosts(): array|PDOException
     {
@@ -105,7 +109,8 @@ class FeedController extends Database {
         }
     }
 
-    public function getDateDiff(string $postDate): string {
+    public function getDateDiff(string $postDate): string
+    {
         try {
             $postDateTime = new DateTime($postDate);
             $currentDateTime = new DateTime();
@@ -147,14 +152,15 @@ class FeedController extends Database {
         }
     }
 
-    public function postImage(){
+    public function postImage()
+    {
         $target_dir = "assets/imgs/users/posts/";
         $target_file = $target_dir . uniqid() . '' . basename($_FILES["postImg"]["name"]);
-        $fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $fileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         $allowedTypes = array('jpg', 'jpeg', 'png', 'gif', 'pdf');
         if (in_array($fileType, $allowedTypes)) {
             if (move_uploaded_file($_FILES["postImg"]["tmp_name"], $target_file)) {
-                var_dump(htmlspecialchars( basename( $_FILES["postImg"]["name"])));
+                var_dump(htmlspecialchars(basename($_FILES["postImg"]["name"])));
             } else {
                 var_dump("error");
             }
@@ -163,59 +169,58 @@ class FeedController extends Database {
         }
     }
 
-    public function postLike(){
-      try{
-        $query = $this->_pdo->prepare("INSERT INTO `reactions` (`reaction_type_id`, `user_id`, `reaction_type`, `reaction_emoji`)
-        VALUES (:post_id, :userId, 'profile'");
-        
-        $query->execute([
-          ":userId" => $this->userId,
-          // Comment savoir quel post à été like ? 
-          // ":post_id" => $post_id 
-      ]);
-      } catch(PDOException $error){
-        return $error;
-      }
-    }
-//     public function createComment($commentContent)
-// {
-//     try {
-//         $query = $this->_pdo->prepare(" INSERT INTO
-//         `posts_comments` (`post_comment_id`, `post_id`, `user_id`, `post_comment_parent_id`, `post_comment_date`, `post_comment_content`) 
-//         VALUES
-//         (NULL, NULL,:userId, NULL, current_timestamp(), :commentContent)
-//     ");
 
-//         $query->execute([
-//             ":userId" => $this->userId,
-//             ":postContent" => $commentContent
-//         ]);
 
-//         $query->fetchAll();
-
-//         return "comment posted";
-//     } catch (PDOException $error) {
-//         return $error;
-//     }
-// }
-public function postComment($postId, $userId, $parentId, $content) {
-try{
-    $query = $this->_pdo->prepare("INSERT INTO
+    public function postComment($postId, $userId, $parentId, $content)
+    {
+        try {
+            $query = $this->_pdo->prepare("INSERT INTO
     `posts_comments` (`post_id`, `user_id`, `post_comment_parent_id`, `post_comment_date`, `post_comment_content`) 
     VALUES (:postId, :userId, :parentId, NOW(), :content)");
-    $query->execute([
-        ":postId" => $postId,
-        ":userId" => $userId,
-        ":parentId" => $parentId,
-        ":content" => $content
-    ]);
-    $query->fetchAll();
-    return "comment POSTED";
-} catch (PDOException $error) {
-    return $error;
-}
-}
-}
+            $query->execute([
+                ":postId" => $postId,
+                ":userId" => $userId,
+                ":parentId" => $parentId,
+                ":content" => $content
+            ]);
+            $query->fetchAll();
+            return "comment POSTED";
+        } catch (PDOException $error) {
+            return $error;
+        }
+    }
 
 
+    public function saveReaction($userId, $reactionType, $reactionEmoji,$reactionTypeId)
+    {
+        try {
+            $query = $this->_pdo->prepare("INSERT INTO reactions (reaction_type, reaction_type_id, user_id, reaction_emoji)
+                VALUES (:reactionType, :reactionTypeId, :userId, :reactionEmoji)");
+            $query->execute([
+                ":reactionType" => $reactionType,
+                ":reactionTypeId" => $reactionTypeId,
+                // ":reactionTypeId" => $this->_pdo->lastInsertId()+1,
+                ":userId" => $userId,
+                ":reactionEmoji" => $reactionEmoji
+            ]);
 
+            return "Réaction enregistrée avec succès.";
+        } catch (PDOException $error) {
+
+            return $error;
+        }
+    }
+    public function filterReaction($reaction){
+        if ($reaction === 'bad') {
+            return 'react1';
+        } elseif ($reaction === 'crying') {
+            return 'react2';
+        }elseif ($reaction === 'drop') {
+            return 'react3';
+        }elseif ($reaction === 'love') {
+            return 'react4';
+        }elseif ($reaction === 'lol') {
+            return 'react5';
+        }
+    }
+}
