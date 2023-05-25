@@ -9,7 +9,7 @@ use Post\PostPageController;
 $postPageController = new PostPageController();
 $postData = $postPageController->renderData();
 $feedController = new FeedController();
-$username = $postPageController->getUserName();
+$username = $feedController->getUserName();
 
 ?>
 
