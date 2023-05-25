@@ -19,6 +19,8 @@ require_once '../Controllers/HTTPResponsesController.php';
 use HTTPResponses\HTTPResponseController;
 require_once '../Controllers/ProfileController.php';
 use ProfileController\ProfileController;
+require_once '../Controllers/ReactionController.php';
+use ReactionController\ReactController;
 
 class Router {
     private string $_method;
@@ -51,6 +53,9 @@ class Router {
                 break;
             case "deletePost":
                 $this->_controller = new DeletePostController($this->_page, $this->_method);
+                break;
+            case "react" :
+                $this->_controller = new ReactController($this->_page, $this->_method);
                 break;
             case "userOptions":
                 $this->_controller = new UserOptionsController($this->_page, $this->_method);

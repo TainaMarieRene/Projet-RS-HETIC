@@ -52,17 +52,47 @@
                 </div>
             <?php endif; ?>
             <?php foreach ($userPosts as $post): ?>
-                <div class="userPost-block">
+                <div class="userPost-block" id="post_id_<?= $post["post_id"] ?>">
+                    <img src="../Views/assets/imgs/users/picture/<?= $post["profile_picture"]; ?>" alt="photo de profil">
+                    <span><?= $post["user_username"] ?></span>
                     <span><?= $post["post_date"] ?></span>
                     <p><?= $post["post_content"] ?></p>
                     <?php if(isset($post["post_img"])):?>
-                        <img src="../Views/assets/imgs/users/posts/<?= $post["post_img"] ?>" alt="Image du post de <?= $user["user_username"]?>">
+                        <img src="../Views/assets/imgs/users/posts/<?= $post["post_img"] ?>" alt="Image du post de <?= $post["user_username"]?>">
                     <?php endif; ?>
+                    <span><?= count($this->_modelPost->getReactionPosts("post", $post["post_id"])) ?> Réactions</span>
+                    <button class="reactButton">Réagir</button>
+                    <div class="react hide">
+                        <ul>
+                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=like">like</a></li>
+                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=celebrate">celebrate</a></li>
+                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=love">love</a></li>
+                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=insightful">insightful</a></li>
+                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=curious">curious</a></li>
+                        </ul>
+                        <ul>
+                            <?php foreach($this->_modelPost->getReactionPosts("post", $post["post_id"]) as $reaction): ?>
+                                <span><?= $reaction["user_username"]?> <?= $reaction["reaction_emoji"] ?> </span>
+                                <br>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
                     <?php if((filter_input(INPUT_GET, "profile_id")) == $_COOKIE['uniCookieUserID']): ?>
                         <a href="index.php?p=deletePost&post_id=<?= $post["post_id"] ?>">Supprimer le post</a>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
     </section>
+    <script>
+        const posts = document.querySelectorAll(".userPost-block")
+
+        posts.forEach((post) => {
+            const reactPostButton = post.querySelector(".reactButton")
+            const showReactPost = post.querySelector(".react")
+            reactPostButton.addEventListener("click", ()=>{
+                showReactPost.classList.toggle("hide")
+            })
+        })
+    </script>
 </body>
 </html>

@@ -7,6 +7,7 @@ use Users\User;
 use Profiles\Profile;
 use Authentifications\Authentification;
 use Posts\Post;
+use Reactions\Reaction;
 // src
 require_once '../src/Helpers.php';
 use Helpers\Helpers;
@@ -64,11 +65,13 @@ class DeleteUserController {
     private Profile $_modelProfile;
     private Authentification $_modelAuth;
     private Post $_modelPost;
+    private Reaction $_modelReaction;
 
     public function __construct($page, $method){
         require_once '../Models/Users.php';
         require_once '../Models/Profiles.php';
         require_once '../Models/Posts.php';
+        require_once '../Models/reactions.php';
 
         $this->_page = $page;
         $this->_method = $method;
@@ -77,7 +80,9 @@ class DeleteUserController {
         $this->_modelProfile = new Profile();
         $this->_modelAuth = new Authentification();
         $this->_modelPost = new Post();
+        $this->_modelReaction = new Reaction();
 
+        $this->_modelReaction->deleteAllReactions($_COOKIE['uniCookieUserID']);
         $this->_modelPost->deleteAllPosts($_COOKIE['uniCookieUserID']);
         $this->_modelProfile->deleteProfile($_COOKIE['uniCookieUserID']);
         $this->_modelUser->deleteUser($_COOKIE['uniCookieUserID']);

@@ -34,6 +34,11 @@ class ProfileController {
         $profile = $this->_modelProfile->getProfileInfo((filter_input(INPUT_GET, "profile_id")));
         $user = $this->_modelUser->getUserByID((filter_input(INPUT_GET, "profile_id")));
         
+        if(!$profile || !$user){
+            header("Location: index.php?p=404");
+            exit();
+        }
+
         switch($this->_method){
             case "POST":
                 $postContent = preg_match("`^.+$`" , preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "postContent"))) ? preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "postContent")) : false;

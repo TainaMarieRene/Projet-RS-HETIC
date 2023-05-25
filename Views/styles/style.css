@@ -48,3 +48,7 @@ h2{
 div.error, div.success{
     margin: 30px auto;
 }
+
+.hide{
+    display: none;
+}

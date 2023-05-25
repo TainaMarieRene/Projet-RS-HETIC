@@ -33,7 +33,7 @@ class Post{
     }
 
     public function getUserProfilePosts($user_id) {
-        $stmt = $this->_db->_pdo->prepare("SELECT posts.*, posts_imgs.post_img FROM posts LEFT JOIN posts_imgs ON posts.post_id = posts_imgs.post_id WHERE posts.user_id = :user_id AND posts.post_type = :post_type ORDER BY posts.post_date DESC");
+        $stmt = $this->_db->_pdo->prepare("SELECT posts.*, profiles.profile_picture, users.user_username, posts_imgs.post_img FROM posts LEFT JOIN posts_imgs ON posts.post_id = posts_imgs.post_id LEFT JOIN profiles ON posts.user_id = profiles.user_id LEFT JOIN users ON posts.user_id = users.user_id WHERE posts.user_id = :user_id AND posts.post_type = :post_type ORDER BY posts.post_date DESC");
         $stmt->execute([
             ":user_id" => $user_id,
             ":post_type" => "profile"
@@ -108,5 +108,17 @@ class Post{
                 ":user_id" => $user_id
             ]);
         }
+    }
+
+    public function getReactionPosts($reaction_type, $reaction_type_id){
+        $stmt = $this->_db->_pdo->prepare("SELECT reactions.reaction_emoji, users.user_username FROM reactions JOIN users ON reactions.user_id = users.user_id WHERE reactions.reaction_type = :reaction_type AND reactions.reaction_type_id = :reaction_type_id GROUP BY users.user_username");
+        $stmt->execute([
+            ":reaction_type" => $reaction_type,
+            ":reaction_type_id" => $reaction_type_id
+        ]);
+
+        $reactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $reactions;
     }
 }
