@@ -65,7 +65,15 @@ $id = 0
 <body>
     <?php include '../Views/templates/header.php'; ?>
     <main>
+<<<<<<< HEAD
 
+=======
+        <?php if(preg_match("`^(valid)$`", filter_input(INPUT_GET, "success"))): ?>
+            <div class="success">Mail validé</div>
+        <?php elseif(preg_match("`^(error)$`", filter_input(INPUT_GET, "success"))): ?>
+            <div class="error">Erreur durant la validation du mail, veuillez réessayer</div>
+        <?php endif; ?>
+>>>>>>> dbdd1932a9b0903e15baa4e4ead32db810b8d02e
         <?php require_once("../Views/templates/side_profile.php"); ?>
 
         <section id="userFeed">
@@ -132,7 +140,7 @@ $id = 0
                     </div>
                     <div class="cardFooter">
                         <a
-                            href="http://localhost/projet-rs-hetic/Views/post.php?id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
+                            href="http://localhost/projet-rs-hetic/public/index.php?p=post&id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
                             Voir plus...
                         </a>
                         <div class=' displayReaction'>

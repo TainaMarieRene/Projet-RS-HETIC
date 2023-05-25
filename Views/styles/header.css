@@ -45,6 +45,12 @@ header h1 {
     align-items: center;
 }
 
+.headerNav img {
+    width: 64px;
+    height: 64px;
+}
+
+
 .headerNav .headerCTA {
     text-decoration: none;
     color: #2B2626;

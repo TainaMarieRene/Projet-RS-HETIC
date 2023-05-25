@@ -3,13 +3,16 @@
 namespace Router;
 
 require_once '../Controllers/AuthController.php';
+
+use AuthController\FeedRouter;
+use AuthController\PostRouter;
 use AuthController\RegisterController;
 use AuthController\LoginController;
 use AuthController\LogoutController;
-use AuthController\FeedController;
 use AuthController\ValidateController;
 use AuthController\ResendMailController;
 require_once '../Controllers/UserController.php';
+
 use UserController\UserOptionsController;
 use UserController\DeleteUserController;
 use UserController\UpdateUserStatusController;
@@ -44,7 +47,7 @@ class Router {
                 $this->_controller = new LogoutController($this->_page, $this->_method);
                 break;
             case "feed":
-                $this->_controller = new FeedController($this->_page, $this->_method);
+                $this->_controller = new FeedRouter($this->_page, $this->_method);
                 break;
             case "profile":
                 $this->_controller = new ProfileController($this->_page, $this->_method);
@@ -63,6 +66,9 @@ class Router {
                 break;
             case "deleteAccount":
                 $this->_controller = new DeleteUserController($this->_page, $this->_method);
+                break;
+            case "post":
+                $this->_controller = new PostRouter($this->_page, $this->_method);
                 break;
             default:
                 $this->_controller = new HTTPResponseController($this->_page, $this->_method);
