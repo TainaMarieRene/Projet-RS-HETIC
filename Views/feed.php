@@ -29,8 +29,8 @@ if (isset($_POST['postComment'])) {
         $userId = $_POST["userId"];
         $parentId = $_POST["parentId"];
         $content = $_POST["commentContent"];
-    
-    
+
+
         $commentMSG = $feedController->postComment($postId, $userId, $parentId, $content);
         header('Location: feed.php', true, 303);
         exit();
@@ -41,15 +41,15 @@ if (isset($_POST['postComment'])) {
 
 
 if (isset($_POST["reaction"])) {
-        $reactionType = "profil"; 
-        $userId = 1; 
-        // $reactionEmoji = "react3"; 
-        $reactionTypeId = 5;
-        $reactionEmoji = $feedController->filterReaction($_POST["reaction"]); 
-//pb pour l'id qui se set pas comme il faut
-        $feedController->saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId);
-        header('Location: feed.php', true, 303);
-        exit();
+    $reactionType = $_POST['postType'];
+    $userId = 1;
+    // $reactionEmoji = "react3"; 
+    $reactionTypeId = $_POST['postId'];
+    $reactionEmoji = $feedController->filterReaction($_POST["reaction"]);
+    //pb pour l'id qui se set pas comme il faut
+    $feedController->saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId);
+    header('Location: feed.php', true, 303);
+    exit();
 }
 
 
@@ -110,11 +110,18 @@ $id = 0
                         </p>
 
                         <form class="hideCta reactionCta" id=<?= 'reactionCta' . $id ?> method="post">
-                            <button type="submit" name="reaction" value="bad"><img src="./assets/icons/smiley-bad.svg" alt="Angry Face"></button>
-                            <button type="submit" name="reaction" value="crying"><img src="./assets/icons/smiley-crying-rainbow.svg" alt="Crying Face"></button>
-                            <button type="submit" name="reaction" value="drop"><img src="./assets/icons/smiley-drop.svg" alt="Drop Face"></button>
-                            <button type="submit" name="reaction" value="love"><img src="./assets/icons/smiley-in-love.svg" alt="heart in eyes Face"></button>
-                            <button type="submit" name="reaction" value="lol"><img src="./assets/icons/smiley-lol-sideways.svg" alt="Laughing face"></button>
+                            <input type="hidden" name="postId" value="<?= $post['id'] ?>">
+                            <input type="hidden" name="postType" value="<?= $post['type'] ?>">
+                            <button type="submit" name="reaction" value="bad"><img src="./assets/icons/smiley-bad.svg"
+                                    alt="Angry Face"></button>
+                            <button type="submit" name="reaction" value="crying"><img
+                                    src="./assets/icons/smiley-crying-rainbow.svg" alt="Crying Face"></button>
+                            <button type="submit" name="reaction" value="drop"><img src="./assets/icons/smiley-drop.svg"
+                                    alt="Drop Face"></button>
+                            <button type="submit" name="reaction" value="love"><img src="./assets/icons/smiley-in-love.svg"
+                                    alt="heart in eyes Face"></button>
+                            <button type="submit" name="reaction" value="lol"><img
+                                    src="./assets/icons/smiley-lol-sideways.svg" alt="Laughing face"></button>
                         </form>
                         <form class="cardCta" method="post">
                             <input class="displayForm" id=<?= "displayForm" . $id ?> type="image"
@@ -124,8 +131,9 @@ $id = 0
                         </form>
                         <form class="hideCta commentForm" id=<?= 'comment' . $id ?> method="post">
                             <input type="hidden" name="postId" value="<?= $post['id'] ?>">
-                            <input type="hidden" name="userId" value="<?= $userId?>">
-                            <input type="hidden" name="parentId" value="<?= $parentId=1 ?>">
+                            <input type="hidden" name="postType" value="<?= $post['type'] ?>">
+                            <input type="hidden" name="userId" value="<?= $userId ?>">
+                            <input type="hidden" name="parentId" value="<?= $parentId = 1 ?>">
                             <textarea name="commentContent" class="commentContent" rows="1"></textarea>
                             <input type="submit" class="postComment" name="postComment" value="Commenter">
                         </form>
@@ -151,7 +159,7 @@ $id = 0
     if (!actionState) {
         document.getElementById("actionMsg").classList.add('hide');
     } else {
-        document.getElementById("actionMsg").classLis t.remove('hide');
+        document.getElementById("actionMsg").classList.remove('hide');
         setTimeout(() => {
             document.getElementById("actionMsg").classList.add('hide');
         }, 1500)
