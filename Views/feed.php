@@ -160,9 +160,14 @@ $likeId = 0;
                                 réagi à ce post</button>
                         </p>
                         <p>
-                            <?= $post["commentsCount"] ?> commentaires
+                            <?= $post["commentsCount"] ?> <button class='reactionButton' id=<?= 'commentButton' . $id ?>>commentaires</button>
                         </p>
                     </div>
+                    <div class='displayComment hideCta' id=<?= 'displayComment' . $id ?>>
+                            <p>
+                                coucou
+                            <p>
+                        </div>
                 </div>
                 <?php $id++ ?>
             <?php endforeach; ?>
