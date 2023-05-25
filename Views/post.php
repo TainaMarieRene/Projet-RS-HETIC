@@ -55,10 +55,12 @@ if (isset($_POST['postComment'])) {
 
             <div class="postCard">
                 <div class="cardHeader">
-                <img src="../Views/assets/imgs/users/picture/<?= "x.jpg" ?>" alt="Image de <?= $postData["postData"]["author"] ?>">
+                <img src="../Views/assets/imgs/users/picture/<?= "default_picture.jpg" ?>" alt="Image de <?= $postData["postData"]["author"] ?>">
                     <div>
                         <span class="cardUserName">
-                            <?= $postData["postData"]["author"] ?>
+                            <a href="http://localhost/projet-rs-hetic/public/index.php?p=profile&profile_id=<?=$postData["postData"]["author_id"]?>">
+                                <?= $postData["postData"]["author"] ?>
+                            </a>
                         </span>
                         <span>
                             <?= $feedController->getDateDiff($postData["postData"]["date"]) ?>
@@ -70,7 +72,7 @@ if (isset($_POST['postComment'])) {
                         <?= $postData["postData"]["content"]?>
                     </p>
                 </div>
-                <?php if($_COOKIE['uniCookieUserID'] != $postData["postData"]["user_id"]):?>
+                <?php if($_COOKIE['uniCookieUserID'] != $postData["postData"]["author_id"]):?>
                 <form class="cardCta" method="post">
                     <input class="likeButton" id= "likeButton<?=$postPageController->postId?>" type="image"
                            src="../Views/assets/icons/like.svg" name="like" alt="Like Icon">
@@ -89,7 +91,7 @@ if (isset($_POST['postComment'])) {
                     <?php foreach($postData["commentsData"] as $commentData): ?>
                         <div class="commentCard">
                             <div class="commentHeader">
-                                <img src="../Views/assets/imgs/users/picture/<?= "x.jpg" ?>" alt="Image de <?= $commentData["author"] ?>">
+                                <img src="../Views/assets/imgs/users/picture/default_picture.jpg" width="64px" alt="Image de <?= $commentData["author"] ?>">
                             </div>
                             <div class="commentCardBody">
                                 <p><?= $commentData["content"] ?></p>

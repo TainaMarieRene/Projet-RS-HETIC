@@ -46,11 +46,10 @@ body {
     font-weight: 500;
 }
 
-.cardHeader div span + span,
+.cardDate,
 .cardFooter {
     color: #7D7373;
 }
-
 
 .cardHeader img {
     width: 4.44vw;
@@ -72,6 +71,7 @@ body {
 #actionMsg {
     font-weight: 500;
 }
+
 input[name="postContent"] {
     background: white;
     border: none;
@@ -113,7 +113,6 @@ input[type="file"] {
 .hide {
     display: none;
 }
-
 
 .reactionCta{
     display: flex;

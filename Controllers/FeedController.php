@@ -41,6 +41,7 @@ class FeedController extends Database
             CONCAT(u.user_firstname, ' ', u.user_lastname) AS `Friends PP`,
             u.user_username AS `author`,
             pst.post_id AS `id`,
+            pst.user_id AS `author_id`,
             pst.post_type AS `type`,
             pst.post_content AS `content`,
             pst.post_date AS `date`,
@@ -62,6 +63,7 @@ class FeedController extends Database
                 SELECT 
                     u.user_username AS `author`,
                     pst.post_id AS `id`,
+                    pst.user_id AS `author_id`,
                     pst.post_type AS `type`,
                     pst.post_content AS `content`,
                     pst.post_date AS `date`,
@@ -82,6 +84,7 @@ class FeedController extends Database
         SELECT
           pg.page_at AS 'author',
           pst.post_id AS 'id',
+        pst.user_id AS `author_id`,
           pst.post_type AS 'type',
           pst.post_content AS 'content',
           pst.post_date AS 'date',

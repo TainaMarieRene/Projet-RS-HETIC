@@ -24,11 +24,11 @@ body {
     font-size: 24px;
 }
 
-.commentHeader {
-    width: 64px;
-    height: 64px;
-    border-radius: 100px;
-    border: 1px solid black;
+.commentHeader img {
+    width: 2.44vw;
+    height: 2.44vw;
+    border: solid 1px;
+    border-radius: 100%;
 }
 
 .commentCard {

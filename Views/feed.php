@@ -94,10 +94,12 @@ $likeId = 0;
                         <img src="../Views/assets/imgs/users/picture/<?= "default_picture.jpg" ?>"
                             alt="Image de <?= $post["author"] ?>">
                         <div>
-                            <span class="cardUserName">
-                                <?= $post["Friends Pseudo"] ?? $post["author"] ?>
-                            </span>
-                            <span>
+                            <a href="http://localhost/projet-rs-hetic/public/index.php?p=profile&profile_id=<?=$post["author_id"]?>">
+                                <span class="cardUserName">
+                                    <?= $post["Friends Pseudo"] ?? $post["author"] ?>
+                                </span>
+                            </a>
+                            <span class="cardDate">
                                 <?= $feedController->getDateDiff($post["date"]) ?>
                             </span>
                         </div>

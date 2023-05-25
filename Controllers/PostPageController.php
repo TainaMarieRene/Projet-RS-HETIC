@@ -43,7 +43,7 @@ class PostPageController extends Database
                          SELECT u.user_username as author,
                                p.post_date as date,
                                p.post_content as content,
-                                u.user_id as user_id
+                                u.user_id as author_id
                         FROM posts AS p
                         JOIN users AS u ON u.user_id = p.user_id
                         WHERE p.post_id = :postId AND p.post_type = :postType;
@@ -53,7 +53,8 @@ class PostPageController extends Database
                     $postDataQuery = $this->_pdo->prepare("
                          SELECT pa.page_at as author,
                                p.post_date as date,
-                               p.post_content as content
+                               p.post_content as content,
+                               pa.page_id as author_id
                         FROM posts AS p
                         JOIN pages AS pa ON pa.page_id = p.post_type_id
                         WHERE p.post_id = :postId AND p.post_type = :postType;
@@ -82,7 +83,8 @@ class PostPageController extends Database
             $commentDataQuery = $this->_pdo->prepare("
                 SELECT pc.post_comment_date as date,
                         pc.post_comment_content as content,
-                        U.user_username as author
+                        u.user_username as author,
+                        u.user_id as author_id
                 FROM posts_comments AS pc
                 JOIN users AS u ON u.user_id = pc.user_id
                 WHERE post_id = :postId
