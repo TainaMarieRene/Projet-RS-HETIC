@@ -256,6 +256,6 @@ class TempoController {
         $this->_method = $method;
         $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
         
-        require_once '../Views/tempofeed.php';
+        require_once '../Views/feed.php';
     }
 }
