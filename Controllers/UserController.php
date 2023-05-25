@@ -17,7 +17,6 @@ class UserOptionsController {
     private string $_method;
     private Helpers $_helpers;
     private User $_modelUser;
-    private array $_user;
     private $_error;
 
     public function __construct($page, $method){
@@ -28,7 +27,24 @@ class UserOptionsController {
         $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
         $this->_modelUser = new User();
 
-        $this->_user = $this->_modelUser->getUserByID($_COOKIE['uniCookieUserID']);
+        $user = $this->_modelUser->getUserByID($_COOKIE['uniCookieUserID']);
+
+        $currentPassword = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST,"currentPassword")) ? filter_input(INPUT_POST,"currentPassword") : false;
+        if (!$currentPassword && !$this->_error) { $this->_error = "Mot de passe invalide !"; }
+        if (!$this->_error) {
+            if($this->_modelUser->loginUser($user["user_mail"], $currentPassword)) {
+                $password1 = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST,"password1")) ? filter_input(INPUT_POST,"password1") : false;
+                $password2 = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST,"password2")) ? filter_input(INPUT_POST,"password2") : false;
+                if ((!$password1 || !$password2) && !$this->_error) { $this->_error = "Nouveau mot de passe invalide !"; }
+                if ($password1 == $password2) {
+                    $this->_modelUser->changePassword($_COOKIE['uniCookieUserID'], $password1);
+                } else {
+                    $this->_error = "Les mots de passe ne correspondent pas !";
+                }
+            } else {
+                $this->_error = "Mot de passe incorrecte !";
+            }
+        }
 
         require_once '../Views/userOptions.php';
     }

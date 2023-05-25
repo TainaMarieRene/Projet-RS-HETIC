@@ -30,7 +30,7 @@ class DeletePostController {
             unlink("../Views/assets/imgs/users/posts/" . $post_img);
         }
 
-        header("Location: index.php?p=profile&user_id=$user_id");
+        header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
 }

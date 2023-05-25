@@ -55,7 +55,7 @@
                 <div class="userPost-block" id="post_id_<?= $post["post_id"] ?>">
                     <img src="../Views/assets/imgs/users/picture/<?= $post["profile_picture"]; ?>" alt="photo de profil">
                     <span><?= $post["user_username"] ?></span>
-                    <span><?= $post["post_date"] ?></span>
+                    <span>Il y a <?= $this->getNewDate($post["post_date"]) ?></span> 
                     <p><?= $post["post_content"] ?></p>
                     <?php if(isset($post["post_img"])):?>
                         <img src="../Views/assets/imgs/users/posts/<?= $post["post_img"] ?>" alt="Image du post de <?= $post["user_username"]?>">

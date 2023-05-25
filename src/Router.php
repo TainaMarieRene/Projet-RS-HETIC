@@ -13,7 +13,6 @@ use AuthController\SearchRouter;
 use AuthController\ValidateController;
 use AuthController\ResendMailController;
 require_once '../Controllers/UserController.php';
-
 use UserController\UserOptionsController;
 use UserController\DeleteUserController;
 use UserController\UpdateUserStatusController;
@@ -25,6 +24,8 @@ require_once '../Controllers/ProfileController.php';
 use ProfileController\ProfileController;
 require_once '../Controllers/ReactionController.php';
 use ReactionController\ReactController;
+
+date_default_timezone_set('Europe/Paris');
 
 class Router {
     private string $_method;
