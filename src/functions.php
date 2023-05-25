@@ -49,7 +49,6 @@ function sendMail($user_id, $user_firstname, $user_lastname, $user_mail){
             p {
                 font-size: 16px;
                 color: #555;
-                margin-bottom: 10px;
             }
     
             a {
@@ -63,19 +62,19 @@ function sendMail($user_id, $user_firstname, $user_lastname, $user_mail){
             }
     
             img {
-                max-width: 200px;
-                margin-top: 20px;
+                max-width: 60px;
+                margin-top: 5px;
             }
         </style>
     </head>
     <body>
         <div class='container'>
-            <h1>Merci pour votre inscription sur Unilink, $user_firstname !</h1>
+            <h1>Merci $user_firstname pour votre inscription sur Unilink !</h1>
             <p>Nous sommes ravis de vous accueillir parmi nous.</p>
             <p>Veuillez cliquer sur le lien ci-dessous pour vérifier votre compte :</p>
             <a href='http://localhost/Projet-RS-Hetic/public/index.php?p=validateUser&type=valid&id=$user_id'>Vérifier mon compte</a>
             <p>Merci encore, et à bientôt sur Unilink !</p>
-            <img src='https://example.com/logo.png' alt='Logo Unilink'>
+            <img src='https://www.hebergeur-image.com/upload/91.173.15.179-646f23ce3210c.png' alt='Logo Unilink'>
         </div>
     </body>
     </html>";
