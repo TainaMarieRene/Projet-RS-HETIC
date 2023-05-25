@@ -36,14 +36,14 @@ class PostPageController extends Database
             ];
         }
 
-// todo : check if the post is from a page and use the according @
         try {
             switch($this->postType) {
                 case "profile":
                     $postDataQuery = $this->_pdo->prepare("
                          SELECT u.user_username as author,
                                p.post_date as date,
-                               p.post_content as content
+                               p.post_content as content,
+                                u.user_id as user_id
                         FROM posts AS p
                         JOIN users AS u ON u.user_id = p.user_id
                         WHERE p.post_id = :postId AND p.post_type = :postType;
@@ -85,7 +85,8 @@ class PostPageController extends Database
                         U.user_username as author
                 FROM posts_comments AS pc
                 JOIN users AS u ON u.user_id = pc.user_id
-                WHERE post_id = :postId;
+                WHERE post_id = :postId
+                ORDER BY pc.post_comment_date ASC;
             ");
 
             $commentDataQuery->execute([
