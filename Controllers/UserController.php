@@ -108,12 +108,15 @@ class UserOptionsController {
                 }
                 // Changer la date de naissance
                 $user_birthdate = filter_input(INPUT_POST, "userBirthdate");
-                if($user_birthdate !=$user["userBirthdate"]){
+                if($user_birthdate != $user["user_birthdate"]){
                     $user_birthdate = preg_match("`^([0-9]{4})(-)(0[1-9]|1[0-2])(-)(0[1-9]|1[0-9]|2[0-9]|3[0-1])$`", filter_input(INPUT_POST, "userBirthdate")) ? filter_input(INPUT_POST, "userBirthdate") : false;
                     if (!$user_birthdate && !$this->_error) { $this->_error = "Date de naissance invalide !"; }
+                    $user_birthdate = $this->checkYears($user_birthdate);
+                    if(!$user_birthdate && !$this->_error) { $this->_error = "Vous n'avez pas l'age requis"; }
                     if (!$this->_error) {
                         $this->_modelUser->changeUserBirthdate($_COOKIE['uniCookieUserID'], $user_birthdate);
                         $this->_success = "Date de naissance modifié !";
+                        $user["user_birthdate"] = $user_birthdate;
                     }
                 }
             break;
