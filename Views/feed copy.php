@@ -186,8 +186,7 @@ $likeId = 0;
         </section>
     </main>
 </body>
-<script src="../Views/script/feedController.js" type="module"></script>
-
+<script src="../Views/script/feed.js"></script>
 
 <script>
     let actionState = "<?= $actionMsg ?>"
