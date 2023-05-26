@@ -29,45 +29,6 @@ class UserOptionsController {
 
         $user = $this->_modelUser->getUserByID($_COOKIE['uniCookieUserID']);
 
-        $currentPassword = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST,"currentPassword")) ? filter_input(INPUT_POST,"currentPassword") : false;
-        if (!$currentPassword && !$this->_error) { $this->_error = "Mot de passe invalide !"; }
-        if (!$this->_error) {
-            if($this->_modelUser->loginUser($user["user_mail"], $currentPassword)) {
-                $password1 = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST,"password1")) ? filter_input(INPUT_POST,"password1") : false;
-                $password2 = preg_match("`^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,100}$`" ,filter_input(INPUT_POST,"password2")) ? filter_input(INPUT_POST,"password2") : false;
-                if ((!$password1 || !$password2) && !$this->_error) { $this->_error = "Nouveau mot de passe invalide !"; }
-                if ($password1 == $password2) {
-                    $this->_modelUser->changePassword($_COOKIE['uniCookieUserID'], $password1);
-                } else {
-                    $this->_error = "Les mots de passe ne correspondent pas !";
-                }
-            } else {
-                $this->_error = "Mot de passe incorrecte !";
-            }
-        }
-
-        require_once '../Views/userOptions.php';
-    }
-}
-
-class UpdateUserStatusController {
-    private string $_page;
-    private string $_method;
-    private Helpers $_helpers;
-    private string $_type;
-    private User $_modelUser;
-
-    public function __construct($page, $method){
-        require_once '../Models/Users.php';
-
-        $this->_page = $page;
-        $this->_method = $method;
-        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
-        $this->_type = preg_match("`^(valid|disable)$`", filter_input(INPUT_GET, "type")) ? filter_input(INPUT_GET, "type") : '';
-        $this->_modelUser = new User();
-
-        $this->_modelUser->updateStatus($_COOKIE['uniCookieUserID'], $this->_type);
-
         switch ($this->_method) {
             case "POST" : 
                 // Changer le username 
@@ -155,7 +116,30 @@ class UpdateUserStatusController {
                         $this->_success = "Date de naissance modifié !";
                     }
                 }
+            break;
         }
+
+        require_once '../Views/userOptions.php';
+    }
+}
+
+class UpdateUserStatusController {
+    private string $_page;
+    private string $_method;
+    private Helpers $_helpers;
+    private string $_type;
+    private User $_modelUser;
+
+    public function __construct($page, $method){
+        require_once '../Models/Users.php';
+
+        $this->_page = $page;
+        $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+        $this->_type = preg_match("`^(valid|disable)$`", filter_input(INPUT_GET, "type")) ? filter_input(INPUT_GET, "type") : '';
+        $this->_modelUser = new User();
+
+        $this->_modelUser->updateStatus($_COOKIE['uniCookieUserID'], $this->_type);
 
         header("Location: index.php?p=userOptions");
         exit;
