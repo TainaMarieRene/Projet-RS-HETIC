@@ -23,6 +23,8 @@ require_once '../Controllers/ProfileController.php';
 use ProfileController\ProfileController;
 require_once '../Controllers/ReactionController.php';
 use ReactionController\ReactController;
+require_once '../Controllers/CommentController.php';
+use CommentController\DeleteCommentController;
 
 date_default_timezone_set('Europe/Paris');
 
@@ -57,6 +59,9 @@ class Router {
                 break;
             case "deletePost":
                 $this->_controller = new DeletePostController($this->_page, $this->_method);
+                break;
+            case "deleteComment":
+                $this->_controller = new DeleteCommentController($this->_page, $this->_method);
                 break;
             case "react" :
                 $this->_controller = new ReactController($this->_page, $this->_method);

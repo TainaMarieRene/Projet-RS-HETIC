@@ -121,4 +121,15 @@ class Post{
         
         return $reactions;
     }
+
+    public function getPostById($post_id){
+        $stmt = $this->_db->_pdo->prepare("SELECT * FROM posts WHERE post_id = :post_id");
+        $stmt->execute([
+            ":post_id" => $post_id
+        ]);
+
+        $reactions = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $reactions;
+    }
 }
