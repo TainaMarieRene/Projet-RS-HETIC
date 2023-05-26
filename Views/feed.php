@@ -95,7 +95,12 @@ $likeId = 0;
                             <img src="../Views/assets/imgs/users/picture/<?= "default_picture.jpg" ?>"
                                 alt="Image de <?= $post["author"] ?>">
                             <div>
+                                <?php if ($post["type"] == "page"): ?>
+                                <a href="http://localhost/projet-rs-hetic/public/index.php?p=page&page_id=<?=$post["author_id"]?>">
+                                <?php else: ?>
                                 <a href="http://localhost/projet-rs-hetic/public/index.php?p=profile&profile_id=<?=$post["author_id"]?>">
+                                <?php endif;?>
+
                                     <span class="cardUserName">
                                         <?= $post["author"] ?>
                                         <?php if ($post["type"] == "page"): ?>
