@@ -8,7 +8,7 @@ use Page\PageController;
 $pageController = new PageController();
 $feedController = new FeedController();
 $username = $feedController->getUserName();
-$renderData = $pageController->getData();
+$renderData = $pageController->getAllPagesData();
 ?>
 <!DOCTYPE html>
 <html lang="en">

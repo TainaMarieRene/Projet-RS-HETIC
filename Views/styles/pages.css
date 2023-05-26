@@ -5,7 +5,9 @@
     box-sizing: border-box;
 }
 
-#pagesLayout {
+#pagesLayout,
+#pageLayout
+{
     margin-left: calc(24.79vw + 32px);
     display: flex;
     flex-flow: column;
@@ -45,3 +47,4 @@ body {
 .userCard a {
     text-decoration: underline;
 }
+
