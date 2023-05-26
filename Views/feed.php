@@ -102,52 +102,6 @@ $likeId = 0;
                                             (page suivie)
                                         <?php endif;?>
 
-<<<<<<< HEAD
-                        <form class="hideCta reactionCta" id=<?= 'reactionCta' . $id ?> method="post">
-                            <input type="hidden" name="postId" value="<?= $post['id'] ?>">
-                            <input type="hidden" name="postType" value="<?= $post['type'] ?>">
-                            <button type="submit" name="reaction" value="bad"><img
-                                    src="../Views/assets/icons/smiley-bad.svg" alt="Angry Face"></button>
-                            <button type="submit" name="reaction" value="crying"><img
-                                    src="../Views/assets/icons/smiley-crying-rainbow.svg" alt="Crying Face"></button>
-                            <button type="submit" name="reaction" value="drop"><img
-                                    src="../Views/assets/icons/smiley-drop.svg" alt="Drop Face"></button>
-                            <button type="submit" name="reaction" value="love"><img
-                                    src="../Views/assets/icons/smiley-in-love.svg" alt="heart in eyes Face"></button>
-                            <button type="submit" name="reaction" value="lol"><img
-                                    src="../Views/assets/icons/smiley-lol-sideways.svg" alt="Laughing face"></button>
-                        </form>
-                        <form class="cardCta" method="post">
-                            <input class="displayForm" id=<?= "displayForm" . $id ?> type="image"
-                                src="../Views/assets/icons/commentary.svg" name="comment" alt="Comment Icon">
-                            <input class="likeButton" id=<?= "likeButton" . $id ?> type="image"
-                                src="../Views/assets/icons/like.svg" name="like" alt="Like Icon">
-                        </form>
-                        <form class="hideCta commentForm" id=<?= 'comment' . $id ?> method="post">
-                            <input type="hidden" name="postId" value="<?= $post['id'] ?>">
-                            <input type="hidden" name="userId" value="<?= $userId ?>">
-                            <input type="hidden" name="parentId" value="<?= $parentId = 1 ?>">
-                            <textarea name="commentContent" class="commentContent" rows="1"></textarea>
-                            <input type="submit" class="postComment" name="postComment" value="Commenter">
-                        </form>
-                    </div>
-                    <div class="cardFooter">
-                        <a
-                            href="http://localhost/projet-rs-hetic/public/index.php?p=post&id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
-                            Voir plus...
-                        </a>
-                        <div class='displayReaction hideCta' id=<?= 'displayReaction' . $id ?>>
-                            <ul class='reactionList'>
-                                <?php foreach ($feedController->getLike($post['id']) as $like): ?>
-                                    <li class='reactionContent'>
-                                        <img class="reactionEmoji <?= $like['reaction_emoji'] ?>" id=<?= 'reactionEmoji' . $likeId ?> src="" alt='image' />
-                                        <span>
-                                            <?= $like['user_firstname'] . " " . $like['user_lastname'] ?>
-                                        </span>
-                                    </li>
-                                    <?php $likeId++ ?>
-                                <?php endforeach; ?>
-=======
                                     </span>
                                 </a>
                                 <span class="cardDate">
@@ -159,7 +113,6 @@ $likeId = 0;
                             <p>
                                 <?= $post["content"] ?>
                             </p>
->>>>>>> 50fb46705c5df8cbeeaa0b685fb648aaaaf6695d
 
                             <form class="hideCta reactionCta" id=<?= 'reactionCta' . $id ?> method="post">
                                 <input type="hidden" name="postId" value="<?= $post['id'] ?>">
@@ -223,32 +176,8 @@ $likeId = 0;
                                 <p>
                             </div>
                     </div>
-<<<<<<< HEAD
-                    <div class='displayComment hideCta' id=<?= 'displayComment' . $id ?>>
-                        <?php foreach ($postData["commentsData"] as $commentData): ?>
-                            <div class="commentCard">
-                                <div class="commentHeader">
-                                    <img src="../Views/assets/imgs/users/picture/<?= "x.jpg" ?>"
-                                        alt="Image de <?= $commentData["author"] ?>">
-                                </div>
-                                <div class="commentCardBody">
-                                    <p>
-                                        <?= $commentData["content"] ?>
-                                    </p>
-                                    <p>@
-                                        <?= $commentData["author"] . " " . $feedController->getDateDiff($commentData["date"]) ?>
-                                    </p>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-                <?php $id++ ?>
-            <?php endforeach; ?>
-=======
                     <?php $id++ ?>
                 <?php endforeach; ?>
->>>>>>> 50fb46705c5df8cbeeaa0b685fb648aaaaf6695d
         </section>
     </main>
 </body>
