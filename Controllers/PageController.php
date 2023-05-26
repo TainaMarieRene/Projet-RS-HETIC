@@ -2,6 +2,8 @@
 
 namespace Page;
 
+use Exception;
+
 class PageController extends \Database\Database
 {
     private int $pageId;
@@ -130,7 +132,8 @@ class PageController extends \Database\Database
             WHERE
               pg.page_id = :pageId
             GROUP BY
-            pg.page_name, pg.page_at, pst.post_id, pst.post_content
+            pg.page_name, pg.page_at, pst.post_id, pst.post_content, pst.post_date
+            ORDER BY pst.post_date DESC ; 
         ");
 
         $pageAdminQuery->execute([
@@ -238,6 +241,28 @@ class PageController extends \Database\Database
         $unfollowQuery->execute([
             ":memberId" => $memberId
         ]);
+    }
+
+    public function createPagePost(string $postContent) {
+        try {
+            $postQuery = $this->_pdo->prepare("
+                            INSERT INTO 
+                    `posts` (`post_id`, `user_id`, `post_type`, `post_type_id`, `post_date`, `post_content`) 
+                VALUES (NULL, :userId, 'page', :pageId, current_timestamp(), :postContent)
+            ");
+
+            $postQuery->execute([
+                ":userId" => $_COOKIE["uniCookieUserID"],
+                ":postContent" => $postContent,
+                ":pageId" => $this->pageId
+            ]);
+
+            $postQuery->fetchAll();
+
+            return "Successfully posted";
+        } catch (Exception $e) {
+            return $e;
+        }
     }
 
 }
