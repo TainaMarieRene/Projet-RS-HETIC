@@ -17,8 +17,8 @@ require_once '../Controllers/UserController.php';
 use UserController\UserOptionsController;
 use UserController\DeleteUserController;
 use UserController\UpdateUserStatusController;
-require_once '../Controllers/PostController.php';
-use PostController\DeletePostController;
+require_once '../Controllers/DeletePCRController.php';
+use DeletePCRController\DeletePCRController;
 require_once '../Controllers/HTTPResponsesController.php';
 use HTTPResponses\HTTPResponseController;
 require_once '../Controllers/ProfileController.php';
@@ -59,11 +59,8 @@ class Router {
             case "profile":
                 $this->_controller = new ProfileController($this->_page, $this->_method);
                 break;
-            case "deletePost":
-                $this->_controller = new DeletePostController($this->_page, $this->_method);
-                break;
-            case "deleteComment":
-                $this->_controller = new DeleteCommentController($this->_page, $this->_method);
+            case "deletePCR":
+                $this->_controller = new DeletePCRController($this->_page, $this->_method);
                 break;
             case "react" :
                 $this->_controller = new ReactController($this->_page, $this->_method);

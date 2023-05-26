@@ -18,6 +18,7 @@ class UserOptionsController {
     private Helpers $_helpers;
     private User $_modelUser;
     private $_error;
+    private $_success;
 
     public function __construct($page, $method){
         require_once '../Models/Users.php';
@@ -123,6 +124,12 @@ class UserOptionsController {
         }
 
         require_once '../Views/userOptions.php';
+    }
+
+    private function checkYears($birthdate){
+        $limit = 18;
+        $age = (date('md') < date('md', strtotime($birthdate))) ? (date('Y') - date('Y', strtotime($birthdate)) - 1) : (date('Y') - date('Y', strtotime($birthdate)));
+        return ($age >= $limit && $age <= 120) ? $birthdate : false;
     }
 }
 

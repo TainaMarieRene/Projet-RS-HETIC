@@ -54,22 +54,11 @@ class Post{
         return $post_img;
     }
 
-    public function deletePost($post_id, $user_id){
-
-        if($this->ifPostAsImg($post_id, $user_id)){
-            $stmt = $this->_db->_pdo->prepare("DELETE FROM posts_imgs WHERE post_id = :post_id");
-            $stmt->execute([
-                ":post_id" => $post_id,
-            ]);
-        }
-        
-        $stmt = $this->_db->_pdo->prepare("DELETE FROM posts WHERE post_id = :post_id and user_id = :user_id");
+    private function deletePostImg($post_id){
+        $stmt = $this->_db->_pdo->prepare("DELETE FROM posts_imgs WHERE post_id = :post_id");
         $stmt->execute([
-            ":post_id" => $post_id,
-            ":user_id" => $user_id
+            ":post_id" => $post_id
         ]);
-
-        return $post_img;
     }
 
     public function imgIsUse($post_img){
@@ -79,35 +68,6 @@ class Post{
         ]);
 
         return ($stmt->fetch(PDO::FETCH_ASSOC)) ? true : false;
-    }
-
-    public function deleteAllPosts($user_id){
-        $stmt = $this->_db->_pdo->prepare("SELECT * FROM posts WHERE user_id = :user_id");
-        $stmt->execute([
-            ":user_id" => $user_id
-        ]);
-
-        $allPost = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($allPost as $post){
-            $post_img = $this->ifPostAsImg($post["post_id"], $user_id);
-            if($post_img){
-                $stmt = $this->_db->_pdo->prepare("DELETE FROM posts_imgs WHERE post_id = :post_id");
-                $stmt->execute([
-                    ":post_id" => $post["post_id"]
-                ]);
-
-                if(!$this->imgIsUse($post_img)){
-                    unlink("../Views/assets/imgs/users/posts/" . $post_img);
-                }
-            }
-
-            $stmt = $this->_db->_pdo->prepare("DELETE FROM posts WHERE post_id = :post_id and user_id = :user_id");
-            $stmt->execute([
-                ":post_id" => $post["post_id"],
-                ":user_id" => $user_id
-            ]);
-        }
     }
 
     public function getReactionPosts($reaction_type, $reaction_type_id){
@@ -131,5 +91,100 @@ class Post{
         $reactions = $stmt->fetch(PDO::FETCH_ASSOC);
         
         return $reactions;
+    }
+
+    public function deletePCR($type, $delete_id, $user_id){
+        if($type == "posts"){
+            $post_img = $this->ifPostAsImg($delete_id, $user_id);
+            if($post_img){
+                $this->deletePostImg($delete_id);
+                if(!$this->imgIsUse($post_img)){
+                    unlink("../Views/assets/imgs/users/posts/" . $post_img);
+                }
+            }
+            if($comments = $this->checkPostComment($delete_id)){
+                foreach($comments as $comment){
+                    if($responses = $this->checkCommentResponse($comment["post_comment_id"])){
+                        foreach ($responses as $response){
+                            $this->deleteComment("comment", $response["post_comment_id"]);
+                        }
+                        $this->deleteComment("comment", $comment["post_comment_id"]);
+                    } else {
+                        $this->deleteComment("comment", $comment["post_comment_id"]);
+                    }
+                }
+                $this->deletePost("post", $delete_id);
+            } else {
+                $this->deletePost("post", $delete_id);
+            }
+        } elseif($type == "posts_comments") {
+            if($comment = $this->checkCommentResponse($delete_id)){
+                foreach ($comment as $response){
+                    $this->deleteComment("comment", $response["post_comment_id"]);
+                }
+                $this->deleteComment("comment", $delete_id);
+            } else {
+                $this->deleteComment("comment", $delete_id);
+            }
+        }
+    }
+
+    public function deleteAllPosts($user_id){
+        $stmt = $this->_db->_pdo->prepare("SELECT * FROM posts WHERE user_id = :user_id");
+        $stmt->execute([
+            ":user_id" => $user_id
+        ]);
+
+        $allPost = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($allPost as $post){
+            $this->deletePCR("posts", $post["post_id"], $user_id);
+        }
+    }
+
+    public function checkPostComment($post_id){
+        $stmt = $this->_db->_pdo->prepare("SELECT * FROM posts_comments WHERE post_id = :post_id AND post_comment_parent_id IS NULL");
+        $stmt->execute([
+            ":post_id" => $post_id
+        ]);
+
+        $check = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $check;
+    }
+
+    public function checkCommentResponse($post_id){
+        $stmt = $this->_db->_pdo->prepare("SELECT * FROM posts_comments WHERE post_comment_parent_id = :post_comment_parent_id");
+        $stmt->execute([
+            ":post_comment_parent_id" => $post_id
+        ]);
+
+        $check = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $check;
+    }
+
+    public function deleteComment($type, $comment_id){
+        $stmt = $this->_db->_pdo->prepare("DELETE FROM reactions WHERE reaction_type = :type and reaction_type_id = :comment_id");
+        $stmt->execute([
+            ":type" => $type,
+            ":comment_id" => $comment_id
+        ]);
+        $stmt = $this->_db->_pdo->prepare("DELETE FROM posts_comments WHERE post_comment_id = :comment_id");
+        $stmt->execute([
+            ":comment_id" => $comment_id
+        ]);
+    }
+
+    public function deletePost($type, $post_id){
+        $stmt = $this->_db->_pdo->prepare("DELETE FROM reactions WHERE reaction_type = :type and reaction_type_id = :post_id");
+        $stmt->execute([
+            ":type" => $type,
+            ":post_id" => $post_id
+        ]);
+        $stmt = $this->_db->_pdo->prepare("DELETE FROM posts WHERE post_id = :post_id");
+        $stmt->execute([
+            ":post_id" => $post_id
+        ]);
     }
 }
