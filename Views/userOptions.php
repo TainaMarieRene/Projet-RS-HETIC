@@ -23,18 +23,20 @@
     <a href="index.php?p=logout&type=allDevice">Lougout all device</a>
 
     <div>
-        <?php if($this->_method == "POST" && $this->_error): ?>
-            <div class="error" ><?= $this->_error ?></div>
+        <?php if($this->_success): ?>
+            <div class="success"><?= $this->_success ?></div>
+        <?php elseif($this->_error): ?>
+            <div class="error"><?= $this->_error ?></div>
         <?php endif; ?>
         <form class="user-info" action="" method="POST">
-            <input type="text" value="<?= $user["user_username"]?>">
-            <input type="text" value="<?= $user["user_mail"]?>">
+            <input type="text" name="userName" value="<?= $user["user_username"]?>">
+            <input type="text" name="userMail" value="<?= $user["user_mail"]?>">
             <input type="password" name="currentPassword" placeholder="Mot de passe actuel">
             <input type="password" name="password1" placeholder="Nouveau mot de passe">
             <input type="password" name="password2" placeholder="Confirmer nouveau mot de passe">
-            <input type="text" value="<?= $user["user_firstname"]?>">
-            <input type="text" value="<?= $user["user_lastname"]?>">
-            <input type="date" value="<?= $user["user_birthdate"]?>">
+            <input type="text" name="userFirstname" value="<?= $user["user_firstname"]?>">
+            <input type="text" name="userLastname" value="<?= $user["user_lastname"]?>">
+            <input type="date" name="userBirthdate" value="<?= $user["user_birthdate"]?>">
             <input type="submit" value="Valider">
         </form>
     </div>

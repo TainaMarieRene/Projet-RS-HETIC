@@ -41,6 +41,7 @@ class FeedController extends Database
             CONCAT(u.user_firstname, ' ', u.user_lastname) AS `Friends PP`,
             u.user_username AS `author`,
             pst.post_id AS `id`,
+            pst.user_id AS `author_id`,
             pst.post_type AS `type`,
             pst.post_content AS `content`,
             pst.post_date AS `date`,
@@ -62,13 +63,14 @@ class FeedController extends Database
                 SELECT 
                     u.user_username AS `author`,
                     pst.post_id AS `id`,
+                    pst.user_id AS `author_id`,
                     pst.post_type AS `type`,
                     pst.post_content AS `content`,
                     pst.post_date AS `date`,
                     COUNT(rct.user_id) AS `likesCount`,
                     COUNT(cmt.post_comment_id) AS `commentsCount`
                 FROM users AS u 
-                JOIN posts AS pst ON pst.user_id = u.user_id
+                JOIN posts AS pst ON (pst.user_id = u.user_id AND pst.post_type = 'profile')
                 LEFT JOIN reactions rct ON (rct.reaction_type = 'profil' AND rct.reaction_type_id = pst.post_id AND rct.user_id = :userId)
                 LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
                 
@@ -79,24 +81,26 @@ class FeedController extends Database
             ");
 
             $pagesPostsQuery = $this->_pdo->prepare("
-        SELECT
-          pg.page_at AS 'author',
-          pst.post_id AS 'id',
-          pst.post_type AS 'type',
-          pst.post_content AS 'content',
-          pst.post_date AS 'date',
-          COUNT(rct.user_id) AS 'likesCount',
-          COUNT(cmt.post_comment_id) AS 'commentsCount'
-        FROM
-          members m
-          INNER JOIN pages pg ON m.member_type_id = pg.page_id
-          LEFT JOIN posts pst ON (pst.post_type = 'page' AND pst.post_type_id = pg.page_id)
-          LEFT JOIN reactions rct ON (rct.reaction_type = 'page' AND rct.reaction_type_id = pg.page_id AND rct.user_id = :userId)
-          LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
-        WHERE
-          m.user_id = :userId
-        GROUP BY
-        pg.page_name, pg.page_at, pst.post_id, pst.post_content");
+            SELECT
+              pg.page_name AS 'author',
+              pst.post_id AS 'id',
+            pst.post_type_id AS `author_id`,
+              pst.post_type AS 'type',
+              pst.post_content AS 'content',
+              pst.post_date AS 'date',
+              COUNT(rct.user_id) AS 'likesCount',
+              COUNT(cmt.post_comment_id) AS 'commentsCount'
+            FROM
+              members m
+              JOIN pages pg ON m.member_type_id = pg.page_id   
+              LEFT JOIN posts pst ON (pst.post_type = 'page')
+              LEFT JOIN reactions rct ON (rct.reaction_type = 'page' AND rct.reaction_type_id = pg.page_id AND rct.user_id = :userId)
+              LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
+            WHERE
+              m.user_id = :userId AND pst.post_type_id = m.member_type_id
+            GROUP BY
+            pg.page_name, pg.page_at, pst.post_id, pst.post_content
+            ");
 
             $friendsPostsQuery->execute([
                 ":userId" => $this->userId
@@ -113,7 +117,6 @@ class FeedController extends Database
             $friendsPostsArray = $friendsPostsQuery->fetchAll();
             $pagesPostsArray = $pagesPostsQuery->fetchAll();
             $usersPostsArray = $usersPostsQuery->fetchAll();
-
             $postsArray = array_merge(array_merge($friendsPostsArray, $usersPostsArray), $pagesPostsArray);
             usort($postsArray, array($this, 'sortPostsByDate'));
 
