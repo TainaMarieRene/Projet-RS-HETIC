@@ -18,14 +18,16 @@ body {
 }
 
 
-#users {
+#users,
+#pages {
     display: flex;
     flex-flow: row wrap;
     gap: 32px;
     justify-content: center;
 }
 
-.userCard {
+.userCard,
+.pageCard{
     background-color: #F5FDF4;
     padding: 32px 16px;
     border-radius: 25px;
@@ -36,10 +38,13 @@ body {
     width: 300px;
 }
 
-.userCard span {
+.userCard span,
+.pageCard span
+{
     color: #7D7373;
 }
-.userCard a {
+.userCard a,
+.pageCard a{
     text-decoration: underline;
 }
 
