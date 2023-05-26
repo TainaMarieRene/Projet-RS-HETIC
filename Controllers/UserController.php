@@ -17,15 +17,18 @@ class UserOptionsController {
     private string $_method;
     private Helpers $_helpers;
     private User $_modelUser;
+    private Profile $_modelProfile;
     private $_error;
 
     public function __construct($page, $method){
         require_once '../Models/Users.php';
+        require_once '../Models/Profiles.php';
 
         $this->_page = $page;
         $this->_method = $method;
         $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
         $this->_modelUser = new User();
+        $this->_modelProfile = new Profile();
 
         $user = $this->_modelUser->getUserByID($_COOKIE['uniCookieUserID']);
 
@@ -117,6 +120,39 @@ class UserOptionsController {
                         $this->_modelUser->changeUserBirthdate($_COOKIE['uniCookieUserID'], $user_birthdate);
                         $this->_success = "Date de naissance modifié !";
                         $user["user_birthdate"] = $user_birthdate;
+                    }
+                }
+                // Changer la bio
+                $profile_bio = filter_input(INPUT_POST, "profileBio");
+                if($profile_bio !=$profile["profile_bio"]) {
+                    $profile_bio = preg_match("`^.+$`" , preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileBio"))) ? preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileBio")) : false;
+                    if (!$profile_bio && $this->_error) { $this->_error = "Espaces non autorisés"; }
+                    if (!$this->_error) {
+                        $this->_modelUser->changeUserProfileBio($profile_bio);
+                        $this->_success = "Bio modifiée !";
+                        $profile["profile_bio"] = $profile_bio;
+                    }
+                }
+                // Changer la localisation
+                $profile_location = filter_input(INPUT_POST, "profileLocation");
+                if ($profile_location !=$profile["profile_location"]) {
+                    $profile_location = preg_match("`^.+$`" , preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileLocation"))) ? preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileLocation")) : false;
+                    if (!$profile_location && $this->_error) { $this->_error = "Espaces non autorisés"; }
+                    if (!$this->_error) {
+                        $this->_modelUser->changeProfileLocation($profile_location);
+                        $this->_success = "Localisation modifiée !";
+                        $profile["profile_location"] = $profile_location;
+                    }
+                }
+                // Changer l'activité
+                $profile_activity = filter_input(INPUT_POST, "profileActivity");
+                if ($profile_activity !=$profile["profile_activity"]) {
+                    $profile_activity = preg_match("`^.+$`" , preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileActivity"))) ? preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileActivity")) : false;
+                    if (!$profile_activity && $this->_error) { $this->_error = "Espaces non autorisés"; }
+                    if (!$this->_error) {
+                        $this->_modelUser->changeProfileActivity($profile_activity);
+                        $this->_success = "Activité modifiée !";
+                        $profile["profile_activity"] = $profile_activity;
                     }
                 }
             break;

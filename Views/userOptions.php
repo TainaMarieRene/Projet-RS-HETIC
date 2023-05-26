@@ -37,6 +37,9 @@
             <input type="text" name="userFirstname" value="<?= $user["user_firstname"]?>">
             <input type="text" name="userLastname" value="<?= $user["user_lastname"]?>">
             <input type="date" name="userBirthdate" value="<?= $user["user_birthdate"]?>">
+            <input type="text" name="profileBio" value="<?= $profile["profile_bio"]; ?>">
+            <input type="text" name="profileLocation" value="<?= $profile["profile_location"]; ?>">
+            <input type="text" name="profileActivity" value="<?= $profile["profile_activity"]; ?>">
             <input type="submit" value="Valider">
         </form>
     </div>
