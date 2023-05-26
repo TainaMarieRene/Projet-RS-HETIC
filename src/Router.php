@@ -95,22 +95,12 @@ class Router {
             case "page":
                 $this->_controller = new PageRouter($this->_page, $this->_method);
                 break;
-            case "friends":
-                $this->_controller = new FriendController($this->_page, $this->_method);
-                break;
-            case "blockFriend": 
-                $this->_controller = new FriendController($this->_page, $this->_method);
-                break;
+            case "blockFriend":
             case "unblockFriend":
-                $this->_controller = new FriendController($this->_page, $this->_method);
-                break;
             case "deleteFriend":
-                $this->_controller = new FriendController($this->_page, $this->_method);
-                break;
             case "acceptFriend":
-                $this->_controller = new FriendController($this->_page, $this->_method);
-                break;
             case "addFriend":
+            case "friends":
                 $this->_controller = new FriendController($this->_page, $this->_method);
                 break;
             default:
