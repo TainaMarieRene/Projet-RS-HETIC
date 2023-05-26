@@ -6,6 +6,7 @@ require_once '../Controllers/AuthController.php';
 
 use AuthController\FeedRouter;
 use AuthController\PageRouter;
+use AuthController\PagesRouter;
 use AuthController\PostRouter;
 use AuthController\RegisterController;
 use AuthController\LoginController;
@@ -87,6 +88,9 @@ class Router {
                 $this->_controller = new SearchRouter($this->_page, $this->_method);
                 break;
             case "pages":
+                $this->_controller = new PagesRouter($this->_page, $this->_method);
+                break;
+            case "page":
                 $this->_controller = new PageRouter($this->_page, $this->_method);
                 break;
             default:
