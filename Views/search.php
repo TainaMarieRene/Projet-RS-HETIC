@@ -61,7 +61,16 @@ $username = (new FeedController())->getUserName();
                 <?php if(!$renderData["pages"]): ?>
                     <span>Aucune page n'a ce nom. Vérifiez dans les utilisateurs.</span>
                 <?php endif;?>
+                <?php foreach ($renderData["pages"] as $page): ?>
+                    <div class="userCard">
+                        <div>
+                            <h2><?= $page["name"] ?></h2>
+                            <span>@<?= $page["at"]?></span>
+                        </div>
+                        <a href="http://localhost/projet-rs-hetic/public/index.php?p=page&page_id=<?= $page["id"]?>" class="username"> Voir la page</a>
+                    </div>
 
+                <?php endforeach;?>
             </div>
         </section>
     </main>
