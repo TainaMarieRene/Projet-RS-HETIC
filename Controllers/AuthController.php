@@ -293,3 +293,20 @@ class SearchRouter {
     }
 
 }
+
+class PageRouter {
+    private string $_page;
+    private string $_method;
+    private Helpers $_helpers;
+    private $_error;
+
+    public function __construct($page, $method)
+    {
+        $this->_page = $page;
+        $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+
+        require_once '../Views/pages.php';
+    }
+
+}

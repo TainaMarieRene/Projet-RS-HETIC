@@ -5,6 +5,7 @@ namespace Router;
 require_once '../Controllers/AuthController.php';
 
 use AuthController\FeedRouter;
+use AuthController\PageRouter;
 use AuthController\PostRouter;
 use AuthController\RegisterController;
 use AuthController\LoginController;
@@ -79,6 +80,9 @@ class Router {
                 break;
             case "search":
                 $this->_controller = new SearchRouter($this->_page, $this->_method);
+                break;
+            case "pages":
+                $this->_controller = new PageRouter($this->_page, $this->_method);
                 break;
             default:
                 $this->_controller = new HTTPResponseController($this->_page, $this->_method);
