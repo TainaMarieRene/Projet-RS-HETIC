@@ -14,7 +14,6 @@ aside {
 
     border-radius: 2vw;
     padding: 2.01%;
-    padding-bottom: 0%;
 
     position: fixed;
 }
@@ -28,7 +27,7 @@ aside {
     font-size: 1.5rem;
     width:21.04vw ;
     max-width: 357px;
-
+    margin-bottom: 16px;
 }
 .bio{
     display: flex;
@@ -39,11 +38,11 @@ aside {
     max-width: 357px;
     margin-top: 5%;
     margin-bottom: 5%;
-
-
 }
 
-
+.profile span {
+    font-size: 24px;
+}
     
 .pp {
     width: 4.44vw;
@@ -64,16 +63,10 @@ li {
     font-size: 2rem;
     font-weight: 300;
     list-style-type: none;
-    padding:1.1vw 0% 1.1vw 0%;
-
-
-
+    padding:1.1vw 0 1.1vw 0;
 }
 
 a {
-
     text-decoration: none;
     color: black;
-    
-
 }
