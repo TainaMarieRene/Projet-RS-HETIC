@@ -62,8 +62,17 @@ header h1 {
     cursor: pointer;
 }
 
- #closeModal {
-     background-color: red;
+.unfollow {
+    background-color: #e23535;
+}
+
+.unfollow:hover {
+    background-color: #2B2626;
+}
+
+
+#closeModal {
+     background-color: #e23535;
  }
  #closeModal:hover {
      background-color: indianred;
