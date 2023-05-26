@@ -110,4 +110,39 @@ class User {
             ":user_password" => password_hash($password, PASSWORD_DEFAULT)
         ]);
     }
+    public function changeUsername($user_id, $user_username) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_username = :user_username WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_username" => $user_username
+        ]);
+    }
+    public function changeUsermail($user_id, $mail) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_mail = :user_mail WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_mail" => $mail
+        ]);
+    }
+    public function changeUserFirstname($user_id, $user_firstname) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_firstname = :user_firstname WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_firstname" => $user_firstname
+        ]);
+    }
+    public function changeUserLastname($user_id, $user_lastname) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_lastname = :user_lastname WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_lastname" => $user_lastname
+        ]);
+    }
+    public function changeUserBirthdate($user_id, $user_birthdate) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_birthdate = :user_birthdate WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_birthdate" => $user_birthdate
+        ]);
+    }
 }
