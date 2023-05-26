@@ -6,6 +6,7 @@ require_once '../Controllers/AuthController.php';
 
 use AuthController\FeedRouter;
 use AuthController\PageRouter;
+use AuthController\PagesRouter;
 use AuthController\PostRouter;
 use AuthController\RegisterController;
 use AuthController\LoginController;
@@ -27,6 +28,8 @@ require_once '../Controllers/ReactionController.php';
 use ReactionController\ReactController;
 require_once '../Controllers/CommentController.php';
 use CommentController\DeleteCommentController;
+require_once '../Controllers/FriendController.php';
+use FriendController\FriendController;
 
 date_default_timezone_set('Europe/Paris');
 
@@ -84,7 +87,18 @@ class Router {
                 $this->_controller = new SearchRouter($this->_page, $this->_method);
                 break;
             case "pages":
+                $this->_controller = new PagesRouter($this->_page, $this->_method);
+                break;
+            case "page":
                 $this->_controller = new PageRouter($this->_page, $this->_method);
+                break;
+            case "blockFriend":
+            case "unblockFriend":
+            case "deleteFriend":
+            case "acceptFriend":
+            case "addFriend":
+            case "friends":
+                $this->_controller = new FriendController($this->_page, $this->_method);
                 break;
             default:
                 $this->_controller = new HTTPResponseController($this->_page, $this->_method);

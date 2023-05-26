@@ -5,7 +5,9 @@
     box-sizing: border-box;
 }
 
-#pagesLayout {
+#pagesLayout,
+#pageLayout
+{
     margin-left: calc(24.79vw + 32px);
     display: flex;
     flex-flow: column;
@@ -44,4 +46,93 @@ body {
 }
 .userCard a {
     text-decoration: underline;
+}
+
+
+.headerPage {
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 32px;
+    width: 100%;
+    border-radius: 25px;
+    background-color: #F5FDF4;
+}
+.headerPage > span {
+    color: #7D7373;
+}
+.headerPage p + p {
+    font-weight: 500;
+}
+
+.headerPage img {
+    border-radius: 100px;
+}
+
+#adminPostAction {
+    width: 100%;
+}
+
+#adminPostAction .postCta {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+.hiddenLabel {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#postCards {
+    display: flex;
+    flex-flow: column;
+    gap: 32px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#postCards img {
+    width: 64px;
+    height: 64px;
+}
+
+
+#actionMsg {
+    font-weight: 500;
+}
+
+input[name="postContent"] {
+    background: white;
+    border: none;
+    padding: 16px 32px;
+    width: calc(100%);
+    max-width: 600px;
+    border-radius: 50px;
+}
+
+button[name="postPost"],
+.mediaInput {
+    background-color: #39E168;
+    border-radius: 50px;
+    border: none;
+    padding: 16px 32px;
+    font-size: 1rem;
+    cursor: pointer
+}
+
+button[name="postPost"]:hover,
+.mediaInput:hover {
+    background-color: #2B2626;
+}
+
+input[type="file"] {
+    display: none;
 }

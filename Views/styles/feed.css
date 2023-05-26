@@ -52,8 +52,8 @@ body {
 }
 
 .cardHeader img {
-    width: 4.44vw;
-    height: 4.44vw;
+    width: 64px;
+    height: 64px;
     border: solid 1px;
     border-radius: 100%;
 }
@@ -192,9 +192,8 @@ input[type="file"] {
 .reactionButton {
     border: none;
     padding: 0;
-    color: none;
     background: none;
-    margin: none;
+    margin: 0;
     color: #7D7373;
     cursor: pointer;
 }
