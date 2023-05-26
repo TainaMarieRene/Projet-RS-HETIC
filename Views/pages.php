@@ -31,7 +31,7 @@ $renderData = $pageController->getAllPagesData();
         <h2>Mes Pages</h2>
         <div class="layout">
             <?php if(!$renderData["myPages"]): ?>
-                <span>Vous n'êtes admin d'aucun page. N'hésitez pas à en créer une.</span>
+                <span>Vous n'êtes admin d'aucune page. N'hésitez pas à en créer une.</span>
             <?php endif;?>
 
             <?php foreach ($renderData['myPages'] as $page): ?>
