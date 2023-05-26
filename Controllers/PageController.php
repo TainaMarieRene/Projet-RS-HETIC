@@ -60,7 +60,9 @@ class PageController extends \Database\Database
                    p.page_id AS id,
                    p.page_desc AS bio
             FROM pages AS p
-            WHERE p.page_creator = :userId;
+            JOIN members AS m ON m.member_type_id = p.page_id
+            JOIN members_pages_extra mpe on m.member_id = mpe.member_id
+            WHERE m.user_id = :userId AND mpe.member_page_role='admin';
         ");
 
         $followedPagesQuery = $this->_pdo->prepare("
@@ -148,18 +150,35 @@ class PageController extends \Database\Database
         ];
     }
 
-    public  function isAdmin() {
+    public  function isAdmin(): bool
+    {
+        if (!$this->isFollower()) {
+            return false;
+        }
+        $memberId = ($this->isFollower())["member_id"];
+        $checkAdminQuery = $this->_pdo->prepare("
+           SELECT * 
+           FROM members_pages_extra AS mpe 
+           JOIN members m on m.member_id = mpe.member_id
+           WHERE mpe.member_page_role='admin' AND mpe.member_id = :memberId
+        ");
 
+        $checkAdminQuery->execute([
+            "memberId" => $memberId
+        ]);
+
+        return (bool)$checkAdminQuery->fetchAll();
     }
     public function isFollower() {
         $checkFollowerQuery = $this->_pdo->prepare("
         SELECT m.member_id FROM users u 
         JOIN members m on u.user_id = m.user_id
-        WHERE u.user_id = :userId;
+        WHERE u.user_id = :userId AND m.member_type_id = :pageId;
         ");
 
         $checkFollowerQuery->execute([
-            ":userId" => $_COOKIE["uniCookieUserID"]
+            ":userId" => $_COOKIE["uniCookieUserID"],
+            ":pageId" => $this->pageId
         ]);
 
         return $checkFollowerQuery->fetch();

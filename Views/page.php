@@ -41,12 +41,16 @@ if (isset($_POST["follow"])) {
                 <h1><?= $pageData["info"]["name"]?></h1>
                 <span>@<?= $pageData["info"]["at"]?></span>
                 <p><?= $pageData["info"]["bio"]?></p>
+                <p><?= $pageData["info"]["followersCount"]?> abonnés</p>
                 <form method="post" class="pageCta">
                     <?php if(!$pageController->isFollower()): ?>
-                        <button name="follow" id="follow" class="headerCTA">Suivre</button>
+                        <button name="follow" id="follow" class="headerCTA">S'abonner</button>
                     <?php else: ?>
-                        <button name="unfollow" id="unfollow" class="headerCTA unfollow">DéSuivre</button>
+                        <button name="unfollow" id="unfollow" class="headerCTA unfollow">Se désabonner</button>
                     <?php endif; ?>
+                    <?php if($pageController->isAdmin()):?>
+                        <button name="adminSettings" id="adminSettings" class="headerCTA">Réglages ADMIN</button>
+                    <?php endif;?>
                 </form>
 
             </div>
