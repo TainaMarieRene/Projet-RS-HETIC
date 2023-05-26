@@ -18,3 +18,30 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: #F5F2F6;
 }
+
+
+
+.userCard {
+    background-color: #F5FDF4;
+    padding: 32px 16px;
+    border-radius: 25px;
+    border: 1px solid #2B2626;
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+    width: 300px;
+}
+
+
+.layout {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 32px;
+    justify-content: center;
+}
+.userCard span {
+    color: #7D7373;
+}
+.userCard a {
+    text-decoration: underline;
+}
