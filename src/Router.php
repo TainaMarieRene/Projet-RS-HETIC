@@ -28,6 +28,8 @@ require_once '../Controllers/ReactionController.php';
 use ReactionController\ReactController;
 require_once '../Controllers/CommentController.php';
 use CommentController\DeleteCommentController;
+require_once '../Controllers/FriendController.php';
+use FriendController\FriendController;
 
 date_default_timezone_set('Europe/Paris');
 
@@ -92,6 +94,24 @@ class Router {
                 break;
             case "page":
                 $this->_controller = new PageRouter($this->_page, $this->_method);
+                break;
+            case "friends":
+                $this->_controller = new FriendController($this->_page, $this->_method);
+                break;
+            case "blockFriend": 
+                $this->_controller = new FriendController($this->_page, $this->_method);
+                break;
+            case "unblockFriend":
+                $this->_controller = new FriendController($this->_page, $this->_method);
+                break;
+            case "deleteFriend":
+                $this->_controller = new FriendController($this->_page, $this->_method);
+                break;
+            case "acceptFriend":
+                $this->_controller = new FriendController($this->_page, $this->_method);
+                break;
+            case "addFriend":
+                $this->_controller = new FriendController($this->_page, $this->_method);
                 break;
             default:
                 $this->_controller = new HTTPResponseController($this->_page, $this->_method);
