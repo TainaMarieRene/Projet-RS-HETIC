@@ -148,10 +148,6 @@ $likeId = 0;
                             </form>
                         </div>
                         <div class="cardFooter">
-                            <a
-                                href="http://localhost/projet-rs-hetic/public/index.php?p=post&id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
-                                Voir les commentaires
-                            </a>
                             <div class='displayReaction hideCta' id=<?= 'displayReaction' . $id ?>>
                                 <ul class='reactionList'>
                                     <?php foreach ($feedController->getLike($post['id']) as $like): ?>
@@ -172,14 +168,14 @@ $likeId = 0;
                                     réagi à ce post</button>
                             </p>
                             <p>
-                                <?= $post["commentsCount"] ?> <button class='reactionButton' id=<?= 'commentButton' . $id ?>>commentaires</button>
+                                <?= $post["commentsCount"] == 1 ? $post["commentsCount"]." commentaire" : $post["commentsCount"]." commentaires"?>
                             </p>
                         </div>
-                        <div class='displayComment hideCta' id=<?= 'displayComment' . $id ?>>
-                                <p>
-                                    coucou
-                                <p>
-                            </div>
+                        <a
+                            href="http://localhost/projet-rs-hetic/public/index.php?p=post&id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
+                            Voir plus...
+                        </a>
+
                     </div>
                     <?php $id++ ?>
                 <?php endforeach; ?>
