@@ -55,6 +55,7 @@ nav a {
 
 .user-info label {
     margin: 0 5px;
+    font-weight: 800;
 }
 
 .user-info input {
