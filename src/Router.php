@@ -24,6 +24,7 @@ require_once '../Controllers/HTTPResponsesController.php';
 use HTTPResponses\HTTPResponseController;
 require_once '../Controllers/ProfileController.php';
 use ProfileController\ProfileController;
+use ProfileController\UpdateProfileStatusController;
 require_once '../Controllers/ReactionController.php';
 use ReactionController\ReactController;
 require_once '../Controllers/CommentController.php';
@@ -73,6 +74,9 @@ class Router {
                 break;
             case "updateAccountStatus":
                 $this->_controller = new UpdateUserStatusController($this->_page, $this->_method);
+                break;
+            case "updateProfileStatus":
+                $this->_controller = new UpdateProfileStatusController($this->_page, $this->_method);
                 break;
             case "resendMail":
                 $this->_controller = new ResendMailController($this->_page, $this->_method);

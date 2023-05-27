@@ -13,18 +13,18 @@
         <h1><img src="../Views/assets/imgs/website/unilink_logo.svg" alt="UniLink Logo" class="logo"></h1>
         <h2>OPTIONS</h2>
     </header>
-    <!-- <p>Options temporaire pour réaliser des tests</p> -->
     <nav>
+        <a href="index.php?p=profile&profile_id=<?= $_COOKIE['uniCookieUserID'] ?>">Profile</a>
+        <a href="index.php?p=feed">Feed</a>
+        <a href="index.php?p=updateProfileStatus&type=<?php if($profile["profile_status"] == "public"){ echo("private"); } else { echo("public"); } ?>"><?php if($profile["profile_status"] == "public"): ?> Passer en privé <?php else: ?> Passer en public <?php endif; ?></a>
+        <a href="index.php?p=logout&type=device">Deconnexion</a>
+        <a href="index.php?p=logout&type=allDevice">Deconnexion Global</a>
         <?php if($user["user_account_status"] != "waiting"): ?>
-            <a href="index.php?p=updateAccountStatus&type=<?php if($user["user_account_status"] == "valid"){ echo("disable"); } else { echo("valid"); } ?>"><?php if($user["user_account_status"] == "valid"){ echo("Disable Account"); } else { echo("Reactivate Account"); } ?></a>
+            <a href="index.php?p=updateAccountStatus&type=<?php if($user["user_account_status"] == "valid"){ echo("disable"); } else { echo("valid"); } ?>"><?php if($user["user_account_status"] == "valid"): ?> Désactiver le compte <?php else: ?> Reactiver le compte<?php endif; ?></a>
         <?php else: ?>
             <span>N'oubliez pas de valider votre compte ! </span><a href="index.php?p=resendMail">Renvoyer le mail</a>
         <?php endif; ?>
-        <a href="index.php?p=deleteAccount">Delete Account</a>
-        <!-- <br> -->
-        <a href="index.php?p=feed">Feed</a>
-        <a href="index.php?p=logout&type=device">Lougout</a>
-        <a href="index.php?p=logout&type=allDevice">Lougout all device</a>
+        <a href="index.php?p=deleteAccount">Supprimer le compte</a>
     </nav>
 
     <div class="user-options">

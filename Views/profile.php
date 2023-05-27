@@ -37,123 +37,124 @@
                     <a href="index.php?p=userOptions">Options d'utilisateur</a>
                 <?php endif; ?>
             </div>
-            <?php if((filter_input(INPUT_GET, "profile_id")) == $_COOKIE['uniCookieUserID']): ?>
-                <div class="create-post">
-                    <?php if($this->_method == "POST" && $this->_error): ?>
-                        <div class="error" ><?= $this->_error ?></div>
-                    <?php endif; ?>
-                    <form class="postCta" method="POST" enctype="multipart/form-data">
-                        <!-- <label for="postContent" class="hiddenLabel">Create Post Content Label</label> -->
-                        <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
-                        <label for="postImg" class="mediaInput"><img alt="Media Icon" src="../Views/assets/icons/media.svg"></label>
-                        <input type="file" name="postImg" id="postImg">
-                        <input name="typeForme" type="hidden" value="post">
-                        <input type="submit" value="Ajouter">
-                    </form>
-                </div>
-            <?php endif; ?>
-            <?php foreach ($userPosts as $post): ?>
-                <div class="userPost-block" id="post_id_<?= $post["post_id"] ?>">
-                    <img src="../Views/assets/imgs/users/picture/<?= $post["profile_picture"]; ?>" alt="photo de profil">
-                    <span><?= $post["user_username"] ?></span>
-                    <span>Il y a <?= $this->getNewDate($post["post_date"]) ?></span> 
-                    <p><?= $post["post_content"] ?></p>
-                    <?php if(isset($post["post_img"])):?>
-                        <img src="../Views/assets/imgs/users/posts/<?= $post["post_img"] ?>" alt="Image du post de <?= $post["user_username"]?>">
-                    <?php endif; ?>
-                    <span><?= count($this->_modelPost->getReactionPosts("post", $post["post_id"])) ?> réactions</span>
-                    <button class="reactButton">Réagir</button>
-                    <div class="react hide">
-                        <ul>
-                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=like">like</a></li>
-                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=celebrate">celebrate</a></li>
-                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=love">love</a></li>
-                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=insightful">insightful</a></li>
-                            <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=curious">curious</a></li>
-                            <li>-----------------------------------------------------</li>
-                        </ul>
-                        <ul>
-                            <?php foreach($this->_modelPost->getReactionPosts("post", $post["post_id"]) as $reaction): ?>
-                                <li><?= $reaction["user_username"]?> <?= $reaction["reaction_emoji"] ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                    <span><?= count($this->_modelComment->getCommentPosts($post["post_id"])) ?> commentaires</span>
-                    <button class="commentButton">Voir plus...</button>
-                    <div class="comment hide">
-                        <form method="POST">
-                            <input name="commentContent" type="text" placeholder="Ecrire un commentaire...">
-                            <input name="postId" type="hidden" value="<?= $post["post_id"] ?>">
-                            <input name="typeForme" type="hidden" value="postComment">
-                            <input type="submit" value="Envoyer">
+            <?php if($profile["user_id"] == $_COOKIE['uniCookieUserID'] || $profile["profile_status"] == "public"): ?>
+                <?php if((filter_input(INPUT_GET, "profile_id")) == $_COOKIE['uniCookieUserID']): ?>
+                    <div class="create-post">
+                        <?php if($this->_method == "POST" && $this->_error): ?>
+                            <div class="error" ><?= $this->_error ?></div>
+                        <?php endif; ?>
+                        <form class="postCta" method="POST" enctype="multipart/form-data">
+                            <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
+                            <label for="postImg" class="mediaInput"><img alt="Media Icon" src="../Views/assets/icons/media.svg"></label>
+                            <input type="file" name="postImg" id="postImg">
+                            <input name="typeForme" type="hidden" value="post">
+                            <input type="submit" value="Ajouter">
                         </form>
-                        <ul>
-                            <?php foreach($this->_modelComment->getCommentPosts($post["post_id"], NULL) as $comment): ?>
-                                <li class="allComment">
-                                    <?= $comment["user_username"]?> : <?= $comment["post_comment_content"] ?>
-                                        <span><?= count($this->_modelPost->getReactionPosts("comment", $comment["post_comment_id"])) ?> réactions</span>
-                                        <button class="reactCommentButton">Réagir</button>
-                                        <div class="commentReaction hide">
-                                            <ul>
-                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=like">like</a></li>
-                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=celebrate">celebrate</a></li>
-                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=love">love</a></li>
-                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=insightful">insightful</a></li>
-                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=curious">curious</a></li>
-                                                <li>-----------------------------------------------------</li>
-                                            </ul>
-                                            <ul>
-                                                <?php foreach($this->_modelPost->getReactionPosts("comment", $comment["post_comment_id"]) as $reaction): ?>
-                                                    <li><?= $reaction["user_username"]?> <?= $reaction["reaction_emoji"] ?></li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </div>
-                                        <span><?= count($this->_modelComment->getCommentPosts($post["post_id"], $comment["post_comment_id"])) ?> réponses</span>
-                                        <button class="commentCommentButton">Voir plus...</button>
-                                        <div class="commentComment hide">
-                                            <form method="POST">
-                                                <input name="commentCommentContent" type="text" placeholder="Ecrire une réponse...">
-                                                <input name="postId" type="hidden" value="<?= $post["post_id"] ?>">
-                                                <input name="commentId" type="hidden" value="<?= $comment["post_comment_id"] ?>">
-                                                <input name="typeForme" type="hidden" value="postCommentComment">
-                                                <input type="submit" value="Envoyer">
-                                            </form>
-                                            <ul>
-                                                <?php foreach($this->_modelComment->getCommentPosts($post["post_id"], $comment["post_comment_id"]) as $commentComment): ?>
-                                                    <li class="allCommentComment">
-                                                        <?= $commentComment["user_username"] ?> : <?= $commentComment["post_comment_content"] ?>
-                                                        <span><?= count($this->_modelPost->getReactionPosts("comment", $commentComment["post_comment_id"])) ?> réactions</span>
-                                                        <button class="reactCommentCommentButton">Réagir</button>
-                                                        <div class="commentCommentReaction hide">
-                                                            <ul>
-                                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=like">like</a></li>
-                                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=celebrate">celebrate</a></li>
-                                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=love">love</a></li>
-                                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=insightful">insightful</a></li>
-                                                                <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=curious">curious</a></li>
-                                                                <li>-----------------------------------------------------</li>
-                                                            </ul>
-                                                            <ul>
-                                                                <?php foreach($this->_modelPost->getReactionPosts("comment", $commentComment["post_comment_id"]) as $reaction): ?>
-                                                                    <li><?= $reaction["user_username"]?> <?= $reaction["reaction_emoji"] ?></li>
-                                                                <?php endforeach; ?>
-                                                            </ul>
-                                                        </div>
-                                                        <?php if($comment["user_id"] == $_COOKIE['uniCookieUserID']): ?><a href="index.php?p=deletePCR&delete_type=posts_comments&delete_id=<?= $commentComment["post_comment_id"] ?>">supprimer la réponse</a><?php endif; ?>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </div>
-                                        <?php if($comment["user_id"] == $_COOKIE['uniCookieUserID']): ?><a href="index.php?p=deletePCR&delete_type=posts_comments&delete_id=<?= $comment["post_comment_id"] ?>">supprimer le commentaire</a><?php endif; ?>
-                                    </li>
-                            <?php endforeach; ?>
-                        </ul>
                     </div>
-                    <?php if((filter_input(INPUT_GET, "profile_id")) == $_COOKIE['uniCookieUserID']): ?>
-                        <a href="index.php?p=deletePCR&delete_type=posts&delete_id=<?= $post["post_id"] ?>">Supprimer le post</a>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
+                <?php endif; ?>
+                <?php foreach ($userPosts as $post): ?>
+                    <div class="userPost-block" id="post_id_<?= $post["post_id"] ?>">
+                        <img src="../Views/assets/imgs/users/picture/<?= $post["profile_picture"]; ?>" alt="photo de profil">
+                        <span><?= $post["user_username"] ?></span>
+                        <span>Il y a <?= $this->getNewDate($post["post_date"]) ?></span> 
+                        <p><?= $post["post_content"] ?></p>
+                        <?php if(isset($post["post_img"])):?>
+                            <img src="../Views/assets/imgs/users/posts/<?= $post["post_img"] ?>" alt="Image du post de <?= $post["user_username"]?>">
+                        <?php endif; ?>
+                        <span><?= count($this->_modelPost->getReactionPosts("post", $post["post_id"])) ?> réactions</span>
+                        <button class="reactButton">Réagir</button>
+                        <div class="react hide">
+                            <ul>
+                                <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=like">like</a></li>
+                                <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=celebrate">celebrate</a></li>
+                                <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=love">love</a></li>
+                                <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=insightful">insightful</a></li>
+                                <li><a href="index.php?p=react&reaction_type=post&reaction_type_id=<?= $post["post_id"] ?>&reaction_emoji=curious">curious</a></li>
+                                <li>-----------------------------------------------------</li>
+                            </ul>
+                            <ul>
+                                <?php foreach($this->_modelPost->getReactionPosts("post", $post["post_id"]) as $reaction): ?>
+                                    <li><?= $reaction["user_username"]?> <?= $reaction["reaction_emoji"] ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                        <span><?= count($this->_modelComment->getCommentPosts($post["post_id"])) ?> commentaires</span>
+                        <button class="commentButton">Voir plus...</button>
+                        <div class="comment hide">
+                            <form method="POST">
+                                <input name="commentContent" type="text" placeholder="Ecrire un commentaire...">
+                                <input name="postId" type="hidden" value="<?= $post["post_id"] ?>">
+                                <input name="typeForme" type="hidden" value="postComment">
+                                <input type="submit" value="Envoyer">
+                            </form>
+                            <ul>
+                                <?php foreach($this->_modelComment->getCommentPosts($post["post_id"], NULL) as $comment): ?>
+                                    <li class="allComment">
+                                        <?= $comment["user_username"]?> : <?= $comment["post_comment_content"] ?>
+                                            <span><?= count($this->_modelPost->getReactionPosts("comment", $comment["post_comment_id"])) ?> réactions</span>
+                                            <button class="reactCommentButton">Réagir</button>
+                                            <div class="commentReaction hide">
+                                                <ul>
+                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=like">like</a></li>
+                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=celebrate">celebrate</a></li>
+                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=love">love</a></li>
+                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=insightful">insightful</a></li>
+                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $comment["post_comment_id"] ?>&reaction_emoji=curious">curious</a></li>
+                                                    <li>-----------------------------------------------------</li>
+                                                </ul>
+                                                <ul>
+                                                    <?php foreach($this->_modelPost->getReactionPosts("comment", $comment["post_comment_id"]) as $reaction): ?>
+                                                        <li><?= $reaction["user_username"]?> <?= $reaction["reaction_emoji"] ?></li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </div>
+                                            <span><?= count($this->_modelComment->getCommentPosts($post["post_id"], $comment["post_comment_id"])) ?> réponses</span>
+                                            <button class="commentCommentButton">Voir plus...</button>
+                                            <div class="commentComment hide">
+                                                <form method="POST">
+                                                    <input name="commentCommentContent" type="text" placeholder="Ecrire une réponse...">
+                                                    <input name="postId" type="hidden" value="<?= $post["post_id"] ?>">
+                                                    <input name="commentId" type="hidden" value="<?= $comment["post_comment_id"] ?>">
+                                                    <input name="typeForme" type="hidden" value="postCommentComment">
+                                                    <input type="submit" value="Envoyer">
+                                                </form>
+                                                <ul>
+                                                    <?php foreach($this->_modelComment->getCommentPosts($post["post_id"], $comment["post_comment_id"]) as $commentComment): ?>
+                                                        <li class="allCommentComment">
+                                                            <?= $commentComment["user_username"] ?> : <?= $commentComment["post_comment_content"] ?>
+                                                            <span><?= count($this->_modelPost->getReactionPosts("comment", $commentComment["post_comment_id"])) ?> réactions</span>
+                                                            <button class="reactCommentCommentButton">Réagir</button>
+                                                            <div class="commentCommentReaction hide">
+                                                                <ul>
+                                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=like">like</a></li>
+                                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=celebrate">celebrate</a></li>
+                                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=love">love</a></li>
+                                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=insightful">insightful</a></li>
+                                                                    <li><a href="index.php?p=react&reaction_type=comment&reaction_type_id=<?= $commentComment["post_comment_id"] ?>&reaction_emoji=curious">curious</a></li>
+                                                                    <li>-----------------------------------------------------</li>
+                                                                </ul>
+                                                                <ul>
+                                                                    <?php foreach($this->_modelPost->getReactionPosts("comment", $commentComment["post_comment_id"]) as $reaction): ?>
+                                                                        <li><?= $reaction["user_username"]?> <?= $reaction["reaction_emoji"] ?></li>
+                                                                    <?php endforeach; ?>
+                                                                </ul>
+                                                            </div>
+                                                            <?php if($comment["user_id"] == $_COOKIE['uniCookieUserID']): ?><a href="index.php?p=deletePCR&delete_type=posts_comments&delete_id=<?= $commentComment["post_comment_id"] ?>">supprimer la réponse</a><?php endif; ?>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </div>
+                                            <?php if($comment["user_id"] == $_COOKIE['uniCookieUserID']): ?><a href="index.php?p=deletePCR&delete_type=posts_comments&delete_id=<?= $comment["post_comment_id"] ?>">supprimer le commentaire</a><?php endif; ?>
+                                        </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                        <?php if((filter_input(INPUT_GET, "profile_id")) == $_COOKIE['uniCookieUserID']): ?>
+                            <a href="index.php?p=deletePCR&delete_type=posts&delete_id=<?= $post["post_id"] ?>">Supprimer le post</a>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
     </section>
     
     <script>

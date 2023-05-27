@@ -77,4 +77,12 @@ class Profile {
                 break;
         }
     }
+
+    public function updateStatus($user_id, $type){
+        $stmt = $this->_db->_pdo->prepare("UPDATE profiles SET profile_status = :type WHERE user_id = :user_id");
+        $stmt->execute([
+            ":user_id" => $user_id,
+            ":type" => $type
+        ]);
+    }
 }

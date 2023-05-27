@@ -114,3 +114,26 @@ class ProfileController {
                 
     }
 }
+
+class UpdateProfileStatusController {
+    private string $_page;
+    private string $_method;
+    private Helpers $_helpers;
+    private string $_type;
+    private Profile $_modelProfile;
+
+    public function __construct($page, $method){
+        require_once '../Models/Profiles.php';
+
+        $this->_page = $page;
+        $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+        $this->_type = preg_match("`^(public|private)$`", filter_input(INPUT_GET, "type")) ? filter_input(INPUT_GET, "type") : '';
+        $this->_modelProfile = new Profile();
+
+        $this->_modelProfile->updateStatus($_COOKIE['uniCookieUserID'], $this->_type);
+
+        header("Location: index.php?p=userOptions");
+        exit;
+    }
+}
