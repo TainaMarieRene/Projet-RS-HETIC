@@ -21,7 +21,7 @@
                     <?= $user["user_lastname"]?>
                 </span>
                 <span>
-                    <?= $user["user_username"]?>
+                    <?= $user["user_username"]?> <?php if($profile["profile_certification"] == 1):?> <img src="../Views/assets/imgs/website/unilink_logo.svg" alt="Certification" class="badge"> <?php endif; ?>
                 </span>
                 <span>
                     <?= $profile["profile_bio"]; ?>
