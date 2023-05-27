@@ -38,26 +38,51 @@ class Profile {
         return $profile;
     }
 
-    public function getUserName($user_id) {
-        $stmt = $this->_db->_pdo->prepare("SELECT user_firstname, user_lastname, user_username FROM users WHERE user_id = :user_id");
-        $stmt->execute([
-            ":user_id"=>$user_id
-        ]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-        return $user;
+    public function imgIsUse($img_type, $img){
+        switch($img_type){
+            case "profile_picture" :
+                $stmt = $this->_db->_pdo->prepare("SELECT user_id FROM profiles WHERE profile_picture = :profile_img");
+                $stmt->execute([
+                    ":profile_img"=>$img
+                ]);
+                $check = $stmt->fetch(PDO::FETCH_ASSOC);
+                break;
+            case "profile_banner" :
+                $stmt = $this->_db->_pdo->prepare("SELECT user_id FROM profiles WHERE profile_banner = :profile_img");
+                $stmt->execute([
+                    ":profile_img"=>$img
+                ]);
+                $check = $stmt->fetch(PDO::FETCH_ASSOC);
+                break;
+        }
+
+        return ($check) ? true : false;
     }
 
-    public function getUserPosts($user_id) {
-        $stmt = $this->_db->_pdo->prepare("SELECT * FROM posts WHERE user_id = :user_id and post_type = :profile_type");
+    public function changeProfileImg($profile_type, $profile_img, $user_id){
+        switch($profile_type){
+            case "profile_picture":
+                $stmt = $this->_db->_pdo->prepare("UPDATE profiles SET profile_picture = :profile_img WHERE user_id = :user_id");
+                $stmt->execute([
+                    ":profile_img" => $profile_img,
+                    ":user_id" => $user_id
+                ]);
+                break;
+            case "profile_banner":
+                $stmt = $this->_db->_pdo->prepare("UPDATE profiles SET profile_banner = :profile_img WHERE user_id = :user_id");
+                $stmt->execute([
+                    ":profile_img" => $profile_img,
+                    ":user_id" => $user_id
+                ]);
+                break;
+        }
+    }
+
+    public function updateStatus($user_id, $type){
+        $stmt = $this->_db->_pdo->prepare("UPDATE profiles SET profile_status = :type WHERE user_id = :user_id");
         $stmt->execute([
             ":user_id" => $user_id,
-            ":profile_type" => "profile"
+            ":type" => $type
         ]);
-    
-        $userPosts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
-        return $userPosts;
     }
-
 }

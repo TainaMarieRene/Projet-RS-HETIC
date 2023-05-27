@@ -12,13 +12,12 @@ class FeedController extends Database
     public function __construct()
     {
         parent::__construct();
-        $this->setUserId(1);
+        $this->setUserId();
     }
 
-    public function setUserId(int $userCookieId): void
+    public function setUserId(): void
     {
-        $this->userId = $userCookieId;
-        //        En tant normal, aller chercher la data dans les cookies
+        $this->userId = $_COOKIE['uniCookieUserID'];
     }
 
     public function getUserName(): string
@@ -42,6 +41,8 @@ class FeedController extends Database
             CONCAT(u.user_firstname, ' ', u.user_lastname) AS `Friends PP`,
             u.user_username AS `author`,
             pst.post_id AS `id`,
+            pst.user_id AS `author_id`,
+            pst.post_type AS `type`,
             pst.post_content AS `content`,
             pst.post_date AS `date`,
             COUNT(rct.user_id) AS `likesCount`,
@@ -58,24 +59,48 @@ class FeedController extends Database
             u.user_firstname, u.user_lastname, u.user_username, pst.post_id, pst.post_content
         ");
 
+            $usersPostsQuery = $this->_pdo->prepare("
+                SELECT 
+                    u.user_username AS `author`,
+                    pst.post_id AS `id`,
+                    pst.user_id AS `author_id`,
+                    pst.post_type AS `type`,
+                    pst.post_content AS `content`,
+                    pst.post_date AS `date`,
+                    COUNT(rct.user_id) AS `likesCount`,
+                    COUNT(cmt.post_comment_id) AS `commentsCount`
+                FROM users AS u 
+                JOIN posts AS pst ON (pst.user_id = u.user_id AND pst.post_type = 'profile')
+                LEFT JOIN reactions rct ON (rct.reaction_type = 'profil' AND rct.reaction_type_id = pst.post_id AND rct.user_id = :userId)
+                LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
+                
+                WHERE (u.user_id = :userId)
+                GROUP BY
+                    u.user_firstname, u.user_lastname, u.user_username, pst.post_id, pst.post_content;
+
+            ");
+
             $pagesPostsQuery = $this->_pdo->prepare("
-        SELECT
-          pg.page_at AS 'author',
-          pst.post_id AS 'id',
-          pst.post_content AS 'content',
-          pst.post_date AS 'date',
-          COUNT(rct.user_id) AS 'likesCount',
-          COUNT(cmt.post_comment_id) AS 'commentsCount'
-        FROM
-          members m
-          INNER JOIN pages pg ON m.member_type_id = pg.page_id
-          LEFT JOIN posts pst ON (pst.post_type = 'page' AND pst.post_type_id = pg.page_id)
-          LEFT JOIN reactions rct ON (rct.reaction_type = 'page' AND rct.reaction_type_id = pg.page_id AND rct.user_id = 1)
-          LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
-        WHERE
-          m.user_id = :userId
-        GROUP BY
-        pg.page_name, pg.page_at, pst.post_id, pst.post_content");
+            SELECT
+              pg.page_name AS 'author',
+              pst.post_id AS 'id',
+            pst.post_type_id AS `author_id`,
+              pst.post_type AS 'type',
+              pst.post_content AS 'content',
+              pst.post_date AS 'date',
+              COUNT(rct.user_id) AS 'likesCount',
+              COUNT(cmt.post_comment_id) AS 'commentsCount'
+            FROM
+              members m
+              JOIN pages pg ON m.member_type_id = pg.page_id   
+              LEFT JOIN posts pst ON (pst.post_type = 'page')
+              LEFT JOIN reactions rct ON (rct.reaction_type = 'page' AND rct.reaction_type_id = pg.page_id AND rct.user_id = :userId)
+              LEFT JOIN posts_comments cmt ON (cmt.post_id = pst.post_id)
+            WHERE
+              m.user_id = :userId AND pst.post_type_id = m.member_type_id
+            GROUP BY
+            pg.page_name, pg.page_at, pst.post_id, pst.post_content
+            ");
 
             $friendsPostsQuery->execute([
                 ":userId" => $this->userId
@@ -85,10 +110,14 @@ class FeedController extends Database
                 ":userId" => $this->userId
             ]);
 
+            $usersPostsQuery->execute([
+                ":userId" => $this->userId
+            ]);
+
             $friendsPostsArray = $friendsPostsQuery->fetchAll();
             $pagesPostsArray = $pagesPostsQuery->fetchAll();
-
-            $postsArray = array_merge($friendsPostsArray, $pagesPostsArray);
+            $usersPostsArray = $usersPostsQuery->fetchAll();
+            $postsArray = array_merge(array_merge($friendsPostsArray, $usersPostsArray), $pagesPostsArray);
             usort($postsArray, array($this, 'sortPostsByDate'));
 
             return $postsArray;
@@ -191,7 +220,7 @@ class FeedController extends Database
     }
 
 
-    public function saveReaction($userId, $reactionType, $reactionEmoji,$reactionTypeId)
+    public function saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId)
     {
         try {
             $query = $this->_pdo->prepare("INSERT INTO reactions (reaction_type, reaction_type_id, user_id, reaction_emoji)
@@ -199,7 +228,6 @@ class FeedController extends Database
             $query->execute([
                 ":reactionType" => $reactionType,
                 ":reactionTypeId" => $reactionTypeId,
-                // ":reactionTypeId" => $this->_pdo->lastInsertId()+1,
                 ":userId" => $userId,
                 ":reactionEmoji" => $reactionEmoji
             ]);
@@ -210,17 +238,40 @@ class FeedController extends Database
             return $error;
         }
     }
-    public function filterReaction($reaction){
+    public function filterReaction($reaction)
+    {
         if ($reaction === 'bad') {
             return 'react1';
         } elseif ($reaction === 'crying') {
             return 'react2';
-        }elseif ($reaction === 'drop') {
+        } elseif ($reaction === 'drop') {
             return 'react3';
-        }elseif ($reaction === 'love') {
+        } elseif ($reaction === 'love') {
             return 'react4';
-        }elseif ($reaction === 'lol') {
+        } elseif ($reaction === 'lol') {
             return 'react5';
         }
     }
+
+    public function getLike($postId)
+    {
+        try {
+            $query = $this->_pdo->prepare("SELECT u.user_firstname, u.user_lastname, r.reaction_emoji
+                FROM users u
+                JOIN reactions r ON u.user_id = r.user_id
+                WHERE r.reaction_type = 'post'
+                AND r.reaction_type_id = :postId");
+
+            $query->execute([
+                ":postId" => $postId,
+            ]);
+
+            $likes = $query->fetchAll();
+            return $likes;
+        } catch (PDOException $error) {
+            return $error;
+        }
+    }
+
+
 }

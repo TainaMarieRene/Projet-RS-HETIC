@@ -81,7 +81,6 @@ class RegisterController {
         }        
 
         require_once '../Views/register.php';
-        if($this->_error){ return $this->_error; }
     }
 
     private function checkYears($birthdate){
@@ -144,7 +143,6 @@ class LoginController {
         }
         
         require_once '../Views/login.php';
-        if($this->_error){ return $this->_error; }
     }
 }
 
@@ -247,7 +245,7 @@ class ResendMailController {
 
 }
 
-class TempoController {
+class FeedRouter {
     private string $_page;
     private string $_method;
     private Helpers $_helpers;
@@ -257,8 +255,75 @@ class TempoController {
         $this->_page = $page;
         $this->_method = $method;
         $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
-        
-        require_once '../Views/tempofeed.php';
-        if($this->_error){ return $this->_error; }
+
+        require_once '../Views/feed.php';
     }
+}
+
+class PostRouter
+{
+    private string $_page;
+    private string $_method;
+    private Helpers $_helpers;
+    private $_error;
+
+    public function __construct($page, $method)
+    {
+        $this->_page = $page;
+        $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+
+        require_once '../Views/post.php';
+    }
+}
+
+class SearchRouter {
+    private string $_page;
+    private string $_method;
+    private Helpers $_helpers;
+    private $_error;
+
+    public function __construct($page, $method)
+    {
+        $this->_page = $page;
+        $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+
+        require_once '../Views/search.php';
+    }
+
+}
+
+class PagesRouter {
+    private string $_page;
+    private string $_method;
+    private Helpers $_helpers;
+    private $_error;
+
+    public function __construct($page, $method)
+    {
+        $this->_page = $page;
+        $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+
+        require_once '../Views/pages.php';
+    }
+
+}
+
+class PageRouter {
+    private string $_page;
+    private string $_method;
+    private Helpers $_helpers;
+    private $_error;
+
+    public function __construct($page, $method)
+    {
+        $this->_page = $page;
+        $this->_method = $method;
+        $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
+
+        require_once '../Views/page.php';
+    }
+
 }

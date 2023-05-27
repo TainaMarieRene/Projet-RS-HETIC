@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#postFeed {
+    margin-left: calc(24.79vw + 32px);
+    display: flex;
+    flex-flow: column;
+    gap: 32px;
+    align-items: center;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F5F2F6;
+}
+
+.cardComments {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+    font-size: 24px;
+}
+
+.commentHeader img {
+    width: 2.44vw;
+    height: 2.44vw;
+    border: solid 1px;
+    border-radius: 100%;
+}
+
+.commentCard {
+    background-color: #F5FDF4;
+    border-radius: 50px;
+    display: flex;
+    flex-flow: row;
+    gap: 16px;
+    align-items: center;
+}
+
+.commentCardBody p + p {
+    color: #7D7373;
+}

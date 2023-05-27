@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#pagesLayout,
+#pageLayout
+{
+    margin-left: calc(24.79vw + 32px);
+    display: flex;
+    flex-flow: column;
+    gap: 32px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F5F2F6;
+}
+
+
+
+.userCard {
+    background-color: #F5FDF4;
+    padding: 32px 16px;
+    border-radius: 25px;
+    border: 1px solid #2B2626;
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+    width: 300px;
+}
+
+
+.layout {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 32px;
+    justify-content: center;
+}
+.userCard span {
+    color: #7D7373;
+}
+.userCard a {
+    text-decoration: underline;
+}
+
+
+.headerPage {
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 32px;
+    width: 100%;
+    border-radius: 25px;
+    background-color: #F5FDF4;
+}
+.headerPage > span {
+    color: #7D7373;
+}
+.headerPage p + p {
+    font-weight: 500;
+}
+
+.headerPage img {
+    border-radius: 100px;
+}
+
+#adminPostAction {
+    width: 100%;
+}
+
+#adminPostAction .postCta {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+.hiddenLabel {
+    position: absolute;
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#postCards {
+    display: flex;
+    flex-flow: column;
+    gap: 32px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#postCards img {
+    width: 64px;
+    height: 64px;
+}
+
+#postCards > div {
+    width: 100%;
+}
+
+
+#actionMsg {
+    font-weight: 500;
+}
+
+input[name="postContent"] {
+    background: white;
+    border: none;
+    padding: 16px 32px;
+    width: calc(100%);
+    max-width: 600px;
+    border-radius: 50px;
+}
+
+button[name="postPost"],
+.mediaInput {
+    background-color: #39E168;
+    border-radius: 50px;
+    border: none;
+    padding: 16px 32px;
+    font-size: 1rem;
+    cursor: pointer
+}
+
+button[name="postPost"]:hover,
+.mediaInput:hover {
+    background-color: #2B2626;
+}
+
+input[type="file"] {
+    display: none;
+}
+#postCards button[name="deletePost"] {
+    padding: 16px;
+}
+

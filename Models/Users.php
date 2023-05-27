@@ -102,24 +102,68 @@ class User {
             ":user_id" => $user_id
         ]);
     }
-}
 
-// TEMPO : MG
-function getUserName($user_id) {
-
-    $pdo = db();
-
-    $requete = $pdo->prepare("SELECT
-    user_firstname, user_lastname, user_username
-    FROM users
-    WHERE user_id = :user_id;
-    ");
-
-    $requete->execute([
-        ":user_id"=>$user_id
-    ]);
-
-    $result = $requete->fetch(PDO::FETCH_ASSOC);
-
-    return $result;
+    public function changePassword($user_id, $password) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_password = :user_password WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_password" => password_hash($password, PASSWORD_DEFAULT)
+        ]);
+    }
+    public function changeUsername($user_id, $user_username) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_username = :user_username WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_username" => $user_username
+        ]);
+    }
+    public function changeUsermail($user_id, $mail) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_mail = :user_mail WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_mail" => $mail
+        ]);
+    }
+    public function changeUserFirstname($user_id, $user_firstname) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_firstname = :user_firstname WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_firstname" => $user_firstname
+        ]);
+    }
+    public function changeUserLastname($user_id, $user_lastname) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_lastname = :user_lastname WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_lastname" => $user_lastname
+        ]);
+    }
+    public function changeUserBirthdate($user_id, $user_birthdate) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE users SET user_birthdate = :user_birthdate WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":user_id" => $user_id,
+            ":user_birthdate" => $user_birthdate
+        ]);
+    }
+    public function changeUserProfileBio($profile_bio, $user_id) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE profiles SET profile_bio = :profile_bio WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":profile_bio" => $profile_bio,
+            ":user_id" => $user_id
+        ]);
+    }
+    public function changeProfileLocation($profile_location, $user_id) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE profiles SET profile_location = :profile_location WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":profile_location" => $profile_location,
+            ":user_id" => $user_id
+        ]);
+    }
+    public function changeProfileActivity($profile_activity, $user_id) {
+        $stmt = $this->_db->_pdo->prepare("UPDATE profiles SET profile_activity = :profile_activity WHERE user_id = :user_id");
+        $stmt-> execute([
+            ":profile_activity" => $profile_activity,
+            ":user_id" => $user_id
+        ]);
+    }
 }

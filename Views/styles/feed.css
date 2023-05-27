@@ -11,6 +11,7 @@
     flex-flow: column;
     gap: 32px;
     align-items: center;
+    justify-content: flex-start;
 }
 
 body {
@@ -45,15 +46,14 @@ body {
     font-weight: 500;
 }
 
-.cardHeader div span + span,
+.cardDate,
 .cardFooter {
     color: #7D7373;
 }
 
-
 .cardHeader img {
-    width: 4.44vw;
-    height: 4.44vw;
+    width: 64px;
+    height: 64px;
     border: solid 1px;
     border-radius: 100%;
 }
@@ -68,9 +68,11 @@ body {
     justify-content: center;
     gap: 8px;
 }
+
 #actionMsg {
     font-weight: 500;
 }
+
 input[name="postContent"] {
     background: white;
     border: none;
@@ -109,12 +111,12 @@ input[type="file"] {
     overflow: hidden;
     white-space: nowrap;
 }
+
 .hide {
     display: none;
 }
 
-
-.reactionCta{
+.reactionCta {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -122,58 +124,63 @@ input[type="file"] {
     height: 4vw;
     border-radius: 50px;
     background: #FFFF;
-    box-shadow:  5px 5px 10px #dedede;
+    box-shadow: 5px 5px 10px #dedede;
     animation: float 1.5s ease-out;
 }
-@keyframes float{
-    0%{
+
+@keyframes float {
+    0% {
         transform: translateY(0px);
     }
-    50%{
+
+    50% {
         transform: translateY(-5px);
     }
-    100%{
+
+    100% {
         transform: translateY(0px);
     }
 }
 
-.reactionCta>button{
+.reactionCta>button {
     width: 2vw;
     border: none;
-    padding: none;
-    color: none;
+    padding: 0;
     background: none;
-
 }
-.reactionCta>button:hover{
+
+.reactionCta>button:hover {
     transform: scale(1.1);
 
 }
 
-.hideCta{
+.hideCta {
     display: none !important;
 }
-.commentForm{
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  align-items: center;
-  gap: 2%
+
+.commentForm {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 2%
 }
-.commentContent{
+
+.commentContent {
     min-width: 10vw;
     min-height: 2vw;
 
     border-color: #2B2626;
     border-radius: 30px;
     border: solid 1px;
-    
+
     padding: 0.5vw;
 
-    resize:none;
+    resize: none;
 
 }
-.postComment{
+
+.postComment {
     background-color: #39E168;
     border-radius: 50px;
     border: none;
@@ -182,3 +189,38 @@ input[type="file"] {
     cursor: pointer
 }
 
+.reactionButton {
+    border: none;
+    padding: 0;
+    background: none;
+    margin: 0;
+    color: #7D7373;
+    cursor: pointer;
+}
+
+.reactionList {
+    width: 14vw;
+    border-radius: 2vw;
+    background: #FFFF;
+    box-shadow: 5px 5px 10px #dedede;
+
+}
+
+.reactionContent {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    font-size: 1rem;
+    padding: 4%;
+
+    border: none;
+
+
+    color: #000000;
+
+}
+
+.reactionEmoji {
+    width: 2vw;
+}
