@@ -1,0 +1,104 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 36px;
+    box-shadow: 12px 11px 6px rgba(0, 0, 0, 0.02), 7px 6px 5px rgba(0, 0, 0, 0.06), 3px 3px 4px rgba(0, 0, 0, 0.1), 1px 1px 2px rgba(0, 0, 0, 0.11), 0px 0px 0px rgba(0, 0, 0, 0.11);
+    background-color: #FFF;
+    border-radius: 8px;
+}
+
+.label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    color: #1a202c;
+}
+  
+  .input-wrapper {
+    margin-top: .5rem;
+}
+  
+  .input, .select-input {
+    display: block;
+    width: 100%;
+    border: none;
+    padding: .375rem;
+    color: #1a202c;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border-radius: .25rem;
+    outline: 1px solid #cbd5e0;
+    font-size: .875rem;
+    line-height: 1.5rem;
+
+}
+
+.input:focus {
+    outline: 2px solid #39E168;
+}
+
+.select-input {
+    padding-left: .75rem;
+    padding-right: 2.5rem;
+}
+
+.button {
+    border-radius: .25rem;
+    background-color: #39E168;
+    padding: .5rem .75rem;
+    font-size: .875rem;
+    font-weight: 600;
+    color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #75de93;
+}
+
+.button:focus {
+    outline: 2px solid #39E168;
+    outline-offset: 2px;
+}
+
+.flex-container {
+    margin-top: .5rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
+  
+  .svg-icon {
+    height: 3rem;
+    width: 3rem;
+    color: #cbd5e0;
+  }
+  
+  .file-input {
+    display: inline-block;
+    border-radius: .25rem;
+    background-color: #ffffff;
+    padding: .375rem .625rem;
+    font-size: .875rem;
+    font-weight: 600;
+    color: #1a202c;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    outline: 1px solid #cbd5e0;
+    cursor: pointer;
+    appearance: button;
+  }
+  
+  .file-input:hover {
+    background-color: #f7fafc;
+  }
