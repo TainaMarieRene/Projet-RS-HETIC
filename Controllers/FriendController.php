@@ -1,10 +1,12 @@
 <?php
 
 namespace FriendController;
-
+require_once '../src/Helpers.php';
+use Helpers\Helpers;
 use Friends\Friend;
 
 class FriendController {
+    private Helpers $_helpers;
     private Friend $_modelFriend;
     private string $_method;
     private string $_page;
@@ -19,8 +21,8 @@ class FriendController {
     public function __construct($_page, $_method){
         require_once '../Models/Friends.php';
         $this->_page = $_page;
-        var_dump($this->_page);
         $this->_method = $_method;
+        $this->_helpers = new Helpers($_page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
         $this->_modelFriend = new Friend();
         $this->_user_id1 = $_COOKIE['uniCookieUserID'];
         $this->_token = $_COOKIE['uniCookieUserID'];
@@ -50,7 +52,6 @@ class FriendController {
                     case 'unblockFriend':
                         $this->_user_id2 = filter_input(INPUT_POST, 'user_id2');
                         $this->_modelFriend->unblock_friend($this->_user_id1, $this->_user_id2);
-                        header('Location: index.php?p=friends');
                         break;
                     case 'deleteFriend':
                         $this->_user_id2 = filter_input(INPUT_POST, 'user_id2');
