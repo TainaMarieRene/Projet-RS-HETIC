@@ -154,6 +154,8 @@
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
+            <?php else: ?>
+                <span>Ce compte est privé</span>
             <?php endif; ?>
     </section>
     
