@@ -58,9 +58,16 @@ if (isset($_POST['postComment'])) {
                 <img src="../Views/assets/imgs/users/picture/<?= "default_picture.jpg" ?>" alt="Image de <?= $postData["postData"]["author"] ?>">
                     <div>
                         <span class="cardUserName">
-                            <a href="http://localhost/projet-rs-hetic/public/index.php?p=profile&profile_id=<?=$postData["postData"]["author_id"]?>">
+                            <?php if($_GET["type"] == "page"): ?>
+                            <a href="http://localhost/projet-rs-hetic/public/index.php?p=page&page_id=<?=$postData["postData"]["author_id"]?>">
                                 <?= $postData["postData"]["author"] ?>
                             </a>
+                            <?php else: ?>
+                                <a href="http://localhost/projet-rs-hetic/public/index.php?p=profile&profile_id=<?=$postData["postData"]["author_id"]?>">
+                                <?= $postData["postData"]["author"] ?>
+                            </a>
+
+                            <?php endif;?>
                         </span>
                         <span>
                             <?= $feedController->getDateDiff($postData["postData"]["date"]) ?>
