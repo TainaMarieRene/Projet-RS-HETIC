@@ -19,6 +19,7 @@ class UserOptionsController {
     private User $_modelUser;
     private Profile $_modelProfile;
     private $_error;
+    private $_success;
 
     public function __construct($page, $method){
         require_once '../Models/Users.php';
@@ -31,6 +32,7 @@ class UserOptionsController {
         $this->_modelProfile = new Profile();
 
         $user = $this->_modelUser->getUserByID($_COOKIE['uniCookieUserID']);
+        $profile = $this->_modelProfile->getProfileInfo($_COOKIE['uniCookieUserID']);
 
         switch ($this->_method) {
             case "POST" : 
@@ -126,9 +128,8 @@ class UserOptionsController {
                 $profile_bio = filter_input(INPUT_POST, "profileBio");
                 if($profile_bio !=$profile["profile_bio"]) {
                     $profile_bio = preg_match("`^.+$`" , preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileBio"))) ? preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileBio")) : false;
-                    if (!$profile_bio && $this->_error) { $this->_error = "Espaces non autorisés"; }
                     if (!$this->_error) {
-                        $this->_modelUser->changeUserProfileBio($profile_bio);
+                        $this->_modelUser->changeUserProfileBio($profile_bio, $_COOKIE['uniCookieUserID']);
                         $this->_success = "Bio modifiée !";
                         $profile["profile_bio"] = $profile_bio;
                     }
@@ -137,9 +138,8 @@ class UserOptionsController {
                 $profile_location = filter_input(INPUT_POST, "profileLocation");
                 if ($profile_location !=$profile["profile_location"]) {
                     $profile_location = preg_match("`^.+$`" , preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileLocation"))) ? preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileLocation")) : false;
-                    if (!$profile_location && $this->_error) { $this->_error = "Espaces non autorisés"; }
                     if (!$this->_error) {
-                        $this->_modelUser->changeProfileLocation($profile_location);
+                        $this->_modelUser->changeProfileLocation($profile_location, $_COOKIE['uniCookieUserID']);
                         $this->_success = "Localisation modifiée !";
                         $profile["profile_location"] = $profile_location;
                     }
@@ -148,17 +148,50 @@ class UserOptionsController {
                 $profile_activity = filter_input(INPUT_POST, "profileActivity");
                 if ($profile_activity !=$profile["profile_activity"]) {
                     $profile_activity = preg_match("`^.+$`" , preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileActivity"))) ? preg_replace("`^\s+|\s+$|^$`", '', filter_input(INPUT_POST, "profileActivity")) : false;
-                    if (!$profile_activity && $this->_error) { $this->_error = "Espaces non autorisés"; }
                     if (!$this->_error) {
-                        $this->_modelUser->changeProfileActivity($profile_activity);
+                        $this->_modelUser->changeProfileActivity($profile_activity, $_COOKIE['uniCookieUserID']);
                         $this->_success = "Activité modifiée !";
                         $profile["profile_activity"] = $profile_activity;
                     }
+                }
+                // Changer la photo de profile
+                if(isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK){
+                    $profile_picture = file_get_contents($_FILES['profile_picture']['tmp_name']);
+                    $profile_pictureHash = hash('sha256', $profile_picture);
+                    $profile_pictureExtension = pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
+                    $profile_picturePath = '../Views/assets/imgs/users/picture/' . $profile_pictureHash . '.' . $profile_pictureExtension;
+                    file_put_contents($profile_picturePath, $profile_picture);
+                    $profile_picturePath = $profile_pictureHash . '.' . $profile_pictureExtension;
+                    $this->_modelProfile->changeProfileImg("profile_picture", $profile_picturePath, $_COOKIE['uniCookieUserID']);
+                    if($profile["profile_picture"] != "default_picture.jpg" && !$this->_modelProfile->imgIsUse("profile_picture", $profile["profile_picture"])){
+                        unlink("../Views/assets/imgs/users/picture/" . $profile["profile_picture"]);
+                    }
+                    $profile["profile_picture"] = $profile_picturePath;
+                }
+                // Changer la bannière
+                if(isset($_FILES['profile_banner']) && $_FILES['profile_banner']['error'] === UPLOAD_ERR_OK){
+                    $profile_banner = file_get_contents($_FILES['profile_banner']['tmp_name']);
+                    $profile_bannerHash = hash('sha256', $profile_banner);
+                    $profile_bannerExtension = pathinfo($_FILES['profile_banner']['name'], PATHINFO_EXTENSION);
+                    $profile_bannerPath = '../Views/assets/imgs/users/banner/' . $profile_bannerHash . '.' . $profile_bannerExtension;
+                    file_put_contents($profile_bannerPath, $profile_banner);
+                    $profile_bannerPath = $profile_bannerHash . '.' . $profile_bannerExtension;
+                    $this->_modelProfile->changeProfileImg("profile_banner", $profile_bannerPath, $_COOKIE['uniCookieUserID']);
+                    if($profile["profile_banner"] != "default_banner.jpg" && !$this->_modelProfile->imgIsUse("profile_banner", $profile["profile_banner"])){
+                        unlink("../Views/assets/imgs/users/banner/" . $profile["profile_banner"]);
+                    }
+                    $profile["profile_banner"] = $profile_bannerPath;
                 }
             break;
         }
 
         require_once '../Views/userOptions.php';
+    }
+
+    private function checkYears($birthdate){
+        $limit = 18;
+        $age = (date('md') < date('md', strtotime($birthdate))) ? (date('Y') - date('Y', strtotime($birthdate)) - 1) : (date('Y') - date('Y', strtotime($birthdate)));
+        return ($age >= $limit && $age <= 120) ? $birthdate : false;
     }
 }
 

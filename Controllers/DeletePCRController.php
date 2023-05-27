@@ -1,6 +1,6 @@
 <?php
 
-namespace PostController;
+namespace DeletePCRController;
 
 // Models
 use Posts\Post;
@@ -8,7 +8,7 @@ use Posts\Post;
 require_once '../src/Helpers.php';
 use Helpers\Helpers;
 
-class DeletePostController {
+class DeletePCRController {
     private string $_page;
     private string $_method;
     private Helpers $_helpers;
@@ -22,13 +22,10 @@ class DeletePostController {
         $this->_helpers = new Helpers($page, isset($_COOKIE['uniCookieUserID']) ? $_COOKIE['uniCookieUserID'] : '', isset($_COOKIE['uniCookieAgent']) ? $_COOKIE['uniCookieAgent'] : '', isset($_COOKIE['uniCookieToken']) ? $_COOKIE['uniCookieToken'] : '');
         $this->_modelPost = new Post();
 
-        $post_id = filter_input(INPUT_GET, 'post_id');
-        $user_id = $_COOKIE['uniCookieUserID'];
+        $delete_type = filter_input(INPUT_GET, 'delete_type');
+        $delete_id = filter_input(INPUT_GET, 'delete_id');
 
-        $post_img = $this->_modelPost->deletePost($post_id, $user_id);
-        if(!$this->_modelPost->imgIsUse($post_img)){
-            unlink("../Views/assets/imgs/users/posts/" . $post_img);
-        }
+        $this->_modelPost->deletePCR($delete_type, $delete_id, $_COOKIE['uniCookieUserID']);
 
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();

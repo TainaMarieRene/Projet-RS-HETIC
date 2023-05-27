@@ -28,7 +28,7 @@
         <?php elseif($this->_error): ?>
             <div class="error"><?= $this->_error ?></div>
         <?php endif; ?>
-        <form class="user-info" action="" method="POST">
+        <form class="user-info" enctype="multipart/form-data" method="POST">
             <input type="text" name="userName" value="<?= $user["user_username"]?>">
             <input type="text" name="userMail" value="<?= $user["user_mail"]?>">
             <input type="password" name="currentPassword" placeholder="Mot de passe actuel">
@@ -37,9 +37,13 @@
             <input type="text" name="userFirstname" value="<?= $user["user_firstname"]?>">
             <input type="text" name="userLastname" value="<?= $user["user_lastname"]?>">
             <input type="date" name="userBirthdate" value="<?= $user["user_birthdate"]?>">
-            <input type="text" name="profileBio" value="<?= $profile["profile_bio"]; ?>">
-            <input type="text" name="profileLocation" value="<?= $profile["profile_location"]; ?>">
-            <input type="text" name="profileActivity" value="<?= $profile["profile_activity"]; ?>">
+            <input type="text" name="profileBio" value="<?= $profile["profile_bio"]; ?>" placeholder="Dites nous en plus...">
+            <input type="text" name="profileLocation" value="<?= $profile["profile_location"]; ?>" placeholder="Ville, Pays...">
+            <input type="text" name="profileActivity" value="<?= $profile["profile_activity"]; ?>" placeholder="Etudiant, Dev...">
+            <label for="profile_picture" class="mediaInput"><img alt="Media Icon" src="../Views/assets/imgs/users/picture/<?= $profile["profile_picture"] ?>"></label>
+            <input type="file" name="profile_picture" id="profile_picture">
+            <label for="profile_banner" class="mediaInput"><img alt="Media Icon" src="../Views/assets/imgs/users/banner/<?= $profile["profile_banner"] ?>"></label>
+            <input type="file" name="profile_banner" id="profile_banner">
             <input type="submit" value="Valider">
         </form>
     </div>

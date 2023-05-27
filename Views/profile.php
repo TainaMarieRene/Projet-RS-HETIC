@@ -21,7 +21,7 @@
                     <?= $user["user_lastname"]?>
                 </span>
                 <span>
-                    <?= $user["user_username"]?>
+                    <?= $user["user_username"]?> <?php if($profile["profile_certification"] == 1):?> <img src="../Views/assets/imgs/website/unilink_logo.svg" alt="Certification" class="badge"> <?php endif; ?>
                 </span>
                 <span>
                     <?= $profile["profile_bio"]; ?>
@@ -108,12 +108,11 @@
                                                 <?php endforeach; ?>
                                             </ul>
                                         </div>
-
                                         <span><?= count($this->_modelComment->getCommentPosts($post["post_id"], $comment["post_comment_id"])) ?> réponses</span>
                                         <button class="commentCommentButton">Voir plus...</button>
                                         <div class="commentComment hide">
                                             <form method="POST">
-                                                <input name="commentCommentContent" type="text" placeholder="Ecrire un commentaire...">
+                                                <input name="commentCommentContent" type="text" placeholder="Ecrire une réponse...">
                                                 <input name="postId" type="hidden" value="<?= $post["post_id"] ?>">
                                                 <input name="commentId" type="hidden" value="<?= $comment["post_comment_id"] ?>">
                                                 <input name="typeForme" type="hidden" value="postCommentComment">
@@ -122,7 +121,7 @@
                                             <ul>
                                                 <?php foreach($this->_modelComment->getCommentPosts($post["post_id"], $comment["post_comment_id"]) as $commentComment): ?>
                                                     <li class="allCommentComment">
-                                                        <?= $commentComment["user_username"]?> : <?= $commentComment["post_comment_content"] ?>
+                                                        <?= $commentComment["user_username"] ?> : <?= $commentComment["post_comment_content"] ?>
                                                         <span><?= count($this->_modelPost->getReactionPosts("comment", $commentComment["post_comment_id"])) ?> réactions</span>
                                                         <button class="reactCommentCommentButton">Réagir</button>
                                                         <div class="commentCommentReaction hide">
@@ -140,19 +139,18 @@
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         </div>
-                                                        <?php if($comment["user_id"] == $_COOKIE['uniCookieUserID']): ?><a href="index.php?p=deleteComment&comment_id=<?= $comment["post_comment_id"] ?>">supprimer</a><?php endif; ?>
+                                                        <?php if($comment["user_id"] == $_COOKIE['uniCookieUserID']): ?><a href="index.php?p=deletePCR&delete_type=posts_comments&delete_id=<?= $commentComment["post_comment_id"] ?>">supprimer la réponse</a><?php endif; ?>
                                                     </li>
                                                 <?php endforeach; ?>
                                             </ul>
                                         </div>
-
-                                        <?php if($comment["user_id"] == $_COOKIE['uniCookieUserID']): ?><a href="index.php?p=deleteComment&comment_id=<?= $comment["post_comment_id"] ?>">supprimer</a><?php endif; ?>
+                                        <?php if($comment["user_id"] == $_COOKIE['uniCookieUserID']): ?><a href="index.php?p=deletePCR&delete_type=posts_comments&delete_id=<?= $comment["post_comment_id"] ?>">supprimer le commentaire</a><?php endif; ?>
                                     </li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
                     <?php if((filter_input(INPUT_GET, "profile_id")) == $_COOKIE['uniCookieUserID']): ?>
-                        <a href="index.php?p=deletePost&post_id=<?= $post["post_id"] ?>">Supprimer le post</a>
+                        <a href="index.php?p=deletePCR&delete_type=posts&delete_id=<?= $post["post_id"] ?>">Supprimer le post</a>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>

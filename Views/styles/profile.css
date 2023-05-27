@@ -26,3 +26,7 @@ section > img{
 .userPost-block img{
     width: 200px;
 }
+
+.badge{
+    width: 25px;
+}
