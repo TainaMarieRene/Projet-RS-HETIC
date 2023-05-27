@@ -107,3 +107,40 @@ nav a {
     transition: transform 150ms, box-shadow 150ms;
     border: #3AE168;
 }
+
+@media screen and (max-width: 375px) {
+    nav {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    #profile_picture, #profile_banner {
+        width: 100%;
+        background-color: #3AE168;
+        border: #3AE168;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+        color: var(--white);
+    }
+}
+
+@media screen and (max-width: 668px){
+    nav {
+        display: flex;
+        flex-direction: column;
+        width: 45%;
+        margin: 20px auto;
+    }
+
+    nav a {
+        width: 100%;
+    }
+
+    #profile_picture, #profile_banner {
+        width: 100%;
+    }
+
+    .user-info .validate {
+        width: 100%;
+    }
+}
