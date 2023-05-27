@@ -39,7 +39,7 @@ if (isset($_POST["reaction"])) {
     $reactionEmoji = $feedController->filterReaction($_POST["reaction"]);
 
     $feedController->saveReaction($userId, $reactionType, $reactionEmoji, $reactionTypeId);
-    header('Location: http://localhost/projet-rs-hetic/public/index.php?p=feed', true, 303);
+    header('Location: http://localhost/projet-rs-hetic/public/index.php?p=feed', true, 200);
     exit();
 }
 
@@ -75,12 +75,12 @@ $likeId = 0;
         <?php require_once("../Views/templates/side_profile.php"); ?>
 
         <section id="userFeed">
-            <p id="actionMsg">
+            <div class="error" id="actionMsg">
                 <?= $actionMsg ?>
-            </p>
-            <p id="commentMSG">
+            </div>
+            <div class="error" id="commentMSG">
                 <?= $commentMSG ?>
-            </p>
+            </div>
             <form class="postCta" method="post">
                 <label for="postContent" class="hiddenLabel">Create Post Content Label</label>
                 <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
@@ -150,7 +150,7 @@ $likeId = 0;
                         <div class="cardFooter">
                             <a
                                 href="http://localhost/projet-rs-hetic/public/index.php?p=post&id=<?= $post["id"] ?>&type=<?= $post['type'] ?>">
-                                Voir plus...
+                                Voir les commentaires
                             </a>
                             <div class='displayReaction hideCta' id=<?= 'displayReaction' . $id ?>>
                                 <ul class='reactionList'>
