@@ -8,25 +8,27 @@ use Page\PageController;
 $feedController = new FeedController();
 $username = ($feedController)->getUserName();
 $pageController = new PageController();
-
 $pageData = $pageController->getSinglePageData();
-$actionMsg = "";
+$errorMsg = "";
+$successMsg = "";
 if (isset($_POST['postPost'])) {
     if ($_POST['postContent']) {
-        $actionMsg = $pageController->createPagePost($_POST['postContent']);
+        $pageController->createPagePost($_POST['postContent']);
         header("Refresh:0");
         exit();
     } else {
-        $actionMsg = 'Can\'t post nothing !';
+        $errorMsg = 'Can\'t post nothing !';
     }
 }
 
 if (isset($_POST["unfollow"])) {
     $pageController->unfollow();
+    header("Refresh:0");
 }
 
 if (isset($_POST["follow"])) {
     $pageController->follow();
+    header("Refresh:0");
 }
 
 ?>
@@ -67,9 +69,12 @@ if (isset($_POST["follow"])) {
             </div>
             <?php if($pageController->isAdmin()):?>
             <div id="adminPostAction">
-                <p id="actionMsg">
-                    <?= $actionMsg ?>
-                </p>
+                <div class="error" id="errorMsg">
+                    <?= $errorMsg ?>
+                </div>
+                <div class="success" id="succesMsg">
+                    <?= $successMsg ?>
+                </div>
                 <form class="postCta" method="post">
                     <label for="postContent" class="hiddenLabel">Create Post Content Label</label>
                     <input type="text" name="postContent" id="postContent" placeholder='Quoi de neuf ?'>
@@ -82,27 +87,69 @@ if (isset($_POST["follow"])) {
             <?php endif;?>
             <div id="postCards">
                 <?php foreach ($pageData["posts"] as $post): ?>
-                    <div class="postCard">
-                        <div class="cardHeader">
-                            <img src="../Views/assets/imgs/users/picture/<?= "default_picture.jpg" ?>" alt="Image de <?= $post["author"] ?>">
-                            <div>
+                <?php if($post["id"]): ?>
+                    <div>
+                        <?php if($pageController->isAdmin()):?>
+                            <?php
+                                if (isset($_POST["delete".$post["id"]])) {
+                                    $pageController->deletePost($post["id"]);
+                                    $successMsg = "Post delete successfully, refresh the page to see the changes.";
+                                }
+                            ?>
+                            <form method="post" class="postDelete">
+                                <button name="delete<?= $post["id"]?>" class="headerCTA unfollow">
+                                    Supprimer le post
+                                </button>
+                            </form>
+                        <?php endif; ?>
+                        <div class="postCard">
+                            <div class="cardHeader">
+                                <img src="../Views/assets/imgs/users/picture/<?= "default_picture.jpg" ?>" alt="Image de <?= $pageData["info"]["name"] ?>">
+                                <div>
                                     <span class="cardUserName">
-                                        <?= $post["author"] ?>
+                                        <?= $pageData["info"]["name"] ?>
                                     </span>
-                                <span class="cardDate">
+                                    <span class="cardDate">
                                     <?= $feedController->getDateDiff($post["date"]) ?>
                                 </span>
+                                </div>
                             </div>
+                            <div class="cardBody">
+                                <p>
+                                    <?= $post["content"] ?>
+                                </p>
+                            </div>
+
                         </div>
-                        <div class="cardBody">
-                            <p>
-                                <?= $post["content"] ?>
-                            </p>
-                        </div>
+                    <?php endif; ?>
+
                     </div>
                 <?php endforeach; ?>
             </div>
         </section>
     </main>
 </body>
+<script>
+    const error = "<?= $errorMsg ?>";
+    const success = "<?= $successMsg ?>";
+    if (!error) {
+        document.getElementById("errorMsg").classList.add('hide')
+    } else{
+        document.getElementById("errorMsg").classList.remove('hide');
+        setTimeout(() => {
+            document.getElementById("errorMsg").classList.add('hide');
+        }, 1500)
+    }
+
+    if (!success) {
+        document.getElementById("succesMsg").classList.add('hide')
+    } else{
+        document.getElementById("succesMsg").classList.remove('hide');
+        setTimeout(() => {
+            document.getElementById("succesMsg").classList.add('hide');
+        }, 1500)
+    }
+
+
+</script>
 </html>

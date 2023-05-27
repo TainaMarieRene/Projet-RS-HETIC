@@ -96,6 +96,7 @@ class PageController extends \Database\Database
     {
         $pageInfoQuery = $this->_pdo->prepare("
             SELECT p.page_at AS at, 
+                   p.page_id AS id,
                    p.page_name AS name,
                    COUNT(m.member_id) AS followersCount,
                    p.page_desc AS bio
@@ -116,7 +117,6 @@ class PageController extends \Database\Database
 
         $pagePostsQuery = $this->_pdo->prepare("
             SELECT 
-              pg.page_name AS 'author',
               pst.post_id AS 'id',
             pst.post_type_id AS `author_id`,
               pst.post_type AS 'type',
@@ -263,6 +263,16 @@ class PageController extends \Database\Database
         } catch (Exception $e) {
             return $e;
         }
+    }
+
+    public function deletePost(int $postId) {
+        $deletePostQuery = $this->_pdo->prepare("
+            DELETE FROM posts WHERE post_id = :postId;
+        ");
+
+        $deletePostQuery->execute([
+           ":postId" => $postId
+        ]);
     }
 
 }
